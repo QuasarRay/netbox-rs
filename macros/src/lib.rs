@@ -336,7 +336,13 @@ fn schema_keyword_path(value: &Value, keyword: &str, path: &str) -> Option<Strin
         return Some(format!("{path}/{keyword}"));
     }
 
-    for key in ["properties", "patternProperties", "definitions", "$defs", "dependentSchemas"] {
+    for key in [
+        "properties",
+        "patternProperties",
+        "definitions",
+        "$defs",
+        "dependentSchemas",
+    ] {
         if let Some(children) = object.get(key).and_then(Value::as_object) {
             for (name, child) in children {
                 if let Some(found) =
@@ -359,9 +365,7 @@ fn schema_keyword_path(value: &Value, keyword: &str, path: &str) -> Option<Strin
     ] {
         if let Some(child) = object.get(key) {
             if child.is_object() {
-                if let Some(found) =
-                    schema_keyword_path(child, keyword, &format!("{path}/{key}"))
-                {
+                if let Some(found) = schema_keyword_path(child, keyword, &format!("{path}/{key}")) {
                     return Some(found);
                 }
             } else if key == "items" {
