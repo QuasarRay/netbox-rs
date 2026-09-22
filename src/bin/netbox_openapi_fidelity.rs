@@ -368,9 +368,9 @@ fn base64_encode(bytes: &[u8]) -> String {
     const TABLE: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     let mut out = String::with_capacity(bytes.len().div_ceil(3) * 4);
-    let mut chunks = bytes.chunks_exact(3);
+    let (chunks, remainder) = bytes.as_chunks::<3>();
 
-    for chunk in &mut chunks {
+    for chunk in chunks {
         let value = (u32::from(chunk[0]) << 16) | (u32::from(chunk[1]) << 8) | u32::from(chunk[2]);
         out.push(TABLE[((value >> 18) & 0x3f) as usize] as char);
         out.push(TABLE[((value >> 12) & 0x3f) as usize] as char);
@@ -378,7 +378,7 @@ fn base64_encode(bytes: &[u8]) -> String {
         out.push(TABLE[(value & 0x3f) as usize] as char);
     }
 
-    match chunks.remainder() {
+    match remainder {
         [] => {}
         [first] => {
             let value = u32::from(*first) << 16;
@@ -407,8 +407,10 @@ fn base64_decode(value: &str) -> Result<Vec<u8>, Box<dyn Error>> {
 
     let bytes = value.as_bytes();
     let mut out = Vec::with_capacity(value.len() / 4 * 3);
+    let (chunks, remainder) = bytes.as_chunks::<4>();
+    debug_assert!(remainder.is_empty());
 
-    for chunk in bytes.chunks_exact(4) {
+    for chunk in chunks {
         let a = decode_base64_character(chunk[0])?;
         let b = decode_base64_character(chunk[1])?;
         let c = if chunk[2] == b'=' {
