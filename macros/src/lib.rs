@@ -20,11 +20,15 @@ pub fn netbox_impl(input: TokenStream) -> TokenStream {
 }
 
 fn expand(input: TokenStream, f: fn(&Doc) -> Result<Tokens, String>) -> Result<Tokens, String> {
-    let path = syn::parse::<LitStr>(input).map_err(|e| e.to_string())?.value();
-    let file = PathBuf::from(env::var("CARGO_MANIFEST_DIR").map_err(|e| e.to_string())?).join(&path);
+    let path = syn::parse::<LitStr>(input)
+        .map_err(|e| e.to_string())?
+        .value();
+    let file =
+        PathBuf::from(env::var("CARGO_MANIFEST_DIR").map_err(|e| e.to_string())?).join(&path);
     let source = fs::read_to_string(&file).map_err(|e| format!("{}: {e}", file.display()))?;
     let value: Value = serde_json::from_str(&source).map_err(|e| e.to_string())?;
-    serde_json::from_value::<OpenAPI>(value.clone()).map_err(|e| format!("invalid OpenAPI: {e}"))?;
+    serde_json::from_value::<OpenAPI>(value.clone())
+        .map_err(|e| format!("invalid OpenAPI: {e}"))?;
     let doc = Doc::new(value)?;
     let body = f(&doc)?;
     let path = LitStr::new(&path, proc_macro2::Span::call_site());
@@ -250,10 +254,7 @@ fn request_schema(doc: &Value, item: &Value, op: &Value) -> Result<Value, String
         } else {
             name
         };
-        let schema = p
-            .get("schema")
-            .cloned()
-            .unwrap_or(Value::Bool(true));
+        let schema = p.get("schema").cloned().unwrap_or(Value::Bool(true));
         properties.insert(field.clone(), schema_core(schema));
         if p.get("required").and_then(Value::as_bool).unwrap_or(false) || place == "path" {
             required.push(Value::String(field));
@@ -396,7 +397,11 @@ fn fallback_id(method: &str, path: &str) -> String {
         method,
         path.trim_matches('/')
             .chars()
-            .map(|c| if matches!(c, '/' | '{' | '}' | '-') { '_' } else { c })
+            .map(|c| if matches!(c, '/' | '{' | '}' | '-') {
+                '_'
+            } else {
+                c
+            })
             .collect::<String>()
     )
 }
