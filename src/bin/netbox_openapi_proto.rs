@@ -364,28 +364,28 @@ fn emit_object_message(
         ));
     }
 
-    if properties.is_empty() {
-        if let Some(additional) = schema.get("additionalProperties") {
-            let field_type = if additional == &Value::Bool(true) {
-                FieldType {
-                    ty: "google.protobuf.Value".to_string(),
-                    repeated: false,
-                    optional_allowed: false,
-                    lossy: true,
-                }
-            } else {
-                type_for_schema(document, additional, type_names, None)
-            };
-            let mut used = BTreeSet::new();
-            let number = stable_field_number(name, "entries", &mut used);
-            if is_valid_map_value_type(&field_type.ty) && !field_type.repeated {
-                out.push_str(&format!(
-                    "  map<string, {}> entries = {number};\n",
-                    field_type.ty
-                ));
-            } else {
-                out.push_str(&format!("  google.protobuf.Struct entries = {number};\n"));
+    if properties.is_empty()
+        && let Some(additional) = schema.get("additionalProperties")
+    {
+        let field_type = if additional == &Value::Bool(true) {
+            FieldType {
+                ty: "google.protobuf.Value".to_string(),
+                repeated: false,
+                optional_allowed: false,
+                lossy: true,
             }
+        } else {
+            type_for_schema(document, additional, type_names, None)
+        };
+        let mut used = BTreeSet::new();
+        let number = stable_field_number(name, "entries", &mut used);
+        if is_valid_map_value_type(&field_type.ty) && !field_type.repeated {
+            out.push_str(&format!(
+                "  map<string, {}> entries = {number};\n",
+                field_type.ty
+            ));
+        } else {
+            out.push_str(&format!("  google.protobuf.Struct entries = {number};\n"));
         }
     }
 
@@ -498,10 +498,10 @@ fn collect_properties(
         visited_refs: &mut BTreeSet<String>,
     ) {
         if let Some(reference) = schema.get("$ref").and_then(Value::as_str) {
-            if visited_refs.insert(reference.to_string()) {
-                if let Some(resolved) = resolve_ref(document, reference) {
-                    visit(document, resolved, properties, required, visited_refs);
-                }
+            if visited_refs.insert(reference.to_string())
+                && let Some(resolved) = resolve_ref(document, reference)
+            {
+                visit(document, resolved, properties, required, visited_refs);
             }
             return;
         }
@@ -554,10 +554,10 @@ fn type_for_schema(
         };
     }
 
-    if let Some(all_of) = schema.get("allOf").and_then(Value::as_array) {
-        if all_of.len() == 1 {
-            return type_for_schema(_document, &all_of[0], type_names, inline_enum);
-        }
+    if let Some(all_of) = schema.get("allOf").and_then(Value::as_array)
+        && all_of.len() == 1
+    {
+        return type_for_schema(_document, &all_of[0], type_names, inline_enum);
     }
 
     if let Some(reference) = schema.get("$ref").and_then(Value::as_str) {
@@ -742,14 +742,14 @@ fn collect_operations(document: &Value) -> BTreeMap<String, Vec<(String, String,
         };
 
         for method in ["get", "post", "put", "patch", "delete"] {
-            if let Some(operation) = path_item.get(method) {
-                if operation.is_object() {
-                    services.entry(service_group(path)).or_default().push((
-                        method.to_string(),
-                        path.clone(),
-                        operation.clone(),
-                    ));
-                }
+            if let Some(operation) = path_item.get(method)
+                && operation.is_object()
+            {
+                services.entry(service_group(path)).or_default().push((
+                    method.to_string(),
+                    path.clone(),
+                    operation.clone(),
+                ));
             }
         }
     }
@@ -882,42 +882,41 @@ fn emit_request_message(
                 .flatten(),
         )
     {
-        if let Some(parameter) = resolve_object(document, parameter) {
-            if let (Some(name), Some(location), Some(schema)) = (
+        if let Some(parameter) = resolve_object(document, parameter)
+            && let (Some(name), Some(location), Some(schema)) = (
                 parameter.get("name").and_then(Value::as_str),
                 parameter.get("in").and_then(Value::as_str),
                 parameter.get("schema"),
-            ) {
-                fields.push(RequestField {
-                    source_name: name.to_string(),
-                    field_name: proto_field_name(name),
-                    schema: schema.clone(),
-                    required: parameter
-                        .get("required")
-                        .and_then(Value::as_bool)
-                        .unwrap_or(false),
-                    comment: format!("{location} parameter"),
-                });
-            }
+            )
+        {
+            fields.push(RequestField {
+                source_name: name.to_string(),
+                field_name: proto_field_name(name),
+                schema: schema.clone(),
+                required: parameter
+                    .get("required")
+                    .and_then(Value::as_bool)
+                    .unwrap_or(false),
+                comment: format!("{location} parameter"),
+            });
         }
     }
 
     if let Some(request_body) = operation
         .get("requestBody")
         .and_then(|body| resolve_object(document, body))
+        && let Some(schema) = content_schema(request_body)
     {
-        if let Some(schema) = content_schema(request_body) {
-            fields.push(RequestField {
-                source_name: "body".to_string(),
-                field_name: "body".to_string(),
-                schema: schema.clone(),
-                required: request_body
-                    .get("required")
-                    .and_then(Value::as_bool)
-                    .unwrap_or(false),
-                comment: "request body".to_string(),
-            });
-        }
+        fields.push(RequestField {
+            source_name: "body".to_string(),
+            field_name: "body".to_string(),
+            schema: schema.clone(),
+            required: request_body
+                .get("required")
+                .and_then(Value::as_bool)
+                .unwrap_or(false),
+            comment: "request body".to_string(),
+        });
     }
 
     if fields.is_empty() {
@@ -1004,10 +1003,10 @@ fn emit_response_message(
         return "google.protobuf.Empty".to_string();
     };
 
-    if let Some(reference) = schema.get("$ref").and_then(Value::as_str) {
-        if let Some(ty) = reference_type(reference, type_names) {
-            return ty;
-        }
+    if let Some(reference) = schema.get("$ref").and_then(Value::as_str)
+        && let Some(ty) = reference_type(reference, type_names)
+    {
+        return ty;
     }
 
     let message_name = format!("{rpc_name}Response");
