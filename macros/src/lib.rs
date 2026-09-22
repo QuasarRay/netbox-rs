@@ -327,58 +327,119 @@ fn resolve<'a>(doc: &'a Value, value: &'a Value) -> Result<&'a Value, String> {
         .ok_or_else(|| format!("unresolved ref: {reference}"))
 }
 
-fn schema_core(mut v: Value) -> Value {
-    match &mut v {
-        Value::Array(a) => {
-            for x in a {
-                *x = schema_core(x.take());
-            }
+fn schema_core(v: Value) -> Value {
+    let Value::Object(mut o) = v else {
+        return v;
+    };
+
+    if let Some(Value::String(reference)) = o.get_mut("$ref") {
+        if let Some(name) = reference.strip_prefix("#/components/schemas/") {
+            *reference = format!("#/definitions/{name}");
         }
-        Value::Object(o) => {
-            if let Some(Value::String(r)) = o.get_mut("$ref") {
-                if let Some(name) = r.strip_prefix("#/components/schemas/") {
-                    *r = format!("#/definitions/{name}");
-                }
-            }
-            let nullable = o
-                .remove("nullable")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false);
-            for value in o.values_mut() {
-                *value = schema_core(value.take());
-            }
-            for key in ["discriminator", "xml", "externalDocs"] {
-                o.remove(key);
-            }
-            if matches!(o.get("additionalProperties"), Some(Value::Bool(true)))
-                && o.get("properties").is_some()
-            {
-                o.insert("additionalProperties".into(), json!({}));
-            }
-            for key in ["Minimum", "Maximum"] {
-                let ex = format!("exclusive{key}");
-                let plain = key.to_ascii_lowercase();
-                if o.get(&ex).and_then(Value::as_bool) == Some(true) {
-                    if let Some(n) = o.remove(&plain) {
-                        o.insert(ex, n);
-                    } else {
-                        o.remove(&ex);
-                    }
-                } else if matches!(o.get(&ex), Some(Value::Bool(_))) {
-                    o.remove(&ex);
-                }
-            }
-            if nullable {
-                let body = Value::Object(core::mem::take(o));
-                *o = match json!({"anyOf":[body,{"type":"null"}]}) {
-                    Value::Object(x) => x,
-                    _ => unreachable!(),
-                };
-            }
-        }
-        _ => {}
     }
-    v
+
+    // Annotation/application-only keywords are preserved in the authoritative
+    // OpenAPI source, but do not participate in construction of Rust types.
+    for key in [
+        "default",
+        "example",
+        "deprecated",
+        "readOnly",
+        "writeOnly",
+        "discriminator",
+        "xml",
+        "externalDocs",
+    ] {
+        o.remove(key);
+    }
+
+    let nullable = o
+        .remove("nullable")
+        .and_then(|value| value.as_bool())
+        .unwrap_or(false);
+
+    // OpenAPI 3.0 uses boolean exclusive bounds; JSON Schema draft-07 uses
+    // the exclusive bound itself as the numeric value.
+    for suffix in ["Minimum", "Maximum"] {
+        let exclusive = format!("exclusive{suffix}");
+        let plain = suffix.to_ascii_lowercase();
+        if o.get(&exclusive).and_then(Value::as_bool) == Some(true) {
+            if let Some(bound) = o.remove(&plain) {
+                o.insert(exclusive, bound);
+            } else {
+                o.remove(&exclusive);
+            }
+        } else if matches!(o.get(&exclusive), Some(Value::Bool(_))) {
+            o.remove(&exclusive);
+        }
+    }
+
+    // Map-valued child-schema positions: keys are user/property identifiers
+    // and must never be interpreted as schema keywords themselves.
+    for key in ["properties", "patternProperties", "definitions", "$defs"] {
+        if let Some(Value::Object(children)) = o.get_mut(key) {
+            for child in children.values_mut() {
+                *child = schema_core(child.take());
+            }
+        }
+    }
+
+    // Single child-schema positions.
+    for key in [
+        "items",
+        "additionalProperties",
+        "not",
+        "contains",
+        "propertyNames",
+        "if",
+        "then",
+        "else",
+    ] {
+        if let Some(child) = o.get_mut(key) {
+            if child.is_object() {
+                *child = schema_core(child.take());
+            } else if key == "items" && child.is_array() {
+                if let Some(children) = child.as_array_mut() {
+                    for child in children {
+                        *child = schema_core(child.take());
+                    }
+                }
+            }
+        }
+    }
+
+    // Array-valued child-schema positions.
+    for key in ["oneOf", "anyOf", "allOf", "prefixItems"] {
+        if let Some(Value::Array(children)) = o.get_mut(key) {
+            for child in children {
+                *child = schema_core(child.take());
+            }
+        }
+    }
+
+    // Draft 2019+/2020-12 map-valued child schemas, accepted for forward
+    // compatibility even though the pinned NetBox document is OpenAPI 3.0.
+    if let Some(Value::Object(children)) = o.get_mut("dependentSchemas") {
+        for child in children.values_mut() {
+            *child = schema_core(child.take());
+        }
+    }
+
+    // Typify treats true additionalProperties next to named fields as
+    // unconstrained-but-ignored. Empty schema has the intended open-map
+    // semantics and yields a flattened map in the generated Rust type.
+    if matches!(o.get("additionalProperties"), Some(Value::Bool(true)))
+        && o.get("properties").is_some()
+    {
+        o.insert("additionalProperties".into(), json!({}));
+    }
+
+    let body = Value::Object(o);
+    if nullable {
+        json!({"anyOf":[body,{"type":"null"}]})
+    } else {
+        body
+    }
 }
 
 fn group(path: &str) -> String {
@@ -431,6 +492,19 @@ mod tests {
             schema_core(json!({"type":"integer","minimum":1,"exclusiveMinimum":true})),
             json!({"type":"integer","exclusiveMinimum":1})
         );
+        assert_eq!(
+            schema_core(json!({"type":"string","default":"ignored"})),
+            json!({"type":"string"})
+        );
+    }
+
+    #[test]
+    fn property_named_default_is_not_an_annotation() {
+        let normalized = schema_core(json!({
+            "type":"object",
+            "properties":{"default":{"type":"string","default":"inner"}}
+        }));
+        assert_eq!(normalized["properties"]["default"], json!({"type":"string"}));
     }
 
     #[test]
