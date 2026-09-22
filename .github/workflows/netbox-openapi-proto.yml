@@ -31,7 +31,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: netbox-openapi-proto-\${{ github.workflow }}-\${{ github.ref }}
+  group: netbox-openapi-proto-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -63,27 +63,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          generated="\${RUNNER_TEMP}/netbox-proto"
+          generated="${RUNNER_TEMP}/netbox-proto"
 
           cargo +1.98.0 run --bin netbox_openapi_proto -- \
             --input openapi/openapi.json \
-            --output-dir "\${generated}" \
+            --output-dir "${generated}" \
             --package netbox.v1
 
           cargo +1.98.0 run --bin netbox_openapi_fidelity -- \
             --input openapi/openapi.json \
-            --output-dir "\${generated}" \
+            --output-dir "${generated}" \
             --package netbox.v1 \
             --verify-generated
 
           protoc \
-            --proto_path="\${generated}" \
+            --proto_path="${generated}" \
             --proto_path=/usr/include \
             --include_imports \
-            --descriptor_set_out="\${RUNNER_TEMP}/netbox-lossless.pb" \
-            "\${generated}"/*.proto
+            --descriptor_set_out="${RUNNER_TEMP}/netbox-lossless.pb" \
+            "${generated}"/*.proto
 
-          test -s "\${RUNNER_TEMP}/netbox-lossless.pb"
+          test -s "${RUNNER_TEMP}/netbox-lossless.pb"
 
       - name: Compile currently committed protobufs
         shell: bash
@@ -92,17 +92,17 @@ jobs:
           protoc \
             --proto_path=proto/netbox \
             --proto_path=/usr/include \
-            --descriptor_set_out="\${RUNNER_TEMP}/netbox-current.pb" \
+            --descriptor_set_out="${RUNNER_TEMP}/netbox-current.pb" \
             proto/netbox/*.proto
 
       - name: Enforce reproducibility after fidelity migration
         shell: bash
         run: |
           set -euo pipefail
-          generated="\${RUNNER_TEMP}/netbox-proto"
+          generated="${RUNNER_TEMP}/netbox-proto"
 
           if grep -qx 'netbox_openapi_document.proto' proto/netbox/.netbox-openapi-proto-manifest; then
-            diff -ru --exclude=README.md "\${generated}" proto/netbox
+            diff -ru --exclude=README.md "${generated}" proto/netbox
 
             cargo +1.98.0 run --bin netbox_openapi_fidelity -- \
               --input openapi/openapi.json \
@@ -122,8 +122,8 @@ jobs:
       contents: write
       pull-requests: write
     env:
-      NETBOX_REF: \${{ inputs.netbox_ref || 'main' }}
-      GH_TOKEN: \${{ github.token }}
+      NETBOX_REF: ${{ inputs.netbox_ref || 'main' }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -144,22 +144,22 @@ jobs:
           set -euo pipefail
           resolved_sha="$(
             curl --fail --silent --show-error --location \
-              "https://api.github.com/repos/netbox-community/netbox/commits/\${NETBOX_REF}" \
+              "https://api.github.com/repos/netbox-community/netbox/commits/${NETBOX_REF}" \
               | jq -r .sha
           )"
-          test -n "\${resolved_sha}"
-          test "\${resolved_sha}" != "null"
+          test -n "${resolved_sha}"
+          test "${resolved_sha}" != "null"
 
           curl --fail --location --retry 3 --retry-all-errors \
-            "https://raw.githubusercontent.com/netbox-community/netbox/\${resolved_sha}/contrib/openapi.json" \
+            "https://raw.githubusercontent.com/netbox-community/netbox/${resolved_sha}/contrib/openapi.json" \
             --output openapi/openapi.json
 
           openapi_version="$(jq -r '.info.version // "unknown"' openapi/openapi.json)"
           cat > openapi/SOURCE <<EOF
           repository=https://github.com/netbox-community/netbox.git
-          commit=\${resolved_sha}
+          commit=${resolved_sha}
           path=contrib/openapi.json
-          openapi_version=\${openapi_version}
+          openapi_version=${openapi_version}
           EOF
 
       - name: Regenerate protobuf contracts
@@ -181,7 +181,7 @@ jobs:
             --proto_path=proto/netbox \
             --proto_path=/usr/include \
             --include_imports \
-            --descriptor_set_out="\${RUNNER_TEMP}/netbox.pb" \
+            --descriptor_set_out="${RUNNER_TEMP}/netbox.pb" \
             proto/netbox/*.proto
 
       - name: Create or refresh update pull request
@@ -196,21 +196,21 @@ jobs:
           branch="automation/netbox-openapi-proto"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -C "\${branch}"
+          git switch -C "${branch}"
           git add openapi proto/netbox
           git commit -m "chore: refresh NetBox OpenAPI and protobufs"
-          git push --force origin "\${branch}"
+          git push --force origin "${branch}"
 
           existing="$(
-            gh pr list --head "\${branch}" --base main --state open \
+            gh pr list --head "${branch}" --base main --state open \
               --json number --jq '.[0].number // empty'
           )"
-          if [[ -z "\${existing}" ]]; then
+          if [[ -z "${existing}" ]]; then
             gh pr create \
               --base main \
-              --head "\${branch}" \
+              --head "${branch}" \
               --title "chore: refresh NetBox OpenAPI and protobufs" \
               --body "Refreshes the committed NetBox OpenAPI snapshot, regenerates proto/netbox, embeds the exact OpenAPI source into descriptor options, verifies byte-for-byte round-trip fidelity, and compiles the result."
           else
-            echo "Updated existing PR #\${existing}"
+            echo "Updated existing PR #${existing}"
           fi
