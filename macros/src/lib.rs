@@ -113,6 +113,9 @@ impl Doc {
 }
 
 fn api(doc: &Doc) -> Result<Tokens, String> {
+    if let Some(path) = schema_keyword_path(&doc.schema, "default", "#") {
+        return Err(format!("normalizer left schema default at {path}"));
+    }
     let root: RootSchema = serde_json::from_value(doc.schema.clone())
         .map_err(|e| format!("JSON Schema normalization failed: {e}"))?;
     let mut types = TypeSpace::new(TypeSpaceSettings::default().with_struct_builder(false));
@@ -325,6 +328,69 @@ fn resolve<'a>(doc: &'a Value, value: &'a Value) -> Result<&'a Value, String> {
         .ok_or_else(|| format!("external ref unsupported: {reference}"))?;
     doc.pointer(pointer)
         .ok_or_else(|| format!("unresolved ref: {reference}"))
+}
+
+fn schema_keyword_path(value: &Value, keyword: &str, path: &str) -> Option<String> {
+    let object = value.as_object()?;
+    if object.contains_key(keyword) {
+        return Some(format!("{path}/{keyword}"));
+    }
+
+    for key in ["properties", "patternProperties", "definitions", "$defs", "dependentSchemas"] {
+        if let Some(children) = object.get(key).and_then(Value::as_object) {
+            for (name, child) in children {
+                if let Some(found) =
+                    schema_keyword_path(child, keyword, &format!("{path}/{key}/{name}"))
+                {
+                    return Some(found);
+                }
+            }
+        }
+    }
+    for key in [
+        "items",
+        "additionalProperties",
+        "not",
+        "contains",
+        "propertyNames",
+        "if",
+        "then",
+        "else",
+    ] {
+        if let Some(child) = object.get(key) {
+            if child.is_object() {
+                if let Some(found) =
+                    schema_keyword_path(child, keyword, &format!("{path}/{key}"))
+                {
+                    return Some(found);
+                }
+            } else if key == "items" {
+                for (index, child) in child.as_array().into_iter().flatten().enumerate() {
+                    if let Some(found) =
+                        schema_keyword_path(child, keyword, &format!("{path}/{key}/{index}"))
+                    {
+                        return Some(found);
+                    }
+                }
+            }
+        }
+    }
+    for key in ["oneOf", "anyOf", "allOf", "prefixItems"] {
+        for (index, child) in object
+            .get(key)
+            .and_then(Value::as_array)
+            .into_iter()
+            .flatten()
+            .enumerate()
+        {
+            if let Some(found) =
+                schema_keyword_path(child, keyword, &format!("{path}/{key}/{index}"))
+            {
+                return Some(found);
+            }
+        }
+    }
+    None
 }
 
 fn schema_core(v: Value) -> Value {
