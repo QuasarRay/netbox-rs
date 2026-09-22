@@ -5,6 +5,7 @@ on:
     paths:
       - Cargo.toml
       - src/bin/netbox_openapi_proto.rs
+      - src/bin/netbox_openapi_fidelity.rs
       - openapi/**
       - proto/netbox/**
       - .github/workflows/netbox-openapi-proto.yml
@@ -13,6 +14,7 @@ on:
     paths:
       - Cargo.toml
       - src/bin/netbox_openapi_proto.rs
+      - src/bin/netbox_openapi_fidelity.rs
       - openapi/**
       - proto/netbox/**
       - .github/workflows/netbox-openapi-proto.yml
@@ -47,17 +49,17 @@ jobs:
         run: cargo +1.98.0 fmt --check
 
       - name: Generator tests
-        run: cargo +1.98.0 test --bin netbox_openapi_proto
+        run: cargo +1.98.0 test --bins
 
       - name: Generator lint
-        run: cargo +1.98.0 clippy --bin netbox_openapi_proto -- -D warnings
+        run: cargo +1.98.0 clippy --bins -- -D warnings
 
       - name: Install protobuf compiler
         run: |
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler
 
-      - name: Reproduce committed protobufs
+      - name: Generate lossless protobuf contract
         shell: bash
         run: |
           set -euo pipefail
@@ -68,23 +70,50 @@ jobs:
             --output-dir "${generated}" \
             --package netbox.v1
 
-          diff -ru --exclude=README.md "${generated}" proto/netbox
-
-          cargo +1.98.0 run --bin netbox_openapi_proto -- \
+          cargo +1.98.0 run --bin netbox_openapi_fidelity -- \
             --input openapi/openapi.json \
-            --output-dir proto/netbox \
+            --output-dir "${generated}" \
             --package netbox.v1 \
-            --check
+            --verify-generated
 
-      - name: Compile committed protobufs
+          protoc \
+            --proto_path="${generated}" \
+            --proto_path=/usr/include \
+            --include_imports \
+            --descriptor_set_out="${RUNNER_TEMP}/netbox-lossless.pb" \
+            "${generated}"/*.proto
+
+          test -s "${RUNNER_TEMP}/netbox-lossless.pb"
+
+      - name: Compile currently committed protobufs
         shell: bash
         run: |
           set -euo pipefail
           protoc \
             --proto_path=proto/netbox \
             --proto_path=/usr/include \
-            --descriptor_set_out="${RUNNER_TEMP}/netbox.pb" \
+            --descriptor_set_out="${RUNNER_TEMP}/netbox-current.pb" \
             proto/netbox/*.proto
+
+      - name: Enforce reproducibility after fidelity migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          generated="${RUNNER_TEMP}/netbox-proto"
+
+          if grep -qx 'netbox_openapi_document.proto' proto/netbox/.netbox-openapi-proto-manifest; then
+            diff -ru --exclude=README.md "${generated}" proto/netbox
+
+            cargo +1.98.0 run --bin netbox_openapi_fidelity -- \
+              --input openapi/openapi.json \
+              --output-dir proto/netbox \
+              --package netbox.v1 \
+              --check \
+              --verify-generated
+          else
+            echo "Committed protobufs predate the lossless fidelity sidecars."
+            echo "The generator is verified in a temporary directory; this change intentionally does not modify proto/netbox."
+          fi
 
   refresh:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -140,11 +169,18 @@ jobs:
             --output-dir proto/netbox \
             --package netbox.v1
 
+          cargo +1.98.0 run --bin netbox_openapi_fidelity -- \
+            --input openapi/openapi.json \
+            --output-dir proto/netbox \
+            --package netbox.v1 \
+            --verify-generated
+
       - name: Compile regenerated protobufs
         run: |
           protoc \
             --proto_path=proto/netbox \
             --proto_path=/usr/include \
+            --include_imports \
             --descriptor_set_out="${RUNNER_TEMP}/netbox.pb" \
             proto/netbox/*.proto
 
@@ -174,7 +210,7 @@ jobs:
               --base main \
               --head "${branch}" \
               --title "chore: refresh NetBox OpenAPI and protobufs" \
-              --body "Refreshes the committed NetBox OpenAPI snapshot and regenerates proto/netbox with the in-repository Rust generator."
+              --body "Refreshes the committed NetBox OpenAPI snapshot, regenerates proto/netbox, embeds the exact OpenAPI source into descriptor options, verifies byte-for-byte round-trip fidelity, and compiles the result."
           else
             echo "Updated existing PR #${existing}"
           fi
