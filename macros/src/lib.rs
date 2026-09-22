@@ -504,7 +504,10 @@ mod tests {
             "type":"object",
             "properties":{"default":{"type":"string","default":"inner"}}
         }));
-        assert_eq!(normalized["properties"]["default"], json!({"type":"string"}));
+        assert_eq!(
+            normalized["properties"]["default"],
+            json!({"type":"string"})
+        );
     }
 
     #[test]
