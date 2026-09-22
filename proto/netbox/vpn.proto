@@ -1,0 +1,2825 @@
+// @generated from netbox-community/netbox contrib/openapi.json; DO NOT EDIT.
+// NetBox OpenAPI version: 4.7.1
+
+syntax = "proto3";
+
+package netbox.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "netbox_types.proto";
+
+message VpnIkePoliciesBulkDestroyRequest {
+  // request body: body
+  repeated IkePolicyRequest body = 145858295;
+}
+message VpnIkePoliciesListRequest {
+  // query parameter: brief
+  optional bool brief = 198982191;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 109559037;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 61749496;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 23105642;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 218280751;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 527259957;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 170105488;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 345429297;
+  // query parameter: created_by_request
+  optional string created_by_request = 409042773;
+  // query parameter: description
+  repeated string description = 216812561;
+  // query parameter: description__empty
+  optional bool description_empty = 370783730;
+  // query parameter: description__ic
+  repeated string description_ic = 317235365;
+  // query parameter: description__ie
+  repeated string description_ie = 350790603;
+  // query parameter: description__iew
+  repeated string description_iew = 356112534;
+  // query parameter: description__iregex
+  repeated string description_iregex = 426906293;
+  // query parameter: description__isw
+  repeated string description_isw = 84713416;
+  // query parameter: description__n
+  repeated string description_n = 132715601;
+  // query parameter: description__nic
+  repeated string description_nic = 93356393;
+  // query parameter: description__nie
+  repeated string description_nie = 59801155;
+  // query parameter: description__niew
+  repeated string description_niew = 494321748;
+  // query parameter: description__nisw
+  repeated string description_nisw = 223627076;
+  // query parameter: description__regex
+  repeated string description_regex = 343829368;
+  // query parameter: fields
+  optional string fields = 420645176;
+  // query parameter: id
+  repeated int32 id = 3521808;
+  // query parameter: id__empty
+  optional bool id_empty = 273221163;
+  // query parameter: id__gt
+  repeated int32 id_gt = 176547467;
+  // query parameter: id__gte
+  repeated int32 id_gte = 332035932;
+  // query parameter: id__lt
+  repeated int32 id_lt = 479677442;
+  // query parameter: id__lte
+  repeated int32 id_lte = 439091277;
+  // query parameter: id__n
+  repeated int32 id_n = 284572048;
+  // query parameter: ike_proposal
+  repeated string ike_proposal = 276928379;
+  // query parameter: ike_proposal__n
+  repeated string ike_proposal_n = 21411177;
+  // query parameter: ike_proposal_id
+  repeated int64 ike_proposal_id = 383017351;
+  // query parameter: ike_proposal_id__n
+  repeated int64 ike_proposal_id_n = 28127735;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 170421181;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 84565756;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 468000800;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 129115741;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 432621181;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 349790126;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 515214859;
+  // query parameter: limit
+  optional int64 limit = 390900870;
+  // query parameter: mode
+  repeated string mode = 326759260;
+  // query parameter: mode__empty
+  optional bool mode_empty = 270977651;
+  // query parameter: mode__ic
+  repeated string mode_ic = 176311848;
+  // query parameter: mode__ie
+  repeated string mode_ie = 276977562;
+  // query parameter: mode__iew
+  repeated string mode_iew = 523262159;
+  // query parameter: mode__iregex
+  repeated string mode_iregex = 306586848;
+  // query parameter: mode__isw
+  repeated string mode_isw = 519613397;
+  // query parameter: mode__n
+  repeated string mode_n = 284857212;
+  // query parameter: mode__nic
+  repeated string mode_nic = 34873600;
+  // query parameter: mode__nie
+  repeated string mode_nie = 1318362;
+  // query parameter: mode__niew
+  repeated string mode_niew = 95071319;
+  // query parameter: mode__nisw
+  repeated string mode_nisw = 98028533;
+  // query parameter: mode__regex
+  repeated string mode_regex = 511267375;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 515106174;
+  // query parameter: name
+  repeated string name = 504503382;
+  // query parameter: name__empty
+  optional bool name_empty = 521338235;
+  // query parameter: name__ic
+  repeated string name_ic = 481560356;
+  // query parameter: name__ie
+  repeated string name_ie = 45355160;
+  // query parameter: name__iew
+  repeated string name_iew = 58102735;
+  // query parameter: name__iregex
+  repeated string name_iregex = 270167520;
+  // query parameter: name__isw
+  repeated string name_isw = 54453973;
+  // query parameter: name__n
+  repeated string name_n = 104437376;
+  // query parameter: name__nic
+  repeated string name_nic = 106585086;
+  // query parameter: name__nie
+  repeated string name_nie = 73029848;
+  // query parameter: name__niew
+  repeated string name_niew = 3771741;
+  // query parameter: name__nisw
+  repeated string name_nisw = 6728955;
+  // query parameter: name__regex
+  repeated string name_regex = 224757049;
+  // query parameter: offset
+  optional int64 offset = 478951720;
+  // query parameter: omit
+  optional string omit = 290383646;
+  // query parameter: ordering
+  optional string ordering = 373075145;
+  // query parameter: owner
+  repeated string owner = 523951164;
+  // query parameter: owner__n
+  repeated string owner_n = 481484754;
+  // query parameter: owner_group
+  repeated string owner_group = 223976724;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 500156732;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 66230100;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 382654920;
+  // query parameter: owner_id
+  repeated int64 owner_id = 322477038;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 11367580;
+  // query parameter: preshared_key
+  optional string preshared_key = 440764775;
+  // query parameter: preshared_key__ic
+  optional string preshared_key_ic = 102916995;
+  // query parameter: preshared_key__ie
+  optional string preshared_key_ie = 69361757;
+  // query parameter: preshared_key__iew
+  optional string preshared_key_iew = 454916544;
+  // query parameter: preshared_key__iregex
+  optional string preshared_key_iregex = 164273887;
+  // query parameter: preshared_key__isw
+  optional string preshared_key_isw = 184208974;
+  // query parameter: preshared_key__n
+  optional string preshared_key_n = 351077031;
+  // query parameter: preshared_key__nic
+  optional string preshared_key_nic = 153787421;
+  // query parameter: preshared_key__nie
+  optional string preshared_key_nie = 53121707;
+  // query parameter: preshared_key__niew
+  optional string preshared_key_niew = 453326096;
+  // query parameter: preshared_key__nisw
+  optional string preshared_key_nisw = 451648810;
+  // query parameter: preshared_key__regex
+  optional string preshared_key_regex = 471134822;
+  // query parameter: q
+  optional string q = 33781036;
+  // query parameter: start
+  optional int64 start = 92929855;
+  // query parameter: tag
+  repeated string tag = 283475069;
+  // query parameter: tag__any
+  repeated string tag_any = 224356035;
+  // query parameter: tag__n
+  repeated string tag_n = 45721033;
+  // query parameter: tag_id
+  repeated int64 tag_id = 222265697;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 80794689;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 476351415;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 438708410;
+  // query parameter: version
+  repeated int64 version = 314534007;
+  // query parameter: version__ic
+  repeated int64 version_ic = 325771085;
+  // query parameter: version__ie
+  repeated int64 version_ie = 292215847;
+  // query parameter: version__iew
+  repeated int64 version_iew = 339278160;
+  // query parameter: version__iregex
+  repeated int64 version_iregex = 424850609;
+  // query parameter: version__isw
+  repeated int64 version_isw = 73690302;
+  // query parameter: version__n
+  repeated int64 version_n = 57883043;
+  // query parameter: version__nic
+  repeated int64 version_nic = 48478731;
+  // query parameter: version__nie
+  repeated int64 version_nie = 484683943;
+  // query parameter: version__niew
+  repeated int64 version_niew = 158304318;
+  // query parameter: version__nisw
+  repeated int64 version_nisw = 161849912;
+  // query parameter: version__regex
+  repeated int64 version_regex = 505809808;
+}
+message VpnIkePoliciesBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkIkePolicyRequest body = 62908061;
+}
+message VpnIkePoliciesBulkPartialUpdateResponse {
+  repeated IkePolicy result = 41305469;
+}
+message VpnIkePoliciesCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 323384087;
+}
+message VpnIkePoliciesBulkUpdateRequest {
+  // request body: body
+  repeated BulkIkePolicyRequest body = 500574678;
+}
+message VpnIkePoliciesBulkUpdateResponse {
+  repeated IkePolicy result = 27735062;
+}
+message VpnIkePoliciesDestroyRequest {
+  // path parameter: id
+  int64 id = 53022503;
+}
+message VpnIkePoliciesRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 268002135;
+  // query parameter: fields
+  optional string fields = 157748076;
+  // path parameter: id
+  int64 id = 453293879;
+  // query parameter: omit
+  optional string omit = 45774166;
+}
+message VpnIkePoliciesPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 339664333;
+  // request body: body
+  optional PatchedWritableIkePolicyRequest body = 333459571;
+}
+message VpnIkePoliciesUpdateRequest {
+  // path parameter: id
+  int64 id = 68534098;
+  // request body: body
+  WritableIkePolicyRequest body = 474153598;
+}
+message VpnIkeProposalsBulkDestroyRequest {
+  // request body: body
+  repeated IkeProposalRequest body = 405726102;
+}
+message VpnIkeProposalsListRequest {
+  // query parameter: authentication_algorithm
+  repeated string authentication_algorithm = 398708088;
+  // query parameter: authentication_algorithm__empty
+  optional bool authentication_algorithm_empty = 65277325;
+  // query parameter: authentication_algorithm__ic
+  repeated string authentication_algorithm_ic = 161416656;
+  // query parameter: authentication_algorithm__ie
+  repeated string authentication_algorithm_ie = 262082370;
+  // query parameter: authentication_algorithm__iew
+  repeated string authentication_algorithm_iew = 426050791;
+  // query parameter: authentication_algorithm__iregex
+  repeated string authentication_algorithm_iregex = 180498828;
+  // query parameter: authentication_algorithm__isw
+  repeated string authentication_algorithm_isw = 422505197;
+  // query parameter: authentication_algorithm__n
+  repeated string authentication_algorithm_n = 228868502;
+  // query parameter: authentication_algorithm__nic
+  repeated string authentication_algorithm_nic = 516213030;
+  // query parameter: authentication_algorithm__nie
+  repeated string authentication_algorithm_nie = 482657792;
+  // query parameter: authentication_algorithm__niew
+  repeated string authentication_algorithm_niew = 264434169;
+  // query parameter: authentication_algorithm__nisw
+  repeated string authentication_algorithm_nisw = 267391383;
+  // query parameter: authentication_algorithm__regex
+  repeated string authentication_algorithm_regex = 305567065;
+  // query parameter: authentication_method
+  repeated string authentication_method = 106293588;
+  // query parameter: authentication_method__empty
+  optional bool authentication_method_empty = 98732691;
+  // query parameter: authentication_method__ic
+  repeated string authentication_method_ic = 486302058;
+  // query parameter: authentication_method__ie
+  repeated string authentication_method_ie = 452746820;
+  // query parameter: authentication_method__iew
+  repeated string authentication_method_iew = 155743445;
+  // query parameter: authentication_method__iregex
+  repeated string authentication_method_iregex = 517509102;
+  // query parameter: authentication_method__isw
+  repeated string authentication_method_isw = 158700659;
+  // query parameter: authentication_method__n
+  repeated string authentication_method_n = 445658534;
+  // query parameter: authentication_method__nic
+  repeated string authentication_method_nic = 231287296;
+  // query parameter: authentication_method__nie
+  repeated string authentication_method_nie = 331953010;
+  // query parameter: authentication_method__niew
+  repeated string authentication_method_niew = 398157149;
+  // query parameter: authentication_method__nisw
+  repeated string authentication_method_nisw = 399834435;
+  // query parameter: authentication_method__regex
+  repeated string authentication_method_regex = 151443105;
+  // query parameter: brief
+  optional bool brief = 275109668;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 151202604;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 504941889;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 202761315;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 527844800;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 238140934;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 307067247;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 519684594;
+  // query parameter: created_by_request
+  optional string created_by_request = 121548830;
+  // query parameter: description
+  repeated string description = 354876658;
+  // query parameter: description__empty
+  optional bool description_empty = 394493089;
+  // query parameter: description__ic
+  repeated string description_ic = 229715446;
+  // query parameter: description__ie
+  repeated string description_ie = 263270684;
+  // query parameter: description__iew
+  repeated string description_iew = 334543405;
+  // query parameter: description__iregex
+  repeated string description_iregex = 381182604;
+  // query parameter: description__isw
+  repeated string description_isw = 336809071;
+  // query parameter: description__n
+  repeated string description_n = 89579406;
+  // query parameter: description__nic
+  repeated string description_nic = 303819306;
+  // query parameter: description__nie
+  repeated string description_nie = 203153592;
+  // query parameter: description__niew
+  repeated string description_niew = 199424599;
+  // query parameter: description__nisw
+  repeated string description_nisw = 202970193;
+  // query parameter: description__regex
+  repeated string description_regex = 3695939;
+  // query parameter: encryption_algorithm
+  repeated string encryption_algorithm = 279143973;
+  // query parameter: encryption_algorithm__empty
+  optional bool encryption_algorithm_empty = 170151318;
+  // query parameter: encryption_algorithm__ic
+  repeated string encryption_algorithm_ic = 245653155;
+  // query parameter: encryption_algorithm__ie
+  repeated string encryption_algorithm_ie = 279208393;
+  // query parameter: encryption_algorithm__iew
+  repeated string encryption_algorithm_iew = 96849108;
+  // query parameter: encryption_algorithm__iregex
+  repeated string encryption_algorithm_iregex = 519942555;
+  // query parameter: encryption_algorithm__isw
+  repeated string encryption_algorithm_isw = 367556678;
+  // query parameter: encryption_algorithm__n
+  repeated string encryption_algorithm_n = 99566439;
+  // query parameter: encryption_algorithm__nic
+  repeated string encryption_algorithm_nic = 378746597;
+  // query parameter: encryption_algorithm__nie
+  repeated string encryption_algorithm_nie = 345191359;
+  // query parameter: encryption_algorithm__niew
+  repeated string encryption_algorithm_niew = 213550446;
+  // query parameter: encryption_algorithm__nisw
+  repeated string encryption_algorithm_nisw = 484936666;
+  // query parameter: encryption_algorithm__regex
+  repeated string encryption_algorithm_regex = 351926990;
+  // query parameter: fields
+  optional string fields = 386084487;
+  // query parameter: group
+  repeated int64 group = 246208641;
+  // query parameter: group__ic
+  repeated int64 group_ic = 482299725;
+  // query parameter: group__ie
+  repeated int64 group_ie = 448744487;
+  // query parameter: group__iew
+  repeated int64 group_iew = 69552460;
+  // query parameter: group__iregex
+  repeated int64 group_iregex = 528360635;
+  // query parameter: group__isw
+  repeated int64 group_isw = 340835528;
+  // query parameter: group__n
+  repeated int64 group_n = 391317911;
+  // query parameter: group__nic
+  repeated int64 group_nic = 315623957;
+  // query parameter: group__nie
+  repeated int64 group_nie = 214958243;
+  // query parameter: group__niew
+  repeated int64 group_niew = 443643980;
+  // query parameter: group__nisw
+  repeated int64 group_nisw = 447189574;
+  // query parameter: group__regex
+  repeated int64 group_regex = 70441880;
+  // query parameter: id
+  repeated int32 id = 210289477;
+  // query parameter: id__empty
+  optional bool id_empty = 261761102;
+  // query parameter: id__gt
+  repeated int32 id_gt = 305642446;
+  // query parameter: id__gte
+  repeated int32 id_gte = 465335029;
+  // query parameter: id__lt
+  repeated int32 id_lt = 270262827;
+  // query parameter: id__lte
+  repeated int32 id_lte = 149241656;
+  // query parameter: id__n
+  repeated int32 id_n = 55873917;
+  // query parameter: ike_policy
+  repeated string ike_policy = 118518520;
+  // query parameter: ike_policy__n
+  repeated string ike_policy_n = 298925596;
+  // query parameter: ike_policy_id
+  repeated int64 ike_policy_id = 391527282;
+  // query parameter: ike_policy_id__n
+  repeated int64 ike_policy_id_n = 113188584;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 225381492;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 258291553;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 84861659;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 24040256;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 385418880;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 436505393;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 415891402;
+  // query parameter: limit
+  optional int64 limit = 529248711;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 30617819;
+  // query parameter: name
+  repeated string name = 9993747;
+  // query parameter: name__empty
+  optional bool name_empty = 468106222;
+  // query parameter: name__ic
+  repeated string name_ic = 430305945;
+  // query parameter: name__ie
+  repeated string name_ie = 463861183;
+  // query parameter: name__iew
+  repeated string name_iew = 289533596;
+  // query parameter: name__iregex
+  repeated string name_iregex = 456295611;
+  // query parameter: name__isw
+  repeated string name_isw = 18134478;
+  // query parameter: name__n
+  repeated string name_n = 508672593;
+  // query parameter: name__nic
+  repeated string name_nic = 26777439;
+  // query parameter: name__nie
+  repeated string name_nie = 530093111;
+  // query parameter: name__niew
+  repeated string name_niew = 506552930;
+  // query parameter: name__nisw
+  repeated string name_nisw = 235858242;
+  // query parameter: name__regex
+  repeated string name_regex = 441151860;
+  // query parameter: offset
+  optional int64 offset = 211244001;
+  // query parameter: omit
+  optional string omit = 493848213;
+  // query parameter: ordering
+  optional string ordering = 506807406;
+  // query parameter: owner
+  repeated string owner = 504064323;
+  // query parameter: owner__n
+  repeated string owner_n = 31166859;
+  // query parameter: owner_group
+  repeated string owner_group = 150818993;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 447962355;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 344352325;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 415791197;
+  // query parameter: owner_id
+  repeated int64 owner_id = 465797953;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 362016899;
+  // query parameter: q
+  optional string q = 149153371;
+  // query parameter: sa_lifetime
+  repeated int32 sa_lifetime = 429626510;
+  // query parameter: sa_lifetime__empty
+  optional bool sa_lifetime_empty = 267558215;
+  // query parameter: sa_lifetime__gt
+  repeated int32 sa_lifetime_gt = 347845577;
+  // query parameter: sa_lifetime__gte
+  repeated int32 sa_lifetime_gte = 175886316;
+  // query parameter: sa_lifetime__lt
+  repeated int32 sa_lifetime_lt = 382533648;
+  // query parameter: sa_lifetime__lte
+  repeated int32 sa_lifetime_lte = 280472075;
+  // query parameter: sa_lifetime__n
+  repeated int32 sa_lifetime_n = 110980146;
+  // query parameter: start
+  optional int64 start = 33890988;
+  // query parameter: tag
+  repeated string tag = 244117608;
+  // query parameter: tag__any
+  repeated string tag_any = 494655706;
+  // query parameter: tag__n
+  repeated string tag_n = 180855142;
+  // query parameter: tag_id
+  repeated int64 tag_id = 16624546;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 264204528;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 59824864;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 64616565;
+}
+message VpnIkeProposalsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkIkeProposalRequest body = 125382564;
+}
+message VpnIkeProposalsBulkPartialUpdateResponse {
+  repeated IkeProposal result = 333542686;
+}
+message VpnIkeProposalsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 66515310;
+}
+message VpnIkeProposalsBulkUpdateRequest {
+  // request body: body
+  repeated BulkIkeProposalRequest body = 119479431;
+}
+message VpnIkeProposalsBulkUpdateResponse {
+  repeated IkeProposal result = 394339045;
+}
+message VpnIkeProposalsDestroyRequest {
+  // path parameter: id
+  int64 id = 34078402;
+}
+message VpnIkeProposalsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 263547214;
+  // query parameter: fields
+  optional string fields = 408761433;
+  // path parameter: id
+  int64 id = 527812770;
+  // query parameter: omit
+  optional string omit = 363632295;
+}
+message VpnIkeProposalsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 250792732;
+  // request body: body
+  optional PatchedWritableIkeProposalRequest body = 312939062;
+}
+message VpnIkeProposalsUpdateRequest {
+  // path parameter: id
+  int64 id = 117971387;
+  // request body: body
+  WritableIkeProposalRequest body = 73139063;
+}
+message VpnIpsecPoliciesBulkDestroyRequest {
+  // request body: body
+  repeated IpSecPolicyRequest body = 374921610;
+}
+message VpnIpsecPoliciesListRequest {
+  // query parameter: brief
+  optional bool brief = 263725588;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 5694740;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 25471705;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 455328041;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 105466936;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 490707660;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 421560309;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 324313478;
+  // query parameter: created_by_request
+  optional string created_by_request = 447580264;
+  // query parameter: description
+  repeated string description = 470214450;
+  // query parameter: description__empty
+  optional bool description_empty = 301096515;
+  // query parameter: description__ic
+  repeated string description_ic = 467864834;
+  // query parameter: description__ie
+  repeated string description_ie = 367199120;
+  // query parameter: description__iew
+  repeated string description_iew = 140458279;
+  // query parameter: description__iregex
+  repeated string description_iregex = 203114668;
+  // query parameter: description__isw
+  repeated string description_isw = 138780993;
+  // query parameter: description__n
+  repeated string description_n = 255191714;
+  // query parameter: description__nic
+  repeated string description_nic = 395341414;
+  // query parameter: description__nie
+  repeated string description_nie = 428896652;
+  // query parameter: description__niew
+  repeated string description_niew = 241392863;
+  // query parameter: description__nisw
+  repeated string description_nisw = 238435649;
+  // query parameter: description__regex
+  repeated string description_regex = 253111915;
+  // query parameter: fields
+  optional string fields = 534013501;
+  // query parameter: id
+  repeated int32 id = 84212135;
+  // query parameter: id__empty
+  optional bool id_empty = 287798386;
+  // query parameter: id__gt
+  repeated int32 id_gt = 118167744;
+  // query parameter: id__gte
+  repeated int32 id_gte = 142086813;
+  // query parameter: id__lt
+  repeated int32 id_lt = 85451149;
+  // query parameter: id__lte
+  repeated int32 id_lte = 93885754;
+  // query parameter: id__n
+  repeated int32 id_n = 265067977;
+  // query parameter: ipsec_proposal
+  repeated string ipsec_proposal = 98892567;
+  // query parameter: ipsec_proposal__n
+  repeated string ipsec_proposal_n = 227817855;
+  // query parameter: ipsec_proposal_id
+  repeated int64 ipsec_proposal_id = 130697735;
+  // query parameter: ipsec_proposal_id__n
+  repeated int64 ipsec_proposal_id_n = 324830785;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 144266336;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 516987595;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 504931445;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 399134786;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 2748606;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 503720545;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 487712684;
+  // query parameter: limit
+  optional int64 limit = 258211385;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 208835423;
+  // query parameter: name
+  repeated string name = 534489627;
+  // query parameter: name__empty
+  optional bool name_empty = 104997778;
+  // query parameter: name__ic
+  repeated string name_ic = 99811991;
+  // query parameter: name__ie
+  repeated string name_ie = 536017187;
+  // query parameter: name__iew
+  repeated string name_iew = 41845750;
+  // query parameter: name__iregex
+  repeated string name_iregex = 118144197;
+  // query parameter: name__isw
+  repeated string name_isw = 45391344;
+  // query parameter: name__n
+  repeated string name_n = 180964107;
+  // query parameter: name__nic
+  repeated string name_nic = 72466681;
+  // query parameter: name__nie
+  repeated string name_nie = 173132395;
+  // query parameter: name__niew
+  repeated string name_niew = 465644460;
+  // query parameter: name__nisw
+  repeated string name_nisw = 467321746;
+  // query parameter: name__regex
+  repeated string name_regex = 490675216;
+  // query parameter: offset
+  optional int64 offset = 235222159;
+  // query parameter: omit
+  optional string omit = 127803117;
+  // query parameter: ordering
+  optional string ordering = 88564338;
+  // query parameter: owner
+  repeated string owner = 486606451;
+  // query parameter: owner__n
+  repeated string owner_n = 138518959;
+  // query parameter: owner_group
+  repeated string owner_group = 497400819;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 410173517;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 49847271;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 371642157;
+  // query parameter: owner_id
+  repeated int64 owner_id = 35012097;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 170673691;
+  // query parameter: pfs_group
+  repeated int64 pfs_group = 113428395;
+  // query parameter: pfs_group__ic
+  repeated int64 pfs_group_ic = 63514301;
+  // query parameter: pfs_group__ie
+  repeated int64 pfs_group_ie = 29959063;
+  // query parameter: pfs_group__iew
+  repeated int64 pfs_group_iew = 144941312;
+  // query parameter: pfs_group__iregex
+  repeated int64 pfs_group_iregex = 477248289;
+  // query parameter: pfs_group__isw
+  repeated int64 pfs_group_isw = 411104652;
+  // query parameter: pfs_group__n
+  repeated int64 pfs_group_n = 264387047;
+  // query parameter: pfs_group__nic
+  repeated int64 pfs_group_nic = 339106395;
+  // query parameter: pfs_group__nie
+  repeated int64 pfs_group_nie = 238440681;
+  // query parameter: pfs_group__niew
+  repeated int64 pfs_group_niew = 511765084;
+  // query parameter: pfs_group__nisw
+  repeated int64 pfs_group_nisw = 510190966;
+  // query parameter: pfs_group__regex
+  repeated int64 pfs_group_regex = 328936864;
+  // query parameter: q
+  optional string q = 379122959;
+  // query parameter: start
+  optional int64 start = 266390892;
+  // query parameter: tag
+  repeated string tag = 169756212;
+  // query parameter: tag__any
+  repeated string tag_any = 534932688;
+  // query parameter: tag__n
+  repeated string tag_n = 28018014;
+  // query parameter: tag_id
+  repeated int64 tag_id = 120516532;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 353338788;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 350349360;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 268133071;
+}
+message VpnIpsecPoliciesBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkIpSecPolicyRequest body = 103840810;
+}
+message VpnIpsecPoliciesBulkPartialUpdateResponse {
+  repeated IpSecPolicy result = 452170522;
+}
+message VpnIpsecPoliciesCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 344810112;
+}
+message VpnIpsecPoliciesBulkUpdateRequest {
+  // request body: body
+  repeated BulkIpSecPolicyRequest body = 51669909;
+}
+message VpnIpsecPoliciesBulkUpdateResponse {
+  repeated IpSecPolicy result = 349934575;
+}
+message VpnIpsecPoliciesDestroyRequest {
+  // path parameter: id
+  int64 id = 349929426;
+}
+message VpnIpsecPoliciesRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 457536216;
+  // query parameter: fields
+  optional string fields = 198020743;
+  // path parameter: id
+  int64 id = 6774334;
+  // query parameter: omit
+  optional string omit = 429901381;
+}
+message VpnIpsecPoliciesPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 311948484;
+  // request body: body
+  optional PatchedWritableIpSecPolicyRequest body = 363651974;
+}
+message VpnIpsecPoliciesUpdateRequest {
+  // path parameter: id
+  int64 id = 231978247;
+  // request body: body
+  WritableIpSecPolicyRequest body = 157469819;
+}
+message VpnIpsecProfilesBulkDestroyRequest {
+  // request body: body
+  repeated IpSecProfileRequest body = 325300476;
+}
+message VpnIpsecProfilesListRequest {
+  // query parameter: brief
+  optional bool brief = 524231280;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 53259822;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 70097093;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 429309025;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 424296750;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 462025620;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 472575181;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 142232498;
+  // query parameter: created_by_request
+  optional string created_by_request = 481759676;
+  // query parameter: description
+  repeated string description = 340086338;
+  // query parameter: description__empty
+  optional bool description_empty = 520156301;
+  // query parameter: description__ic
+  repeated string description_ic = 189839290;
+  // query parameter: description__ie
+  repeated string description_ie = 223394528;
+  // query parameter: description__iew
+  repeated string description_iew = 504747649;
+  // query parameter: description__iregex
+  repeated string description_iregex = 300504196;
+  // query parameter: description__isw
+  repeated string description_isw = 507013315;
+  // query parameter: description__n
+  repeated string description_n = 325610606;
+  // query parameter: description__nic
+  repeated string description_nic = 476673676;
+  // query parameter: description__nie
+  repeated string description_nie = 376007962;
+  // query parameter: description__niew
+  repeated string description_niew = 200750201;
+  // query parameter: description__nisw
+  repeated string description_nisw = 204295795;
+  // query parameter: description__regex
+  repeated string description_regex = 294677519;
+  // query parameter: fields
+  optional string fields = 378757367;
+  // query parameter: id
+  repeated int32 id = 117399237;
+  // query parameter: id__empty
+  optional bool id_empty = 251503900;
+  // query parameter: id__gt
+  repeated int32 id_gt = 204684014;
+  // query parameter: id__gte
+  repeated int32 id_gte = 447029499;
+  // query parameter: id__lt
+  repeated int32 id_lt = 171864251;
+  // query parameter: id__lte
+  repeated int32 id_lte = 357277532;
+  // query parameter: id__n
+  repeated int32 id_n = 117243415;
+  // query parameter: ike_policy
+  repeated string ike_policy = 393998004;
+  // query parameter: ike_policy__n
+  repeated string ike_policy_n = 302876784;
+  // query parameter: ike_policy_id
+  repeated int64 ike_policy_id = 137379158;
+  // query parameter: ike_policy_id__n
+  repeated int64 ike_policy_id_n = 231757360;
+  // query parameter: ipsec_policy
+  repeated string ipsec_policy = 523948481;
+  // query parameter: ipsec_policy__n
+  repeated string ipsec_policy_n = 64007947;
+  // query parameter: ipsec_policy_id
+  repeated int64 ipsec_policy_id = 498639041;
+  // query parameter: ipsec_policy_id__n
+  repeated int64 ipsec_policy_id_n = 218371339;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 184513912;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 268705689;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 230151075;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 191014806;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 533281050;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 298147523;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 149488088;
+  // query parameter: limit
+  optional int64 limit = 375931037;
+  // query parameter: mode
+  repeated string mode = 57174877;
+  // query parameter: mode__empty
+  optional bool mode_empty = 1291698;
+  // query parameter: mode__ic
+  repeated string mode_ic = 274511327;
+  // query parameter: mode__ie
+  repeated string mode_ie = 173845613;
+  // query parameter: mode__iew
+  repeated string mode_iew = 249754832;
+  // query parameter: mode__iregex
+  repeated string mode_iregex = 307485657;
+  // query parameter: mode__isw
+  repeated string mode_isw = 248180714;
+  // query parameter: mode__n
+  repeated string mode_n = 340260763;
+  // query parameter: mode__nic
+  repeated string mode_nic = 277803009;
+  // query parameter: mode__nie
+  repeated string mode_nie = 378468723;
+  // query parameter: mode__niew
+  repeated string mode_niew = 135398120;
+  // query parameter: mode__nisw
+  repeated string mode_nisw = 137075406;
+  // query parameter: mode__regex
+  repeated string mode_regex = 313244004;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 124652105;
+  // query parameter: name
+  repeated string name = 248558075;
+  // query parameter: name__empty
+  optional bool name_empty = 146405664;
+  // query parameter: name__ic
+  repeated string name_ic = 86964463;
+  // query parameter: name__ie
+  repeated string name_ie = 120519701;
+  // query parameter: name__iew
+  repeated string name_iew = 301420516;
+  // query parameter: name__iregex
+  repeated string name_iregex = 349505001;
+  // query parameter: name__isw
+  repeated string name_isw = 30034296;
+  // query parameter: name__n
+  repeated string name_n = 362279445;
+  // query parameter: name__nic
+  repeated string name_nic = 77590937;
+  // query parameter: name__nie
+  repeated string name_nie = 44035699;
+  // query parameter: name__niew
+  repeated string name_niew = 449040746;
+  // query parameter: name__nisw
+  repeated string name_nisw = 178333176;
+  // query parameter: name__regex
+  repeated string name_regex = 405759290;
+  // query parameter: offset
+  optional int64 offset = 450465423;
+  // query parameter: omit
+  optional string omit = 469807597;
+  // query parameter: ordering
+  optional string ordering = 250580288;
+  // query parameter: owner
+  repeated string owner = 142954963;
+  // query parameter: owner__n
+  repeated string owner_n = 83761827;
+  // query parameter: owner_group
+  repeated string owner_group = 162102595;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 386297951;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 14246017;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 349970595;
+  // query parameter: owner_id
+  repeated int64 owner_id = 249963899;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 318099669;
+  // query parameter: q
+  optional string q = 354393395;
+  // query parameter: start
+  optional int64 start = 160613452;
+  // query parameter: tag
+  repeated string tag = 77638272;
+  // query parameter: tag__any
+  repeated string tag_any = 427790498;
+  // query parameter: tag__n
+  repeated string tag_n = 358734780;
+  // query parameter: tag_id
+  repeated int64 tag_id = 462946088;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 282131758;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 348944198;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 102052687;
+}
+message VpnIpsecProfilesBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkIpSecProfileRequest body = 457317194;
+}
+message VpnIpsecProfilesBulkPartialUpdateResponse {
+  repeated IpSecProfile result = 416516360;
+}
+message VpnIpsecProfilesCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 270775240;
+}
+message VpnIpsecProfilesBulkUpdateRequest {
+  // request body: body
+  repeated BulkIpSecProfileRequest body = 215518025;
+}
+message VpnIpsecProfilesBulkUpdateResponse {
+  repeated IpSecProfile result = 144136703;
+}
+message VpnIpsecProfilesDestroyRequest {
+  // path parameter: id
+  int64 id = 309427808;
+}
+message VpnIpsecProfilesRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 395765930;
+  // query parameter: fields
+  optional string fields = 342612535;
+  // path parameter: id
+  int64 id = 506382044;
+  // query parameter: omit
+  optional string omit = 345364521;
+}
+message VpnIpsecProfilesPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 268101116;
+  // request body: body
+  optional PatchedWritableIpSecProfileRequest body = 305870264;
+}
+message VpnIpsecProfilesUpdateRequest {
+  // path parameter: id
+  int64 id = 170995137;
+  // request body: body
+  WritableIpSecProfileRequest body = 164790375;
+}
+message VpnIpsecProposalsBulkDestroyRequest {
+  // request body: body
+  repeated IpSecProposalRequest body = 41406489;
+}
+message VpnIpsecProposalsListRequest {
+  // query parameter: authentication_algorithm
+  repeated string authentication_algorithm = 93060477;
+  // query parameter: authentication_algorithm__empty
+  optional bool authentication_algorithm_empty = 512194166;
+  // query parameter: authentication_algorithm__ic
+  repeated string authentication_algorithm_ic = 396374861;
+  // query parameter: authentication_algorithm__ie
+  repeated string authentication_algorithm_ie = 362819623;
+  // query parameter: authentication_algorithm__iew
+  repeated string authentication_algorithm_iew = 472649608;
+  // query parameter: authentication_algorithm__iregex
+  repeated string authentication_algorithm_iregex = 52912301;
+  // query parameter: authentication_algorithm__isw
+  repeated string authentication_algorithm_isw = 207074648;
+  // query parameter: authentication_algorithm__n
+  repeated string authentication_algorithm_n = 384776891;
+  // query parameter: authentication_algorithm__nic
+  repeated string authentication_algorithm_nic = 179290323;
+  // query parameter: authentication_algorithm__nie
+  repeated string authentication_algorithm_nie = 78624609;
+  // query parameter: authentication_algorithm__niew
+  repeated string authentication_algorithm_niew = 396179772;
+  // query parameter: authentication_algorithm__nisw
+  repeated string authentication_algorithm_nisw = 399828534;
+  // query parameter: authentication_algorithm__regex
+  repeated string authentication_algorithm_regex = 251724196;
+  // query parameter: brief
+  optional bool brief = 269755591;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 282793173;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 39583290;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 502862814;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 119147191;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 199732839;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 11988678;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 29469843;
+  // query parameter: created_by_request
+  optional string created_by_request = 461305627;
+  // query parameter: description
+  repeated string description = 330844823;
+  // query parameter: description__empty
+  optional bool description_empty = 478206562;
+  // query parameter: description__ic
+  repeated string description_ic = 306725551;
+  // query parameter: description__ie
+  repeated string description_ie = 407391265;
+  // query parameter: description__iew
+  repeated string description_iew = 516965122;
+  // query parameter: description__iregex
+  repeated string description_iregex = 348958807;
+  // query parameter: description__isw
+  repeated string description_isw = 518539240;
+  // query parameter: description__n
+  repeated string description_n = 32693869;
+  // query parameter: description__nic
+  repeated string description_nic = 159653821;
+  // query parameter: description__nie
+  repeated string description_nie = 193209059;
+  // query parameter: description__niew
+  repeated string description_niew = 201495360;
+  // query parameter: description__nisw
+  repeated string description_nisw = 467070320;
+  // query parameter: description__regex
+  repeated string description_regex = 364767970;
+  // query parameter: encryption_algorithm
+  repeated string encryption_algorithm = 370209854;
+  // query parameter: encryption_algorithm__empty
+  optional bool encryption_algorithm_empty = 135239001;
+  // query parameter: encryption_algorithm__ic
+  repeated string encryption_algorithm_ic = 518101716;
+  // query parameter: encryption_algorithm__ie
+  repeated string encryption_algorithm_ie = 417436002;
+  // query parameter: encryption_algorithm__iew
+  repeated string encryption_algorithm_iew = 253197243;
+  // query parameter: encryption_algorithm__iregex
+  repeated string encryption_algorithm_iregex = 259613366;
+  // query parameter: encryption_algorithm__isw
+  repeated string encryption_algorithm_isw = 256742837;
+  // query parameter: encryption_algorithm__n
+  repeated string encryption_algorithm_n = 398526358;
+  // query parameter: encryption_algorithm__nic
+  repeated string encryption_algorithm_nic = 518513240;
+  // query parameter: encryption_algorithm__nie
+  repeated string encryption_algorithm_nie = 15197568;
+  // query parameter: encryption_algorithm__niew
+  repeated string encryption_algorithm_niew = 218988303;
+  // query parameter: encryption_algorithm__nisw
+  repeated string encryption_algorithm_nisw = 221357137;
+  // query parameter: encryption_algorithm__regex
+  repeated string encryption_algorithm_regex = 237491677;
+  // query parameter: fields
+  optional string fields = 322760114;
+  // query parameter: id
+  repeated int32 id = 533316498;
+  // query parameter: id__empty
+  optional bool id_empty = 530240081;
+  // query parameter: id__gt
+  repeated int32 id_gt = 344328113;
+  // query parameter: id__gte
+  repeated int32 id_gte = 469649344;
+  // query parameter: id__lt
+  repeated int32 id_lt = 379707732;
+  // query parameter: id__lte
+  repeated int32 id_lte = 248871791;
+  // query parameter: id__n
+  repeated int32 id_n = 42946808;
+  // query parameter: ipsec_policy
+  repeated string ipsec_policy = 15796952;
+  // query parameter: ipsec_policy__n
+  repeated string ipsec_policy_n = 393184802;
+  // query parameter: ipsec_policy_id
+  repeated int64 ipsec_policy_id = 502618990;
+  // query parameter: ipsec_policy_id__n
+  repeated int64 ipsec_policy_id_n = 92452088;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 3280221;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 436046770;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 259764652;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 532205891;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 496078341;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 119663366;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 195063205;
+  // query parameter: limit
+  optional int64 limit = 316072396;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 266433526;
+  // query parameter: name
+  repeated string name = 61906310;
+  // query parameter: name__empty
+  optional bool name_empty = 325943499;
+  // query parameter: name__ic
+  repeated string name_ic = 392812026;
+  // query parameter: name__ie
+  repeated string name_ie = 426367264;
+  // query parameter: name__iew
+  repeated string name_iew = 161562303;
+  // query parameter: name__iregex
+  repeated string name_iregex = 196849608;
+  // query parameter: name__isw
+  repeated string name_isw = 163827969;
+  // query parameter: name__n
+  repeated string name_n = 27704490;
+  // query parameter: name__nic
+  repeated string name_nic = 133488330;
+  // query parameter: name__nie
+  repeated string name_nie = 32822616;
+  // query parameter: name__niew
+  repeated string name_niew = 409700283;
+  // query parameter: name__nisw
+  repeated string name_nisw = 413245877;
+  // query parameter: name__regex
+  repeated string name_regex = 212775003;
+  // query parameter: offset
+  optional int64 offset = 448659950;
+  // query parameter: omit
+  optional string omit = 470146150;
+  // query parameter: ordering
+  optional string ordering = 72299335;
+  // query parameter: owner
+  repeated string owner = 50192916;
+  // query parameter: owner__n
+  repeated string owner_n = 148734454;
+  // query parameter: owner_group
+  repeated string owner_group = 305792154;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 410643946;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 302502584;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 24466542;
+  // query parameter: owner_id
+  repeated int64 owner_id = 312965050;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 446436864;
+  // query parameter: q
+  optional string q = 488941910;
+  // query parameter: sa_lifetime_data
+  repeated int32 sa_lifetime_data = 467306084;
+  // query parameter: sa_lifetime_data__empty
+  optional bool sa_lifetime_data_empty = 376786211;
+  // query parameter: sa_lifetime_data__gt
+  repeated int32 sa_lifetime_data_gt = 359515949;
+  // query parameter: sa_lifetime_data__gte
+  repeated int32 sa_lifetime_data_gte = 47232212;
+  // query parameter: sa_lifetime_data__lt
+  repeated int32 sa_lifetime_data_lt = 394204020;
+  // query parameter: sa_lifetime_data__lte
+  repeated int32 sa_lifetime_data_lte = 151714803;
+  // query parameter: sa_lifetime_data__n
+  repeated int32 sa_lifetime_data_n = 236234772;
+  // query parameter: sa_lifetime_seconds
+  repeated int32 sa_lifetime_seconds = 497092307;
+  // query parameter: sa_lifetime_seconds__empty
+  optional bool sa_lifetime_seconds_empty = 251014190;
+  // query parameter: sa_lifetime_seconds__gt
+  repeated int32 sa_lifetime_seconds_gt = 356565812;
+  // query parameter: sa_lifetime_seconds__gte
+  repeated int32 sa_lifetime_seconds_gte = 351493573;
+  // query parameter: sa_lifetime_seconds__lt
+  repeated int32 sa_lifetime_seconds_lt = 56008575;
+  // query parameter: sa_lifetime_seconds__lte
+  repeated int32 sa_lifetime_seconds_lte = 475821958;
+  // query parameter: sa_lifetime_seconds__n
+  repeated int32 sa_lifetime_seconds_n = 211289629;
+  // query parameter: start
+  optional int64 start = 94697003;
+  // query parameter: tag
+  repeated string tag = 502335307;
+  // query parameter: tag__any
+  repeated string tag_any = 402646667;
+  // query parameter: tag__n
+  repeated string tag_n = 247412757;
+  // query parameter: tag_id
+  repeated int64 tag_id = 77370901;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 255970907;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 51509343;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 53427568;
+}
+message VpnIpsecProposalsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkIpSecProposalRequest body = 529199009;
+}
+message VpnIpsecProposalsBulkPartialUpdateResponse {
+  repeated IpSecProposal result = 460279237;
+}
+message VpnIpsecProposalsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 435528443;
+}
+message VpnIpsecProposalsBulkUpdateRequest {
+  // request body: body
+  repeated BulkIpSecProposalRequest body = 78437560;
+}
+message VpnIpsecProposalsBulkUpdateResponse {
+  repeated IpSecProposal result = 268488602;
+}
+message VpnIpsecProposalsDestroyRequest {
+  // path parameter: id
+  int64 id = 344638377;
+}
+message VpnIpsecProposalsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 532497943;
+  // query parameter: fields
+  optional string fields = 437998512;
+  // path parameter: id
+  int64 id = 253809095;
+  // query parameter: omit
+  optional string omit = 99213246;
+}
+message VpnIpsecProposalsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 78976599;
+  // request body: body
+  optional PatchedWritableIpSecProposalRequest body = 181151299;
+}
+message VpnIpsecProposalsUpdateRequest {
+  // path parameter: id
+  int64 id = 521244436;
+  // request body: body
+  WritableIpSecProposalRequest body = 399892702;
+}
+message VpnL2vpnTerminationsBulkDestroyRequest {
+  // request body: body
+  repeated L2VpnTerminationRequest body = 21597971;
+}
+message VpnL2vpnTerminationsListRequest {
+  // query parameter: assigned_object_id
+  repeated int32 assigned_object_id = 108210481;
+  // query parameter: assigned_object_id__empty
+  optional bool assigned_object_id_empty = 494767762;
+  // query parameter: assigned_object_id__gt
+  repeated int32 assigned_object_id_gt = 488255808;
+  // query parameter: assigned_object_id__gte
+  repeated int32 assigned_object_id_gte = 71018313;
+  // query parameter: assigned_object_id__lt
+  repeated int32 assigned_object_id_lt = 456230761;
+  // query parameter: assigned_object_id__lte
+  repeated int32 assigned_object_id_lte = 234350648;
+  // query parameter: assigned_object_id__n
+  repeated int32 assigned_object_id_n = 432592873;
+  // query parameter: assigned_object_type
+  repeated string assigned_object_type = 80709260;
+  // query parameter: assigned_object_type__n
+  repeated string assigned_object_type_n = 112931984;
+  // query parameter: assigned_object_type_id
+  repeated int64 assigned_object_type_id = 210627586;
+  // query parameter: assigned_object_type_id__n
+  repeated int64 assigned_object_type_id_n = 293681502;
+  // query parameter: brief
+  optional bool brief = 209653825;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 161625853;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 531672658;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 39524474;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 526833607;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 4144855;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 210740250;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 357120283;
+  // query parameter: created_by_request
+  optional string created_by_request = 65561723;
+  // query parameter: device
+  repeated string device = 444146227;
+  // query parameter: device__n
+  repeated string device_n = 33642341;
+  // query parameter: device_id
+  repeated int64 device_id = 125539581;
+  // query parameter: device_id__n
+  repeated int64 device_id_n = 509702927;
+  // query parameter: fields
+  optional string fields = 90049234;
+  // query parameter: id
+  repeated int32 id = 432311922;
+  // query parameter: id__empty
+  optional bool id_empty = 200519003;
+  // query parameter: id__gt
+  repeated int32 id_gt = 431654107;
+  // query parameter: id__gte
+  repeated int32 id_gte = 194959672;
+  // query parameter: id__lt
+  repeated int32 id_lt = 195340418;
+  // query parameter: id__lte
+  repeated int32 id_lte = 70553915;
+  // query parameter: id__n
+  repeated int32 id_n = 196941272;
+  // query parameter: interface
+  repeated string interface = 431083228;
+  // query parameter: interface__n
+  repeated string interface_n = 506987976;
+  // query parameter: interface_id
+  repeated int64 interface_id = 336344842;
+  // query parameter: interface_id__n
+  repeated int64 interface_id_n = 221527038;
+  // query parameter: l2vpn
+  repeated string l2vpn = 205244927;
+  // query parameter: l2vpn__n
+  repeated string l2vpn_n = 400722495;
+  // query parameter: l2vpn_id
+  repeated int64 l2vpn_id = 499032273;
+  // query parameter: l2vpn_id__n
+  repeated int64 l2vpn_id_n = 189771921;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 262819991;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 114459172;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 74029332;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 138187977;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 41312737;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 89883750;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 372033033;
+  // query parameter: limit
+  optional int64 limit = 408743304;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 275161826;
+  // query parameter: offset
+  optional int64 offset = 458180466;
+  // query parameter: omit
+  optional string omit = 488878958;
+  // query parameter: ordering
+  optional string ordering = 291649141;
+  // query parameter: q
+  optional string q = 511428088;
+  // query parameter: region
+  repeated string region = 344780705;
+  // query parameter: region_id
+  repeated int32 region_id = 471204769;
+  // query parameter: site
+  repeated string site = 399967724;
+  // query parameter: site_id
+  repeated int32 site_id = 479442086;
+  // query parameter: start
+  optional int64 start = 419366787;
+  // query parameter: tag
+  repeated string tag = 116164807;
+  // query parameter: tag__any
+  repeated string tag_any = 126188197;
+  // query parameter: tag__n
+  repeated string tag_n = 299256853;
+  // query parameter: tag_id
+  repeated int64 tag_id = 197017021;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 108628487;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 57676811;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 449556326;
+  // query parameter: virtual_machine
+  repeated string virtual_machine = 278184360;
+  // query parameter: virtual_machine__n
+  repeated string virtual_machine_n = 366539466;
+  // query parameter: virtual_machine_id
+  repeated int64 virtual_machine_id = 311690;
+  // query parameter: virtual_machine_id__n
+  repeated int64 virtual_machine_id_n = 429161862;
+  // query parameter: vlan
+  repeated string vlan = 237367326;
+  // query parameter: vlan__n
+  repeated string vlan_n = 470262392;
+  // query parameter: vlan_id
+  repeated int64 vlan_id = 376393676;
+  // query parameter: vlan_id__n
+  repeated int64 vlan_id_n = 319428414;
+  // query parameter: vlan_vid
+  optional int64 vlan_vid = 439237366;
+  // query parameter: vlan_vid__empty
+  optional int64 vlan_vid_empty = 67631615;
+  // query parameter: vlan_vid__gt
+  optional int64 vlan_vid_gt = 402643187;
+  // query parameter: vlan_vid__gte
+  optional int64 vlan_vid_gte = 180475458;
+  // query parameter: vlan_vid__lt
+  optional int64 vlan_vid_lt = 168902252;
+  // query parameter: vlan_vid__lte
+  optional int64 vlan_vid_lte = 287633971;
+  // query parameter: vlan_vid__n
+  optional int64 vlan_vid_n = 279804266;
+  // query parameter: vminterface
+  repeated string vminterface = 400352765;
+  // query parameter: vminterface__n
+  repeated string vminterface_n = 351931973;
+  // query parameter: vminterface_id
+  repeated int64 vminterface_id = 528476637;
+  // query parameter: vminterface_id__n
+  repeated int64 vminterface_id_n = 22325553;
+}
+message VpnL2vpnTerminationsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkL2VpnTerminationRequest body = 330245243;
+}
+message VpnL2vpnTerminationsBulkPartialUpdateResponse {
+  repeated L2VpnTermination result = 271147981;
+}
+message VpnL2vpnTerminationsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 246681279;
+}
+message VpnL2vpnTerminationsBulkUpdateRequest {
+  // request body: body
+  repeated BulkL2VpnTerminationRequest body = 477337020;
+}
+message VpnL2vpnTerminationsBulkUpdateResponse {
+  repeated L2VpnTermination result = 527232154;
+}
+message VpnL2vpnTerminationsDestroyRequest {
+  // path parameter: id
+  int64 id = 229198585;
+}
+message VpnL2vpnTerminationsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 484247931;
+  // query parameter: fields
+  optional string fields = 366838108;
+  // path parameter: id
+  int64 id = 247988865;
+  // query parameter: omit
+  optional string omit = 224124940;
+}
+message VpnL2vpnTerminationsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 339099151;
+  // request body: body
+  optional PatchedL2VpnTerminationRequest body = 352663075;
+}
+message VpnL2vpnTerminationsUpdateRequest {
+  // path parameter: id
+  int64 id = 475056896;
+  // request body: body
+  L2VpnTerminationRequest body = 155425580;
+}
+message VpnL2vpnsBulkDestroyRequest {
+  // request body: body
+  repeated L2VpnRequest body = 379042835;
+}
+message VpnL2vpnsListRequest {
+  // query parameter: brief
+  optional bool brief = 270563135;
+  // query parameter: contact
+  repeated int64 contact = 102761771;
+  // query parameter: contact__n
+  repeated int64 contact_n = 15818907;
+  // query parameter: contact_group
+  repeated string contact_group = 447904285;
+  // query parameter: contact_group__n
+  repeated string contact_group_n = 349720517;
+  // query parameter: contact_role
+  repeated int64 contact_role = 259389310;
+  // query parameter: contact_role__n
+  repeated int64 contact_role_n = 241572518;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 535524861;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 388330324;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 398018430;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 44750015;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 362638811;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 265527568;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 231452193;
+  // query parameter: created_by_request
+  optional string created_by_request = 186939773;
+  // query parameter: description
+  repeated string description = 268899647;
+  // query parameter: description__empty
+  optional bool description_empty = 110021988;
+  // query parameter: description__ic
+  repeated string description_ic = 214026301;
+  // query parameter: description__ie
+  repeated string description_ie = 247581539;
+  // query parameter: description__iew
+  repeated string description_iew = 504547368;
+  // query parameter: description__iregex
+  repeated string description_iregex = 5027101;
+  // query parameter: description__isw
+  repeated string description_isw = 233161132;
+  // query parameter: description__n
+  repeated string description_n = 361262417;
+  // query parameter: description__nic
+  repeated string description_nic = 239244253;
+  // query parameter: description__nie
+  repeated string description_nie = 205689015;
+  // query parameter: description__niew
+  repeated string description_niew = 97125798;
+  // query parameter: description__nisw
+  repeated string description_nisw = 363289138;
+  // query parameter: description__regex
+  repeated string description_regex = 205595772;
+  // query parameter: export_target
+  repeated string export_target = 241258771;
+  // query parameter: export_target__n
+  repeated string export_target_n = 276152671;
+  // query parameter: export_target_id
+  repeated int64 export_target_id = 384908209;
+  // query parameter: export_target_id__n
+  repeated int64 export_target_id_n = 113935865;
+  // query parameter: fields
+  optional string fields = 477310934;
+  // query parameter: id
+  repeated int32 id = 245457780;
+  // query parameter: id__empty
+  optional bool id_empty = 369394787;
+  // query parameter: id__gt
+  repeated int32 id_gt = 282044881;
+  // query parameter: id__gte
+  repeated int32 id_gte = 31987770;
+  // query parameter: id__lt
+  repeated int32 id_lt = 45731192;
+  // query parameter: id__lte
+  repeated int32 id_lte = 444452923;
+  // query parameter: id__n
+  repeated int32 id_n = 257850582;
+  // query parameter: identifier
+  repeated int32 identifier = 159907076;
+  // query parameter: identifier__empty
+  optional bool identifier_empty = 149334567;
+  // query parameter: identifier__gt
+  repeated int32 identifier_gt = 221190203;
+  // query parameter: identifier__gte
+  repeated int32 identifier_gte = 304301958;
+  // query parameter: identifier__lt
+  repeated int32 identifier_lt = 253906798;
+  // query parameter: identifier__lte
+  repeated int32 identifier_lte = 352477237;
+  // query parameter: identifier__n
+  repeated int32 identifier_n = 446786564;
+  // query parameter: import_target
+  repeated string import_target = 106368716;
+  // query parameter: import_target__n
+  repeated string import_target_n = 240745498;
+  // query parameter: import_target_id
+  repeated int64 import_target_id = 64905264;
+  // query parameter: import_target_id__n
+  repeated int64 import_target_id_n = 328467338;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 317607309;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 174559536;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 321938976;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 187780049;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 289222381;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 139475822;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 50259209;
+  // query parameter: limit
+  optional int64 limit = 469652614;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 335262174;
+  // query parameter: name
+  repeated string name = 315533876;
+  // query parameter: name__empty
+  optional bool name_empty = 88232505;
+  // query parameter: name__ic
+  repeated string name_ic = 436003858;
+  // query parameter: name__ie
+  repeated string name_ie = 536669572;
+  // query parameter: name__iew
+  repeated string name_iew = 86582983;
+  // query parameter: name__iregex
+  repeated string name_iregex = 463916640;
+  // query parameter: name__isw
+  repeated string name_isw = 88260269;
+  // query parameter: name__n
+  repeated string name_n = 23394032;
+  // query parameter: name__nic
+  repeated string name_nic = 132595748;
+  // query parameter: name__nie
+  repeated string name_nie = 99040510;
+  // query parameter: name__niew
+  repeated string name_niew = 419713939;
+  // query parameter: name__nisw
+  repeated string name_nisw = 422671153;
+  // query parameter: name__regex
+  repeated string name_regex = 527026795;
+  // query parameter: offset
+  optional int64 offset = 308571240;
+  // query parameter: omit
+  optional string omit = 322506854;
+  // query parameter: ordering
+  optional string ordering = 112223079;
+  // query parameter: owner
+  repeated string owner = 513365508;
+  // query parameter: owner__n
+  repeated string owner_n = 103193138;
+  // query parameter: owner_group
+  repeated string owner_group = 295236314;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 354128316;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 183485198;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 79839230;
+  // query parameter: owner_id
+  repeated int64 owner_id = 207404446;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 379832012;
+  // query parameter: q
+  optional string q = 348437738;
+  // query parameter: slug
+  repeated string slug = 177238898;
+  // query parameter: slug__empty
+  optional bool slug_empty = 336410803;
+  // query parameter: slug__ic
+  repeated string slug_ic = 488220426;
+  // query parameter: slug__ie
+  repeated string slug_ie = 454665188;
+  // query parameter: slug__iew
+  repeated string slug_iew = 391949037;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 365589388;
+  // query parameter: slug__isw
+  repeated string slug_isw = 394906251;
+  // query parameter: slug__n
+  repeated string slug_n = 4709582;
+  // query parameter: slug__nic
+  repeated string slug_nic = 425916184;
+  // query parameter: slug__nie
+  repeated string slug_nie = 526581898;
+  // query parameter: slug__niew
+  repeated string slug_niew = 450526455;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 452100573;
+  // query parameter: slug__regex
+  repeated string slug_regex = 276707779;
+  // query parameter: start
+  optional int64 start = 480276097;
+  // query parameter: status
+  repeated string status = 64550935;
+  // query parameter: status__empty
+  optional bool status_empty = 435575272;
+  // query parameter: status__ic
+  repeated string status_ic = 116657311;
+  // query parameter: status__ie
+  repeated string status_ie = 150212549;
+  // query parameter: status__iew
+  repeated string status_iew = 53795992;
+  // query parameter: status__iregex
+  repeated string status_iregex = 231227065;
+  // query parameter: status__isw
+  repeated string status_isw = 319267784;
+  // query parameter: status__n
+  repeated string status_n = 58947657;
+  // query parameter: status__nic
+  repeated string status_nic = 327910761;
+  // query parameter: status__nie
+  repeated string status_nie = 294355523;
+  // query parameter: status__niew
+  repeated string status_niew = 530451540;
+  // query parameter: status__nisw
+  repeated string status_nisw = 259756868;
+  // query parameter: status__regex
+  repeated string status_regex = 408620910;
+  // query parameter: tag
+  repeated string tag = 512743363;
+  // query parameter: tag__any
+  repeated string tag_any = 483633061;
+  // query parameter: tag__n
+  repeated string tag_n = 149647627;
+  // query parameter: tag_id
+  repeated int64 tag_id = 47407795;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 467122443;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 226552579;
+  // query parameter: tenant
+  repeated string tenant = 1377241;
+  // query parameter: tenant__n
+  repeated string tenant_n = 438816585;
+  // query parameter: tenant_group
+  repeated string tenant_group = 71877367;
+  // query parameter: tenant_group__n
+  repeated string tenant_group_n = 536362275;
+  // query parameter: tenant_group_id
+  repeated string tenant_group_id = 437949329;
+  // query parameter: tenant_group_id__n
+  repeated string tenant_group_id_n = 176565717;
+  // query parameter: tenant_id
+  repeated int64 tenant_id = 341799633;
+  // query parameter: tenant_id__n
+  repeated int64 tenant_id_n = 418413569;
+  // query parameter: type
+  repeated string type = 30112955;
+  // query parameter: type__empty
+  optional bool type_empty = 285739526;
+  // query parameter: type__ic
+  repeated string type_ic = 398817225;
+  // query parameter: type__ie
+  repeated string type_ie = 499482939;
+  // query parameter: type__iew
+  repeated string type_iew = 48922538;
+  // query parameter: type__iregex
+  repeated string type_iregex = 289856895;
+  // query parameter: type__isw
+  repeated string type_isw = 50496656;
+  // query parameter: type__n
+  repeated string type_n = 375294211;
+  // query parameter: type__nic
+  repeated string type_nic = 270058851;
+  // query parameter: type__nie
+  repeated string type_nie = 303614089;
+  // query parameter: type__niew
+  repeated string type_niew = 134408542;
+  // query parameter: type__nisw
+  repeated string type_nisw = 399983502;
+  // query parameter: type__regex
+  repeated string type_regex = 172300934;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 34063466;
+}
+message VpnL2vpnsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkL2VpnRequest body = 186902909;
+}
+message VpnL2vpnsBulkPartialUpdateResponse {
+  repeated L2Vpn result = 104775893;
+}
+message VpnL2vpnsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 106388925;
+}
+message VpnL2vpnsBulkUpdateRequest {
+  // request body: body
+  repeated BulkL2VpnRequest body = 314365118;
+}
+message VpnL2vpnsBulkUpdateResponse {
+  repeated L2Vpn result = 235172758;
+}
+message VpnL2vpnsDestroyRequest {
+  // path parameter: id
+  int64 id = 62826481;
+}
+message VpnL2vpnsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 116252805;
+  // query parameter: fields
+  optional string fields = 241170018;
+  // path parameter: id
+  int64 id = 308898175;
+  // query parameter: omit
+  optional string omit = 44698894;
+}
+message VpnL2vpnsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 213431061;
+  // request body: body
+  optional PatchedWritableL2VpnRequest body = 226994985;
+}
+message VpnL2vpnsUpdateRequest {
+  // path parameter: id
+  int64 id = 334764542;
+  // request body: body
+  WritableL2VpnRequest body = 15133226;
+}
+message VpnTunnelGroupsBulkDestroyRequest {
+  // request body: body
+  repeated TunnelGroupRequest body = 362464064;
+}
+message VpnTunnelGroupsListRequest {
+  // query parameter: brief
+  optional bool brief = 260360624;
+  // query parameter: contact
+  repeated int64 contact = 52814578;
+  // query parameter: contact__n
+  repeated int64 contact_n = 157879842;
+  // query parameter: contact_group
+  repeated string contact_group = 223559588;
+  // query parameter: contact_group__n
+  repeated string contact_group_n = 215283806;
+  // query parameter: contact_role
+  repeated int64 contact_role = 191813067;
+  // query parameter: contact_role__n
+  repeated int64 contact_role_n = 122574141;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 93346152;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 27602699;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 382755739;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 453858418;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 415575502;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 6739475;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 365924332;
+  // query parameter: created_by_request
+  optional string created_by_request = 102462960;
+  // query parameter: description
+  repeated string description = 525076104;
+  // query parameter: description__empty
+  optional bool description_empty = 461992909;
+  // query parameter: description__ic
+  repeated string description_ic = 395497214;
+  // query parameter: description__ie
+  repeated string description_ie = 429052452;
+  // query parameter: description__iew
+  repeated string description_iew = 169949631;
+  // query parameter: description__iregex
+  repeated string description_iregex = 263928010;
+  // query parameter: description__isw
+  repeated string description_isw = 172215297;
+  // query parameter: description__n
+  repeated string description_n = 412712880;
+  // query parameter: description__nic
+  repeated string description_nic = 141875658;
+  // query parameter: description__nie
+  repeated string description_nie = 41209944;
+  // query parameter: description__niew
+  repeated string description_niew = 31697081;
+  // query parameter: description__nisw
+  repeated string description_nisw = 35242675;
+  // query parameter: description__regex
+  repeated string description_regex = 348824397;
+  // query parameter: fields
+  optional string fields = 535104829;
+  // query parameter: id
+  repeated int32 id = 18345473;
+  // query parameter: id__empty
+  optional bool id_empty = 507928160;
+  // query parameter: id__gt
+  repeated int32 id_gt = 277612076;
+  // query parameter: id__gte
+  repeated int32 id_gte = 309190719;
+  // query parameter: id__lt
+  repeated int32 id_lt = 244895481;
+  // query parameter: id__lte
+  repeated int32 id_lte = 260912272;
+  // query parameter: id__n
+  repeated int32 id_n = 431820373;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 371199928;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 104958929;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 512584407;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 194967510;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 278843472;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 302100227;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 23631386;
+  // query parameter: limit
+  optional int64 limit = 224370651;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 349593729;
+  // query parameter: name
+  repeated string name = 230178111;
+  // query parameter: name__empty
+  optional bool name_empty = 362874222;
+  // query parameter: name__ic
+  repeated string name_ic = 509440049;
+  // query parameter: name__ie
+  repeated string name_ie = 6124377;
+  // query parameter: name__iew
+  repeated string name_iew = 370950176;
+  // query parameter: name__iregex
+  repeated string name_iregex = 435871013;
+  // query parameter: name__isw
+  repeated string name_isw = 99563956;
+  // query parameter: name__n
+  repeated string name_n = 392635731;
+  // query parameter: name__nic
+  repeated string name_nic = 105647061;
+  // query parameter: name__nie
+  repeated string name_nie = 72091823;
+  // query parameter: name__niew
+  repeated string name_niew = 481422756;
+  // query parameter: name__nisw
+  repeated string name_nisw = 210715186;
+  // query parameter: name__regex
+  repeated string name_regex = 458447990;
+  // query parameter: offset
+  optional int64 offset = 288836565;
+  // query parameter: omit
+  optional string omit = 492901169;
+  // query parameter: ordering
+  optional string ordering = 248495234;
+  // query parameter: owner
+  repeated string owner = 322908957;
+  // query parameter: owner__n
+  repeated string owner_n = 369785839;
+  // query parameter: owner_group
+  repeated string owner_group = 363324555;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 195611811;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 360430787;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 486902503;
+  // query parameter: owner_id
+  repeated int64 owner_id = 535884743;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 519218445;
+  // query parameter: q
+  optional string q = 319510655;
+  // query parameter: slug
+  repeated string slug = 467533761;
+  // query parameter: slug__empty
+  optional bool slug_empty = 188422954;
+  // query parameter: slug__ic
+  repeated string slug_ic = 31596985;
+  // query parameter: slug__ie
+  repeated string slug_ie = 467802181;
+  // query parameter: slug__iew
+  repeated string slug_iew = 468459170;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 247011293;
+  // query parameter: slug__isw
+  repeated string slug_isw = 472004764;
+  // query parameter: slug__n
+  repeated string slug_n = 274047915;
+  // query parameter: slug__nic
+  repeated string slug_nic = 499080101;
+  // query parameter: slug__nie
+  repeated string slug_nie = 62874905;
+  // query parameter: slug__niew
+  repeated string slug_niew = 55362504;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 56936622;
+  // query parameter: slug__regex
+  repeated string slug_regex = 37229482;
+  // query parameter: start
+  optional int64 start = 340464262;
+  // query parameter: tag
+  repeated string tag = 424342986;
+  // query parameter: tag__any
+  repeated string tag_any = 297949150;
+  // query parameter: tag__n
+  repeated string tag_n = 58674942;
+  // query parameter: tag_id
+  repeated int64 tag_id = 162886250;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 253092450;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 99309460;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 236567431;
+}
+message VpnTunnelGroupsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkTunnelGroupRequest body = 508707458;
+}
+message VpnTunnelGroupsBulkPartialUpdateResponse {
+  repeated TunnelGroup result = 420261700;
+}
+message VpnTunnelGroupsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 440189962;
+}
+message VpnTunnelGroupsBulkUpdateRequest {
+  // request body: body
+  repeated BulkTunnelGroupRequest body = 521030787;
+}
+message VpnTunnelGroupsBulkUpdateResponse {
+  repeated TunnelGroup result = 437823553;
+}
+message VpnTunnelGroupsDestroyRequest {
+  // path parameter: id
+  int64 id = 390852502;
+}
+message VpnTunnelGroupsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 332545508;
+  // query parameter: fields
+  optional string fields = 438807419;
+  // path parameter: id
+  int64 id = 520423200;
+  // query parameter: omit
+  optional string omit = 106977393;
+}
+message VpnTunnelGroupsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 454825274;
+  // request body: body
+  optional PatchedTunnelGroupRequest body = 201512962;
+}
+message VpnTunnelGroupsUpdateRequest {
+  // path parameter: id
+  int64 id = 41814795;
+  // request body: body
+  TunnelGroupRequest body = 525340069;
+}
+message VpnTunnelTerminationsBulkDestroyRequest {
+  // request body: body
+  repeated TunnelTerminationRequest body = 355696109;
+}
+message VpnTunnelTerminationsListRequest {
+  // query parameter: brief
+  optional bool brief = 276333351;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 443000389;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 473175072;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 69630506;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 210925841;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 37502291;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 332681472;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 64536733;
+  // query parameter: created_by_request
+  optional string created_by_request = 282580265;
+  // query parameter: fields
+  optional string fields = 487576538;
+  // query parameter: id
+  repeated int32 id = 391786288;
+  // query parameter: id__empty
+  optional bool id_empty = 114932025;
+  // query parameter: id__gt
+  repeated int32 id_gt = 433662055;
+  // query parameter: id__gte
+  repeated int32 id_gte = 165302728;
+  // query parameter: id__lt
+  repeated int32 id_lt = 469041674;
+  // query parameter: id__lte
+  repeated int32 id_lte = 481396085;
+  // query parameter: id__n
+  repeated int32 id_n = 38006266;
+  // query parameter: interface
+  repeated string interface = 436667392;
+  // query parameter: interface__n
+  repeated string interface_n = 532889946;
+  // query parameter: interface_id
+  repeated int64 interface_id = 428678638;
+  // query parameter: interface_id__n
+  repeated int64 interface_id_n = 77952476;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 378518907;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 499654868;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 172005748;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 397474437;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 139877533;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 519333236;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 180024879;
+  // query parameter: limit
+  optional int64 limit = 281186200;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 473480528;
+  // query parameter: offset
+  optional int64 offset = 160925856;
+  // query parameter: omit
+  optional string omit = 235327096;
+  // query parameter: ordering
+  optional string ordering = 97644457;
+  // query parameter: outside_ip_id
+  repeated int64 outside_ip_id = 69846994;
+  // query parameter: outside_ip_id__n
+  repeated int64 outside_ip_id_n = 92309626;
+  // query parameter: q
+  optional string q = 438140502;
+  // query parameter: role
+  repeated string role = 178164591;
+  // query parameter: role__empty
+  optional bool role_empty = 188478156;
+  // query parameter: role__ic
+  repeated string role_ic = 116772599;
+  // query parameter: role__ie
+  repeated string role_ie = 150327837;
+  // query parameter: role__iew
+  repeated string role_iew = 100286074;
+  // query parameter: role__iregex
+  repeated string role_iregex = 23598617;
+  // query parameter: role__isw
+  repeated string role_isw = 365757866;
+  // query parameter: role__n
+  repeated string role_n = 246786093;
+  // query parameter: role__nic
+  repeated string role_nic = 374400843;
+  // query parameter: role__nie
+  repeated string role_nie = 340845605;
+  // query parameter: role__niew
+  repeated string role_niew = 475497666;
+  // query parameter: role__nisw
+  repeated string role_nisw = 204802978;
+  // query parameter: role__regex
+  repeated string role_regex = 68374350;
+  // query parameter: start
+  optional int64 start = 325236397;
+  // query parameter: tag
+  repeated string tag = 108746291;
+  // query parameter: tag__any
+  repeated string tag_any = 216916211;
+  // query parameter: tag__n
+  repeated string tag_n = 27592435;
+  // query parameter: tag_id
+  repeated int64 tag_id = 398364441;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 206841167;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 173782351;
+  // query parameter: termination_id
+  repeated int32 termination_id = 521419683;
+  // query parameter: termination_id__empty
+  optional bool termination_id_empty = 73119288;
+  // query parameter: termination_id__gt
+  repeated int32 termination_id_gt = 335391030;
+  // query parameter: termination_id__gte
+  repeated int32 termination_id_gte = 106005973;
+  // query parameter: termination_id__lt
+  repeated int32 termination_id_lt = 300114579;
+  // query parameter: termination_id__lte
+  repeated int32 termination_id_lte = 368360230;
+  // query parameter: termination_id__n
+  repeated int32 termination_id_n = 263768919;
+  // query parameter: termination_type
+  repeated string termination_type = 385626460;
+  // query parameter: termination_type__n
+  repeated string termination_type_n = 265242044;
+  // query parameter: tunnel
+  repeated string tunnel = 211346575;
+  // query parameter: tunnel__n
+  repeated string tunnel_n = 124490205;
+  // query parameter: tunnel_id
+  repeated int64 tunnel_id = 294532061;
+  // query parameter: tunnel_id__n
+  repeated int64 tunnel_id_n = 10320147;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 339689458;
+  // query parameter: vminterface
+  repeated string vminterface = 273554137;
+  // query parameter: vminterface__n
+  repeated string vminterface_n = 353031699;
+  // query parameter: vminterface_id
+  repeated int64 vminterface_id = 176487035;
+  // query parameter: vminterface_id__n
+  repeated int64 vminterface_id_n = 188405035;
+}
+message VpnTunnelTerminationsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkTunnelTerminationRequest body = 276231777;
+}
+message VpnTunnelTerminationsBulkPartialUpdateResponse {
+  repeated TunnelTermination result = 182078529;
+}
+message VpnTunnelTerminationsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 502919329;
+}
+message VpnTunnelTerminationsBulkUpdateRequest {
+  // request body: body
+  repeated BulkTunnelTerminationRequest body = 411948820;
+}
+message VpnTunnelTerminationsBulkUpdateResponse {
+  repeated TunnelTermination result = 140099708;
+}
+message VpnTunnelTerminationsDestroyRequest {
+  // path parameter: id
+  int64 id = 434238093;
+}
+message VpnTunnelTerminationsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 57228319;
+  // query parameter: fields
+  optional string fields = 217442910;
+  // path parameter: id
+  int64 id = 140836771;
+  // query parameter: omit
+  optional string omit = 425283100;
+}
+message VpnTunnelTerminationsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 158871757;
+  // request body: body
+  optional PatchedWritableTunnelTerminationRequest body = 436326835;
+}
+message VpnTunnelTerminationsUpdateRequest {
+  // path parameter: id
+  int64 id = 469385502;
+  // request body: body
+  WritableTunnelTerminationRequest body = 42597142;
+}
+message VpnTunnelsBulkDestroyRequest {
+  // request body: body
+  repeated TunnelRequest body = 142555909;
+}
+message VpnTunnelsListRequest {
+  // query parameter: brief
+  optional bool brief = 398742417;
+  // query parameter: contact
+  repeated int64 contact = 315488745;
+  // query parameter: contact__n
+  repeated int64 contact_n = 99671489;
+  // query parameter: contact_group
+  repeated string contact_group = 505811507;
+  // query parameter: contact_group__n
+  repeated string contact_group_n = 102794627;
+  // query parameter: contact_role
+  repeated int64 contact_role = 25924146;
+  // query parameter: contact_role__n
+  repeated int64 contact_role_n = 227665956;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 181334535;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 81576874;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 147249214;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 17204731;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 383666071;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 183187192;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 35587951;
+  // query parameter: created_by_request
+  optional string created_by_request = 457178197;
+  // query parameter: description
+  repeated string description = 212933881;
+  // query parameter: description__empty
+  optional bool description_empty = 127504266;
+  // query parameter: description__ic
+  repeated string description_ic = 103607505;
+  // query parameter: description__ie
+  repeated string description_ie = 204273219;
+  // query parameter: description__iew
+  repeated string description_iew = 398965574;
+  // query parameter: description__iregex
+  repeated string description_iregex = 358777169;
+  // query parameter: description__isw
+  repeated string description_isw = 395419980;
+  // query parameter: description__n
+  repeated string description_n = 49841513;
+  // query parameter: description__nic
+  repeated string description_nic = 80658207;
+  // query parameter: description__nie
+  repeated string description_nie = 114213445;
+  // query parameter: description__niew
+  repeated string description_niew = 175879768;
+  // query parameter: description__nisw
+  repeated string description_nisw = 446587338;
+  // query parameter: description__regex
+  repeated string description_regex = 221485784;
+  // query parameter: encapsulation
+  repeated string encapsulation = 83326161;
+  // query parameter: encapsulation__empty
+  optional bool encapsulation_empty = 317781680;
+  // query parameter: encapsulation__ic
+  repeated string encapsulation_ic = 57725529;
+  // query parameter: encapsulation__ie
+  repeated string encapsulation_ie = 91280767;
+  // query parameter: encapsulation__iew
+  repeated string encapsulation_iew = 463429728;
+  // query parameter: encapsulation__iregex
+  repeated string encapsulation_iregex = 88311165;
+  // query parameter: encapsulation__isw
+  repeated string encapsulation_isw = 192133778;
+  // query parameter: encapsulation__n
+  repeated string encapsulation_n = 144061451;
+  // query parameter: encapsulation__nic
+  repeated string encapsulation_nic = 242353443;
+  // query parameter: encapsulation__nie
+  repeated string encapsulation_nie = 208798205;
+  // query parameter: encapsulation__niew
+  repeated string encapsulation_niew = 410541590;
+  // query parameter: encapsulation__nisw
+  repeated string encapsulation_nisw = 139846918;
+  // query parameter: encapsulation__regex
+  repeated string encapsulation_regex = 126944308;
+  // query parameter: fields
+  optional string fields = 107094780;
+  // query parameter: group
+  repeated string group = 1716844;
+  // query parameter: group__n
+  repeated string group_n = 436210714;
+  // query parameter: group_id
+  repeated int64 group_id = 333266436;
+  // query parameter: group_id__n
+  repeated int64 group_id_n = 509906784;
+  // query parameter: id
+  repeated int32 id = 62201860;
+  // query parameter: id__empty
+  optional bool id_empty = 356127235;
+  // query parameter: id__gt
+  repeated int32 id_gt = 426020289;
+  // query parameter: id__gte
+  repeated int32 id_gte = 508230344;
+  // query parameter: id__lt
+  repeated int32 id_lt = 458736884;
+  // query parameter: id__lte
+  repeated int32 id_lte = 19560493;
+  // query parameter: id__n
+  repeated int32 id_n = 260622386;
+  // query parameter: ipsec_profile
+  repeated string ipsec_profile = 459214465;
+  // query parameter: ipsec_profile__n
+  repeated string ipsec_profile_n = 27091929;
+  // query parameter: ipsec_profile_id
+  repeated int64 ipsec_profile_id = 402983647;
+  // query parameter: ipsec_profile_id__n
+  repeated int64 ipsec_profile_id_n = 334878903;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 315650529;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 91354706;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 400014418;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 278737663;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 96884443;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 171604946;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 76507331;
+  // query parameter: limit
+  optional int64 limit = 264440580;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 271595942;
+  // query parameter: name
+  repeated string name = 308411532;
+  // query parameter: name__empty
+  optional bool name_empty = 265983293;
+  // query parameter: name__ic
+  repeated string name_ic = 142938394;
+  // query parameter: name__ie
+  repeated string name_ie = 176493632;
+  // query parameter: name__iew
+  repeated string name_iew = 259973317;
+  // query parameter: name__iregex
+  repeated string name_iregex = 243731636;
+  // query parameter: name__isw
+  repeated string name_isw = 262238983;
+  // query parameter: name__n
+  repeated string name_n = 326493244;
+  // query parameter: name__nic
+  repeated string name_nic = 229352386;
+  // query parameter: name__nie
+  repeated string name_nie = 128686672;
+  // query parameter: name__niew
+  repeated string name_niew = 254004341;
+  // query parameter: name__nisw
+  repeated string name_nisw = 257549935;
+  // query parameter: name__regex
+  repeated string name_regex = 80645857;
+  // query parameter: offset
+  optional int64 offset = 167266988;
+  // query parameter: omit
+  optional string omit = 453981954;
+  // query parameter: ordering
+  optional string ordering = 186357427;
+  // query parameter: owner
+  repeated string owner = 49846548;
+  // query parameter: owner__n
+  repeated string owner_n = 132165000;
+  // query parameter: owner_group
+  repeated string owner_group = 130205356;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 382005568;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 21078044;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 518105658;
+  // query parameter: owner_id
+  repeated int64 owner_id = 33176572;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 253358736;
+  // query parameter: q
+  optional string q = 39165674;
+  // query parameter: start
+  optional int64 start = 99553419;
+  // query parameter: status
+  repeated string status = 68186667;
+  // query parameter: status__empty
+  optional bool status_empty = 62596532;
+  // query parameter: status__ic
+  repeated string status_ic = 352596157;
+  // query parameter: status__ie
+  repeated string status_ie = 453261871;
+  // query parameter: status__iew
+  repeated string status_iew = 480760784;
+  // query parameter: status__iregex
+  repeated string status_iregex = 317887337;
+  // query parameter: status__isw
+  repeated string status_isw = 477215190;
+  // query parameter: status__n
+  repeated string status_n = 381174485;
+  // query parameter: status__nic
+  repeated string status_nic = 165013289;
+  // query parameter: status__nie
+  repeated string status_nie = 198568527;
+  // query parameter: status__niew
+  repeated string status_niew = 482327268;
+  // query parameter: status__nisw
+  repeated string status_nisw = 216151030;
+  // query parameter: status__regex
+  repeated string status_regex = 306330962;
+  // query parameter: tag
+  repeated string tag = 255891297;
+  // query parameter: tag__any
+  repeated string tag_any = 200098349;
+  // query parameter: tag__n
+  repeated string tag_n = 116508371;
+  // query parameter: tag_id
+  repeated int64 tag_id = 209775809;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 468395893;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 164106913;
+  // query parameter: tenant
+  repeated string tenant = 207713907;
+  // query parameter: tenant__n
+  repeated string tenant_n = 505594297;
+  // query parameter: tenant_group
+  repeated string tenant_group = 520794663;
+  // query parameter: tenant_group__n
+  repeated string tenant_group_n = 204161019;
+  // query parameter: tenant_group_id
+  repeated string tenant_group_id = 32839235;
+  // query parameter: tenant_group_id__n
+  repeated string tenant_group_id_n = 530092187;
+  // query parameter: tenant_id
+  repeated int64 tenant_id = 345998201;
+  // query parameter: tenant_id__n
+  repeated int64 tenant_id_n = 281961147;
+  // query parameter: tunnel_id
+  repeated int32 tunnel_id = 31658133;
+  // query parameter: tunnel_id__empty
+  optional bool tunnel_id_empty = 496565350;
+  // query parameter: tunnel_id__gt
+  repeated int32 tunnel_id_gt = 352072192;
+  // query parameter: tunnel_id__gte
+  repeated int32 tunnel_id_gte = 117578689;
+  // query parameter: tunnel_id__lt
+  repeated int32 tunnel_id_lt = 316692573;
+  // query parameter: tunnel_id__lte
+  repeated int32 tunnel_id_lte = 338356242;
+  // query parameter: tunnel_id__n
+  repeated int32 tunnel_id_n = 351068271;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 85916382;
+}
+message VpnTunnelsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkTunnelRequest body = 141319197;
+}
+message VpnTunnelsBulkPartialUpdateResponse {
+  repeated Tunnel result = 499111281;
+}
+message VpnTunnelsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 473181055;
+}
+message VpnTunnelsBulkUpdateRequest {
+  // request body: body
+  repeated BulkTunnelRequest body = 471668720;
+}
+message VpnTunnelsBulkUpdateResponse {
+  repeated Tunnel result = 109839858;
+}
+message VpnTunnelsDestroyRequest {
+  // path parameter: id
+  int64 id = 528076069;
+}
+message VpnTunnelsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 410106701;
+  // query parameter: fields
+  optional string fields = 199253380;
+  // path parameter: id
+  int64 id = 62226173;
+  // query parameter: omit
+  optional string omit = 301715594;
+}
+message VpnTunnelsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 101420035;
+  // request body: body
+  optional PatchedWritableTunnelRequest body = 534194051;
+}
+message VpnTunnelsUpdateRequest {
+  // path parameter: id
+  int64 id = 287147224;
+  // request body: body
+  WritableTunnelRequest body = 83149302;
+}
+
+service VpnService {
+  // DELETE /api/vpn/ike-policies/ - Delete a list of IKE policy objects.
+  rpc VpnIkePoliciesBulkDestroy (VpnIkePoliciesBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ike-policies/ - Get a list of IKE policy objects.
+  rpc VpnIkePoliciesList (VpnIkePoliciesListRequest) returns (PaginatedIkePolicyList);
+  // PATCH /api/vpn/ike-policies/ - Patch a list of IKE policy objects.
+  rpc VpnIkePoliciesBulkPartialUpdate (VpnIkePoliciesBulkPartialUpdateRequest) returns (VpnIkePoliciesBulkPartialUpdateResponse);
+  // POST /api/vpn/ike-policies/ - Post a list of IKE policy objects.
+  rpc VpnIkePoliciesCreate (VpnIkePoliciesCreateRequest) returns (IkePolicy);
+  // PUT /api/vpn/ike-policies/ - Put a list of IKE policy objects.
+  rpc VpnIkePoliciesBulkUpdate (VpnIkePoliciesBulkUpdateRequest) returns (VpnIkePoliciesBulkUpdateResponse);
+  // DELETE /api/vpn/ike-policies/{id}/ - Delete a IKE policy object.
+  rpc VpnIkePoliciesDestroy (VpnIkePoliciesDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ike-policies/{id}/ - Get a IKE policy object.
+  rpc VpnIkePoliciesRetrieve (VpnIkePoliciesRetrieveRequest) returns (IkePolicy);
+  // PATCH /api/vpn/ike-policies/{id}/ - Patch a IKE policy object.
+  rpc VpnIkePoliciesPartialUpdate (VpnIkePoliciesPartialUpdateRequest) returns (IkePolicy);
+  // PUT /api/vpn/ike-policies/{id}/ - Put a IKE policy object.
+  rpc VpnIkePoliciesUpdate (VpnIkePoliciesUpdateRequest) returns (IkePolicy);
+  // DELETE /api/vpn/ike-proposals/ - Delete a list of IKE proposal objects.
+  rpc VpnIkeProposalsBulkDestroy (VpnIkeProposalsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ike-proposals/ - Get a list of IKE proposal objects.
+  rpc VpnIkeProposalsList (VpnIkeProposalsListRequest) returns (PaginatedIkeProposalList);
+  // PATCH /api/vpn/ike-proposals/ - Patch a list of IKE proposal objects.
+  rpc VpnIkeProposalsBulkPartialUpdate (VpnIkeProposalsBulkPartialUpdateRequest) returns (VpnIkeProposalsBulkPartialUpdateResponse);
+  // POST /api/vpn/ike-proposals/ - Post a list of IKE proposal objects.
+  rpc VpnIkeProposalsCreate (VpnIkeProposalsCreateRequest) returns (IkeProposal);
+  // PUT /api/vpn/ike-proposals/ - Put a list of IKE proposal objects.
+  rpc VpnIkeProposalsBulkUpdate (VpnIkeProposalsBulkUpdateRequest) returns (VpnIkeProposalsBulkUpdateResponse);
+  // DELETE /api/vpn/ike-proposals/{id}/ - Delete a IKE proposal object.
+  rpc VpnIkeProposalsDestroy (VpnIkeProposalsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ike-proposals/{id}/ - Get a IKE proposal object.
+  rpc VpnIkeProposalsRetrieve (VpnIkeProposalsRetrieveRequest) returns (IkeProposal);
+  // PATCH /api/vpn/ike-proposals/{id}/ - Patch a IKE proposal object.
+  rpc VpnIkeProposalsPartialUpdate (VpnIkeProposalsPartialUpdateRequest) returns (IkeProposal);
+  // PUT /api/vpn/ike-proposals/{id}/ - Put a IKE proposal object.
+  rpc VpnIkeProposalsUpdate (VpnIkeProposalsUpdateRequest) returns (IkeProposal);
+  // DELETE /api/vpn/ipsec-policies/ - Delete a list of IPSec policy objects.
+  rpc VpnIpsecPoliciesBulkDestroy (VpnIpsecPoliciesBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-policies/ - Get a list of IPSec policy objects.
+  rpc VpnIpsecPoliciesList (VpnIpsecPoliciesListRequest) returns (PaginatedIpSecPolicyList);
+  // PATCH /api/vpn/ipsec-policies/ - Patch a list of IPSec policy objects.
+  rpc VpnIpsecPoliciesBulkPartialUpdate (VpnIpsecPoliciesBulkPartialUpdateRequest) returns (VpnIpsecPoliciesBulkPartialUpdateResponse);
+  // POST /api/vpn/ipsec-policies/ - Post a list of IPSec policy objects.
+  rpc VpnIpsecPoliciesCreate (VpnIpsecPoliciesCreateRequest) returns (IpSecPolicy);
+  // PUT /api/vpn/ipsec-policies/ - Put a list of IPSec policy objects.
+  rpc VpnIpsecPoliciesBulkUpdate (VpnIpsecPoliciesBulkUpdateRequest) returns (VpnIpsecPoliciesBulkUpdateResponse);
+  // DELETE /api/vpn/ipsec-policies/{id}/ - Delete a IPSec policy object.
+  rpc VpnIpsecPoliciesDestroy (VpnIpsecPoliciesDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-policies/{id}/ - Get a IPSec policy object.
+  rpc VpnIpsecPoliciesRetrieve (VpnIpsecPoliciesRetrieveRequest) returns (IpSecPolicy);
+  // PATCH /api/vpn/ipsec-policies/{id}/ - Patch a IPSec policy object.
+  rpc VpnIpsecPoliciesPartialUpdate (VpnIpsecPoliciesPartialUpdateRequest) returns (IpSecPolicy);
+  // PUT /api/vpn/ipsec-policies/{id}/ - Put a IPSec policy object.
+  rpc VpnIpsecPoliciesUpdate (VpnIpsecPoliciesUpdateRequest) returns (IpSecPolicy);
+  // DELETE /api/vpn/ipsec-profiles/ - Delete a list of IPSec profile objects.
+  rpc VpnIpsecProfilesBulkDestroy (VpnIpsecProfilesBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-profiles/ - Get a list of IPSec profile objects.
+  rpc VpnIpsecProfilesList (VpnIpsecProfilesListRequest) returns (PaginatedIpSecProfileList);
+  // PATCH /api/vpn/ipsec-profiles/ - Patch a list of IPSec profile objects.
+  rpc VpnIpsecProfilesBulkPartialUpdate (VpnIpsecProfilesBulkPartialUpdateRequest) returns (VpnIpsecProfilesBulkPartialUpdateResponse);
+  // POST /api/vpn/ipsec-profiles/ - Post a list of IPSec profile objects.
+  rpc VpnIpsecProfilesCreate (VpnIpsecProfilesCreateRequest) returns (IpSecProfile);
+  // PUT /api/vpn/ipsec-profiles/ - Put a list of IPSec profile objects.
+  rpc VpnIpsecProfilesBulkUpdate (VpnIpsecProfilesBulkUpdateRequest) returns (VpnIpsecProfilesBulkUpdateResponse);
+  // DELETE /api/vpn/ipsec-profiles/{id}/ - Delete a IPSec profile object.
+  rpc VpnIpsecProfilesDestroy (VpnIpsecProfilesDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-profiles/{id}/ - Get a IPSec profile object.
+  rpc VpnIpsecProfilesRetrieve (VpnIpsecProfilesRetrieveRequest) returns (IpSecProfile);
+  // PATCH /api/vpn/ipsec-profiles/{id}/ - Patch a IPSec profile object.
+  rpc VpnIpsecProfilesPartialUpdate (VpnIpsecProfilesPartialUpdateRequest) returns (IpSecProfile);
+  // PUT /api/vpn/ipsec-profiles/{id}/ - Put a IPSec profile object.
+  rpc VpnIpsecProfilesUpdate (VpnIpsecProfilesUpdateRequest) returns (IpSecProfile);
+  // DELETE /api/vpn/ipsec-proposals/ - Delete a list of IPSec proposal objects.
+  rpc VpnIpsecProposalsBulkDestroy (VpnIpsecProposalsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-proposals/ - Get a list of IPSec proposal objects.
+  rpc VpnIpsecProposalsList (VpnIpsecProposalsListRequest) returns (PaginatedIpSecProposalList);
+  // PATCH /api/vpn/ipsec-proposals/ - Patch a list of IPSec proposal objects.
+  rpc VpnIpsecProposalsBulkPartialUpdate (VpnIpsecProposalsBulkPartialUpdateRequest) returns (VpnIpsecProposalsBulkPartialUpdateResponse);
+  // POST /api/vpn/ipsec-proposals/ - Post a list of IPSec proposal objects.
+  rpc VpnIpsecProposalsCreate (VpnIpsecProposalsCreateRequest) returns (IpSecProposal);
+  // PUT /api/vpn/ipsec-proposals/ - Put a list of IPSec proposal objects.
+  rpc VpnIpsecProposalsBulkUpdate (VpnIpsecProposalsBulkUpdateRequest) returns (VpnIpsecProposalsBulkUpdateResponse);
+  // DELETE /api/vpn/ipsec-proposals/{id}/ - Delete a IPSec proposal object.
+  rpc VpnIpsecProposalsDestroy (VpnIpsecProposalsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/ipsec-proposals/{id}/ - Get a IPSec proposal object.
+  rpc VpnIpsecProposalsRetrieve (VpnIpsecProposalsRetrieveRequest) returns (IpSecProposal);
+  // PATCH /api/vpn/ipsec-proposals/{id}/ - Patch a IPSec proposal object.
+  rpc VpnIpsecProposalsPartialUpdate (VpnIpsecProposalsPartialUpdateRequest) returns (IpSecProposal);
+  // PUT /api/vpn/ipsec-proposals/{id}/ - Put a IPSec proposal object.
+  rpc VpnIpsecProposalsUpdate (VpnIpsecProposalsUpdateRequest) returns (IpSecProposal);
+  // DELETE /api/vpn/l2vpn-terminations/ - Delete a list of L2VPN termination objects.
+  rpc VpnL2vpnTerminationsBulkDestroy (VpnL2vpnTerminationsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/l2vpn-terminations/ - Get a list of L2VPN termination objects.
+  rpc VpnL2vpnTerminationsList (VpnL2vpnTerminationsListRequest) returns (PaginatedL2VpnTerminationList);
+  // PATCH /api/vpn/l2vpn-terminations/ - Patch a list of L2VPN termination objects.
+  rpc VpnL2vpnTerminationsBulkPartialUpdate (VpnL2vpnTerminationsBulkPartialUpdateRequest) returns (VpnL2vpnTerminationsBulkPartialUpdateResponse);
+  // POST /api/vpn/l2vpn-terminations/ - Post a list of L2VPN termination objects.
+  rpc VpnL2vpnTerminationsCreate (VpnL2vpnTerminationsCreateRequest) returns (L2VpnTermination);
+  // PUT /api/vpn/l2vpn-terminations/ - Put a list of L2VPN termination objects.
+  rpc VpnL2vpnTerminationsBulkUpdate (VpnL2vpnTerminationsBulkUpdateRequest) returns (VpnL2vpnTerminationsBulkUpdateResponse);
+  // DELETE /api/vpn/l2vpn-terminations/{id}/ - Delete a L2VPN termination object.
+  rpc VpnL2vpnTerminationsDestroy (VpnL2vpnTerminationsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/l2vpn-terminations/{id}/ - Get a L2VPN termination object.
+  rpc VpnL2vpnTerminationsRetrieve (VpnL2vpnTerminationsRetrieveRequest) returns (L2VpnTermination);
+  // PATCH /api/vpn/l2vpn-terminations/{id}/ - Patch a L2VPN termination object.
+  rpc VpnL2vpnTerminationsPartialUpdate (VpnL2vpnTerminationsPartialUpdateRequest) returns (L2VpnTermination);
+  // PUT /api/vpn/l2vpn-terminations/{id}/ - Put a L2VPN termination object.
+  rpc VpnL2vpnTerminationsUpdate (VpnL2vpnTerminationsUpdateRequest) returns (L2VpnTermination);
+  // DELETE /api/vpn/l2vpns/ - Delete a list of L2VPN objects.
+  rpc VpnL2vpnsBulkDestroy (VpnL2vpnsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/l2vpns/ - Get a list of L2VPN objects.
+  rpc VpnL2vpnsList (VpnL2vpnsListRequest) returns (PaginatedL2VpnList);
+  // PATCH /api/vpn/l2vpns/ - Patch a list of L2VPN objects.
+  rpc VpnL2vpnsBulkPartialUpdate (VpnL2vpnsBulkPartialUpdateRequest) returns (VpnL2vpnsBulkPartialUpdateResponse);
+  // POST /api/vpn/l2vpns/ - Post a list of L2VPN objects.
+  rpc VpnL2vpnsCreate (VpnL2vpnsCreateRequest) returns (L2Vpn);
+  // PUT /api/vpn/l2vpns/ - Put a list of L2VPN objects.
+  rpc VpnL2vpnsBulkUpdate (VpnL2vpnsBulkUpdateRequest) returns (VpnL2vpnsBulkUpdateResponse);
+  // DELETE /api/vpn/l2vpns/{id}/ - Delete a L2VPN object.
+  rpc VpnL2vpnsDestroy (VpnL2vpnsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/l2vpns/{id}/ - Get a L2VPN object.
+  rpc VpnL2vpnsRetrieve (VpnL2vpnsRetrieveRequest) returns (L2Vpn);
+  // PATCH /api/vpn/l2vpns/{id}/ - Patch a L2VPN object.
+  rpc VpnL2vpnsPartialUpdate (VpnL2vpnsPartialUpdateRequest) returns (L2Vpn);
+  // PUT /api/vpn/l2vpns/{id}/ - Put a L2VPN object.
+  rpc VpnL2vpnsUpdate (VpnL2vpnsUpdateRequest) returns (L2Vpn);
+  // DELETE /api/vpn/tunnel-groups/ - Delete a list of tunnel group objects.
+  rpc VpnTunnelGroupsBulkDestroy (VpnTunnelGroupsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnel-groups/ - Get a list of tunnel group objects.
+  rpc VpnTunnelGroupsList (VpnTunnelGroupsListRequest) returns (PaginatedTunnelGroupList);
+  // PATCH /api/vpn/tunnel-groups/ - Patch a list of tunnel group objects.
+  rpc VpnTunnelGroupsBulkPartialUpdate (VpnTunnelGroupsBulkPartialUpdateRequest) returns (VpnTunnelGroupsBulkPartialUpdateResponse);
+  // POST /api/vpn/tunnel-groups/ - Post a list of tunnel group objects.
+  rpc VpnTunnelGroupsCreate (VpnTunnelGroupsCreateRequest) returns (TunnelGroup);
+  // PUT /api/vpn/tunnel-groups/ - Put a list of tunnel group objects.
+  rpc VpnTunnelGroupsBulkUpdate (VpnTunnelGroupsBulkUpdateRequest) returns (VpnTunnelGroupsBulkUpdateResponse);
+  // DELETE /api/vpn/tunnel-groups/{id}/ - Delete a tunnel group object.
+  rpc VpnTunnelGroupsDestroy (VpnTunnelGroupsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnel-groups/{id}/ - Get a tunnel group object.
+  rpc VpnTunnelGroupsRetrieve (VpnTunnelGroupsRetrieveRequest) returns (TunnelGroup);
+  // PATCH /api/vpn/tunnel-groups/{id}/ - Patch a tunnel group object.
+  rpc VpnTunnelGroupsPartialUpdate (VpnTunnelGroupsPartialUpdateRequest) returns (TunnelGroup);
+  // PUT /api/vpn/tunnel-groups/{id}/ - Put a tunnel group object.
+  rpc VpnTunnelGroupsUpdate (VpnTunnelGroupsUpdateRequest) returns (TunnelGroup);
+  // DELETE /api/vpn/tunnel-terminations/ - Delete a list of tunnel termination objects.
+  rpc VpnTunnelTerminationsBulkDestroy (VpnTunnelTerminationsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnel-terminations/ - Get a list of tunnel termination objects.
+  rpc VpnTunnelTerminationsList (VpnTunnelTerminationsListRequest) returns (PaginatedTunnelTerminationList);
+  // PATCH /api/vpn/tunnel-terminations/ - Patch a list of tunnel termination objects.
+  rpc VpnTunnelTerminationsBulkPartialUpdate (VpnTunnelTerminationsBulkPartialUpdateRequest) returns (VpnTunnelTerminationsBulkPartialUpdateResponse);
+  // POST /api/vpn/tunnel-terminations/ - Post a list of tunnel termination objects.
+  rpc VpnTunnelTerminationsCreate (VpnTunnelTerminationsCreateRequest) returns (TunnelTermination);
+  // PUT /api/vpn/tunnel-terminations/ - Put a list of tunnel termination objects.
+  rpc VpnTunnelTerminationsBulkUpdate (VpnTunnelTerminationsBulkUpdateRequest) returns (VpnTunnelTerminationsBulkUpdateResponse);
+  // DELETE /api/vpn/tunnel-terminations/{id}/ - Delete a tunnel termination object.
+  rpc VpnTunnelTerminationsDestroy (VpnTunnelTerminationsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnel-terminations/{id}/ - Get a tunnel termination object.
+  rpc VpnTunnelTerminationsRetrieve (VpnTunnelTerminationsRetrieveRequest) returns (TunnelTermination);
+  // PATCH /api/vpn/tunnel-terminations/{id}/ - Patch a tunnel termination object.
+  rpc VpnTunnelTerminationsPartialUpdate (VpnTunnelTerminationsPartialUpdateRequest) returns (TunnelTermination);
+  // PUT /api/vpn/tunnel-terminations/{id}/ - Put a tunnel termination object.
+  rpc VpnTunnelTerminationsUpdate (VpnTunnelTerminationsUpdateRequest) returns (TunnelTermination);
+  // DELETE /api/vpn/tunnels/ - Delete a list of tunnel objects.
+  rpc VpnTunnelsBulkDestroy (VpnTunnelsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnels/ - Get a list of tunnel objects.
+  rpc VpnTunnelsList (VpnTunnelsListRequest) returns (PaginatedTunnelList);
+  // PATCH /api/vpn/tunnels/ - Patch a list of tunnel objects.
+  rpc VpnTunnelsBulkPartialUpdate (VpnTunnelsBulkPartialUpdateRequest) returns (VpnTunnelsBulkPartialUpdateResponse);
+  // POST /api/vpn/tunnels/ - Post a list of tunnel objects.
+  rpc VpnTunnelsCreate (VpnTunnelsCreateRequest) returns (Tunnel);
+  // PUT /api/vpn/tunnels/ - Put a list of tunnel objects.
+  rpc VpnTunnelsBulkUpdate (VpnTunnelsBulkUpdateRequest) returns (VpnTunnelsBulkUpdateResponse);
+  // DELETE /api/vpn/tunnels/{id}/ - Delete a tunnel object.
+  rpc VpnTunnelsDestroy (VpnTunnelsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/vpn/tunnels/{id}/ - Get a tunnel object.
+  rpc VpnTunnelsRetrieve (VpnTunnelsRetrieveRequest) returns (Tunnel);
+  // PATCH /api/vpn/tunnels/{id}/ - Patch a tunnel object.
+  rpc VpnTunnelsPartialUpdate (VpnTunnelsPartialUpdateRequest) returns (Tunnel);
+  // PUT /api/vpn/tunnels/{id}/ - Put a tunnel object.
+  rpc VpnTunnelsUpdate (VpnTunnelsUpdateRequest) returns (Tunnel);
+}

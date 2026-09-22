@@ -1,0 +1,1591 @@
+// @generated from netbox-community/netbox contrib/openapi.json; DO NOT EDIT.
+// NetBox OpenAPI version: 4.7.1
+
+syntax = "proto3";
+
+package netbox.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "netbox_types.proto";
+
+message TenancyContactAssignmentsBulkDestroyRequest {
+  // request body: body
+  repeated ContactAssignmentRequest body = 358730018;
+}
+message TenancyContactAssignmentsListRequest {
+  // query parameter: brief
+  optional bool brief = 520603852;
+  // query parameter: contact_id
+  repeated int64 contact_id = 204096084;
+  // query parameter: contact_id__n
+  repeated int64 contact_id_n = 229569224;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 431263618;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 230706601;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 103961277;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 305684228;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 136677872;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 353859507;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 18864008;
+  // query parameter: created_by_request
+  optional string created_by_request = 46577040;
+  // query parameter: fields
+  optional string fields = 73989337;
+  // query parameter: group
+  repeated string group = 70135519;
+  // query parameter: group__n
+  repeated string group_n = 109006849;
+  // query parameter: group_id
+  repeated string group_id = 284271585;
+  // query parameter: group_id__n
+  repeated string group_id_n = 210867967;
+  // query parameter: id
+  repeated int32 id = 187980193;
+  // query parameter: id__empty
+  optional bool id_empty = 530686452;
+  // query parameter: id__gt
+  repeated int32 id_gt = 267130180;
+  // query parameter: id__gte
+  repeated int32 id_gte = 379931349;
+  // query parameter: id__lt
+  repeated int32 id_lt = 234413585;
+  // query parameter: id__lte
+  repeated int32 id_lte = 331756086;
+  // query parameter: id__n
+  repeated int32 id_n = 342537965;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 48876708;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 176145843;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 20148023;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 385367980;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 323277998;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 492500697;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 529972214;
+  // query parameter: limit
+  optional int64 limit = 443037175;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 495447071;
+  // query parameter: object_id
+  repeated int32 object_id = 522110955;
+  // query parameter: object_id__empty
+  optional bool object_id_empty = 49626710;
+  // query parameter: object_id__gt
+  repeated int32 object_id_gt = 230751318;
+  // query parameter: object_id__gte
+  repeated int32 object_id_gte = 315423045;
+  // query parameter: object_id__lt
+  repeated int32 object_id_lt = 196063247;
+  // query parameter: object_id__lte
+  repeated int32 object_id_lte = 210940454;
+  // query parameter: object_id__n
+  repeated int32 object_id_n = 123213351;
+  // query parameter: object_type
+  repeated string object_type = 522864258;
+  // query parameter: object_type__n
+  repeated string object_type_n = 233278696;
+  // query parameter: object_type_id
+  optional int64 object_type_id = 72978154;
+  // query parameter: object_type_id__n
+  optional int64 object_type_id_n = 483144668;
+  // query parameter: offset
+  optional int64 offset = 145697393;
+  // query parameter: omit
+  optional string omit = 83233739;
+  // query parameter: ordering
+  optional string ordering = 130144550;
+  // query parameter: priority
+  optional string priority = 309233866;
+  // query parameter: priority__empty
+  optional bool priority_empty = 490198579;
+  // query parameter: priority__ic
+  repeated string priority_ic = 387865856;
+  // query parameter: priority__ie
+  repeated string priority_ie = 287200142;
+  // query parameter: priority__iew
+  repeated string priority_iew = 247346617;
+  // query parameter: priority__iregex
+  repeated string priority_iregex = 95748426;
+  // query parameter: priority__isw
+  repeated string priority_isw = 250892211;
+  // query parameter: priority__n
+  optional string priority_n = 440500160;
+  // query parameter: priority__nic
+  repeated string priority_nic = 509999606;
+  // query parameter: priority__nie
+  repeated string priority_nie = 6683934;
+  // query parameter: priority__niew
+  repeated string priority_niew = 411960307;
+  // query parameter: priority__nisw
+  repeated string priority_nisw = 409003093;
+  // query parameter: priority__regex
+  repeated string priority_regex = 266992389;
+  // query parameter: q
+  optional string q = 341246613;
+  // query parameter: role
+  repeated string role = 112110894;
+  // query parameter: role__n
+  repeated string role_n = 376066776;
+  // query parameter: role_id
+  repeated int64 role_id = 273122498;
+  // query parameter: role_id__n
+  repeated int64 role_id_n = 102182176;
+  // query parameter: start
+  optional int64 start = 63836580;
+  // query parameter: tag
+  repeated string tag = 67632608;
+  // query parameter: tag__any
+  repeated string tag_any = 34721930;
+  // query parameter: tag__n
+  repeated string tag_n = 271727252;
+  // query parameter: tag_id
+  repeated int64 tag_id = 365595968;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 288539982;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 176087404;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 532501541;
+}
+message TenancyContactAssignmentsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkContactAssignmentRequest body = 409224740;
+}
+message TenancyContactAssignmentsBulkPartialUpdateResponse {
+  repeated ContactAssignment result = 81707362;
+}
+message TenancyContactAssignmentsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 46495396;
+}
+message TenancyContactAssignmentsBulkUpdateRequest {
+  // request body: body
+  repeated BulkContactAssignmentRequest body = 484342885;
+}
+message TenancyContactAssignmentsBulkUpdateResponse {
+  repeated ContactAssignment result = 500928149;
+}
+message TenancyContactAssignmentsDestroyRequest {
+  // path parameter: id
+  int64 id = 140974262;
+}
+message TenancyContactAssignmentsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 122643728;
+  // query parameter: fields
+  optional string fields = 291185937;
+  // path parameter: id
+  int64 id = 370239044;
+  // query parameter: omit
+  optional string omit = 193327623;
+}
+message TenancyContactAssignmentsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 206930328;
+  // request body: body
+  optional PatchedWritableContactAssignmentRequest body = 85578594;
+}
+message TenancyContactAssignmentsUpdateRequest {
+  // path parameter: id
+  int64 id = 311050539;
+  // request body: body
+  WritableContactAssignmentRequest body = 401284937;
+}
+message TenancyContactGroupsBulkDestroyRequest {
+  // request body: body
+  repeated ContactGroupRequest body = 250080470;
+}
+message TenancyContactGroupsListRequest {
+  // query parameter: ancestor
+  repeated string ancestor = 534403759;
+  // query parameter: ancestor__n
+  repeated string ancestor_n = 89189665;
+  // query parameter: ancestor_id
+  repeated string ancestor_id = 518597863;
+  // query parameter: ancestor_id__n
+  repeated string ancestor_id_n = 355438997;
+  // query parameter: brief
+  optional bool brief = 280321116;
+  // query parameter: contact_id
+  repeated int64 contact_id = 448541702;
+  // query parameter: contact_id__n
+  repeated int64 contact_id_n = 397584048;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 25771770;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 162814989;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 285105669;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 493706800;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 320485288;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 273032415;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 521720722;
+  // query parameter: created_by_request
+  optional string created_by_request = 432337144;
+  // query parameter: description
+  repeated string description = 451384474;
+  // query parameter: description__empty
+  optional bool description_empty = 204660151;
+  // query parameter: description__ic
+  repeated string description_ic = 6240946;
+  // query parameter: description__ie
+  repeated string description_ie = 442446142;
+  // query parameter: description__iew
+  repeated string description_iew = 131763735;
+  // query parameter: description__iregex
+  repeated string description_iregex = 206559380;
+  // query parameter: description__isw
+  repeated string description_isw = 135309329;
+  // query parameter: description__n
+  repeated string description_n = 164123644;
+  // query parameter: description__nic
+  repeated string description_nic = 355503028;
+  // query parameter: description__nie
+  repeated string description_nie = 389058266;
+  // query parameter: description__niew
+  repeated string description_niew = 24151529;
+  // query parameter: description__nisw
+  repeated string description_nisw = 26417195;
+  // query parameter: description__regex
+  repeated string description_regex = 306912827;
+  // query parameter: fields
+  optional string fields = 37472051;
+  // query parameter: id
+  repeated int32 id = 145788851;
+  // query parameter: id__empty
+  optional bool id_empty = 143216320;
+  // query parameter: id__gt
+  repeated int32 id_gt = 209433640;
+  // query parameter: id__gte
+  repeated int32 id_gte = 146588661;
+  // query parameter: id__lt
+  repeated int32 id_lt = 176717045;
+  // query parameter: id__lte
+  repeated int32 id_lte = 98310214;
+  // query parameter: id__n
+  repeated int32 id_n = 210008819;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 488608876;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 204605223;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 292926765;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 55336656;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 327614836;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 159819247;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 169460240;
+  // query parameter: limit
+  optional int64 limit = 230211079;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 368283093;
+  // query parameter: name
+  repeated string name = 193877555;
+  // query parameter: name__empty
+  optional bool name_empty = 525995036;
+  // query parameter: name__ic
+  repeated string name_ic = 30793385;
+  // query parameter: name__ie
+  repeated string name_ie = 466998581;
+  // query parameter: name__iew
+  repeated string name_iew = 413056722;
+  // query parameter: name__iregex
+  repeated string name_iregex = 260836171;
+  // query parameter: name__isw
+  repeated string name_isw = 411379436;
+  // query parameter: name__n
+  repeated string name_n = 425249139;
+  // query parameter: name__nic
+  repeated string name_nic = 443690551;
+  // query parameter: name__nie
+  repeated string name_nie = 7485339;
+  // query parameter: name__niew
+  repeated string name_niew = 13503010;
+  // query parameter: name__nisw
+  repeated string name_nisw = 9854248;
+  // query parameter: name__regex
+  repeated string name_regex = 433557632;
+  // query parameter: offset
+  optional int64 offset = 466831889;
+  // query parameter: omit
+  optional string omit = 26442717;
+  // query parameter: ordering
+  optional string ordering = 144487494;
+  // query parameter: owner
+  repeated string owner = 93169303;
+  // query parameter: owner__n
+  repeated string owner_n = 506190147;
+  // query parameter: owner_group
+  repeated string owner_group = 213660203;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 407470807;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 41921681;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 302168583;
+  // query parameter: owner_id
+  repeated int64 owner_id = 397434609;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 394399537;
+  // query parameter: parent
+  repeated string parent = 204209242;
+  // query parameter: parent__n
+  repeated string parent_n = 188799836;
+  // query parameter: parent_id
+  repeated int64 parent_id = 354297462;
+  // query parameter: parent_id__n
+  repeated int64 parent_id_n = 156718230;
+  // query parameter: q
+  optional string q = 85541599;
+  // query parameter: slug
+  repeated string slug = 104173833;
+  // query parameter: slug__empty
+  optional bool slug_empty = 216718308;
+  // query parameter: slug__ic
+  repeated string slug_ic = 169715209;
+  // query parameter: slug__ie
+  repeated string slug_ie = 203270447;
+  // query parameter: slug__iew
+  repeated string slug_iew = 229743182;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 204242737;
+  // query parameter: slug__isw
+  repeated string slug_isw = 500437854;
+  // query parameter: slug__n
+  repeated string slug_n = 179642209;
+  // query parameter: slug__nic
+  repeated string slug_nic = 514290797;
+  // query parameter: slug__nie
+  repeated string slug_nie = 480735559;
+  // query parameter: slug__niew
+  repeated string slug_niew = 211234856;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 482633974;
+  // query parameter: slug__regex
+  repeated string slug_regex = 397973708;
+  // query parameter: start
+  optional int64 start = 389610706;
+  // query parameter: tag
+  repeated string tag = 514910670;
+  // query parameter: tag__any
+  repeated string tag_any = 316926636;
+  // query parameter: tag__n
+  repeated string tag_n = 227265988;
+  // query parameter: tag_id
+  repeated int64 tag_id = 325064774;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 414436788;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 471634844;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 535833981;
+}
+message TenancyContactGroupsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkContactGroupRequest body = 100747324;
+}
+message TenancyContactGroupsBulkPartialUpdateResponse {
+  repeated ContactGroup result = 295784906;
+}
+message TenancyContactGroupsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 199609298;
+}
+message TenancyContactGroupsBulkUpdateRequest {
+  // request body: body
+  repeated BulkContactGroupRequest body = 476303407;
+}
+message TenancyContactGroupsBulkUpdateResponse {
+  repeated ContactGroup result = 290116955;
+}
+message TenancyContactGroupsDestroyRequest {
+  // path parameter: id
+  int64 id = 125028968;
+}
+message TenancyContactGroupsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 472132130;
+  // query parameter: fields
+  optional string fields = 227327481;
+  // path parameter: id
+  int64 id = 85951972;
+  // query parameter: omit
+  optional string omit = 234590967;
+}
+message TenancyContactGroupsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 73367444;
+  // request body: body
+  optional PatchedWritableContactGroupRequest body = 27268928;
+}
+message TenancyContactGroupsUpdateRequest {
+  // path parameter: id
+  int64 id = 286490269;
+  // request body: body
+  WritableContactGroupRequest body = 251724595;
+}
+message TenancyContactRolesBulkDestroyRequest {
+  // request body: body
+  repeated ContactRoleRequest body = 26534405;
+}
+message TenancyContactRolesListRequest {
+  // query parameter: brief
+  optional bool brief = 1435793;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 524750603;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 34419364;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 266585408;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 328178931;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 503002265;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 494161408;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 194414187;
+  // query parameter: created_by_request
+  optional string created_by_request = 180902749;
+  // query parameter: description
+  repeated string description = 332270059;
+  // query parameter: description__empty
+  optional bool description_empty = 388099728;
+  // query parameter: description__ic
+  repeated string description_ic = 426486231;
+  // query parameter: description__ie
+  repeated string description_ie = 527151945;
+  // query parameter: description__iew
+  repeated string description_iew = 59458110;
+  // query parameter: description__iregex
+  repeated string description_iregex = 152047179;
+  // query parameter: description__isw
+  repeated string description_isw = 55912516;
+  // query parameter: description__n
+  repeated string description_n = 2684003;
+  // query parameter: description__nic
+  repeated string description_nic = 278021669;
+  // query parameter: description__nie
+  repeated string description_nie = 311576907;
+  // query parameter: description__niew
+  repeated string description_niew = 256457554;
+  // query parameter: description__nisw
+  repeated string description_nisw = 527165124;
+  // query parameter: description__regex
+  repeated string description_regex = 482081246;
+  // query parameter: fields
+  optional string fields = 516927990;
+  // query parameter: id
+  repeated int32 id = 282574596;
+  // query parameter: id__empty
+  optional bool id_empty = 307230469;
+  // query parameter: id__gt
+  repeated int32 id_gt = 298982605;
+  // query parameter: id__gte
+  repeated int32 id_gte = 314775502;
+  // query parameter: id__lt
+  repeated int32 id_lt = 331699200;
+  // query parameter: id__lte
+  repeated int32 id_lte = 362976561;
+  // query parameter: id__n
+  repeated int32 id_n = 400186672;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 89753819;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 421495626;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 60506970;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 359315449;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 294247905;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 252182732;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 399386057;
+  // query parameter: limit
+  optional int64 limit = 404004882;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 64865952;
+  // query parameter: name
+  repeated string name = 324744078;
+  // query parameter: name__empty
+  optional bool name_empty = 385319487;
+  // query parameter: name__ic
+  repeated string name_ic = 26916890;
+  // query parameter: name__ie
+  repeated string name_ie = 60472128;
+  // query parameter: name__iew
+  repeated string name_iew = 211076551;
+  // query parameter: name__iregex
+  repeated string name_iregex = 17834926;
+  // query parameter: name__isw
+  repeated string name_isw = 213342217;
+  // query parameter: name__n
+  repeated string name_n = 133038386;
+  // query parameter: name__nic
+  repeated string name_nic = 180455620;
+  // query parameter: name__nie
+  repeated string name_nie = 79789906;
+  // query parameter: name__niew
+  repeated string name_niew = 412830593;
+  // query parameter: name__nisw
+  repeated string name_nisw = 416376187;
+  // query parameter: name__regex
+  repeated string name_regex = 199982051;
+  // query parameter: offset
+  optional int64 offset = 40229288;
+  // query parameter: omit
+  optional string omit = 470314500;
+  // query parameter: ordering
+  optional string ordering = 70335923;
+  // query parameter: owner
+  repeated string owner = 189410834;
+  // query parameter: owner__n
+  repeated string owner_n = 16143496;
+  // query parameter: owner_group
+  repeated string owner_group = 249541550;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 334848058;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 510791444;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 61812534;
+  // query parameter: owner_id
+  repeated int64 owner_id = 454025978;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 372694930;
+  // query parameter: q
+  optional string q = 210232298;
+  // query parameter: slug
+  repeated string slug = 523805218;
+  // query parameter: slug__empty
+  optional bool slug_empty = 445573485;
+  // query parameter: slug__ic
+  repeated string slug_ic = 93720094;
+  // query parameter: slug__ie
+  repeated string slug_ie = 127275332;
+  // query parameter: slug__iew
+  repeated string slug_iew = 423441511;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 513782760;
+  // query parameter: slug__isw
+  repeated string slug_isw = 425707177;
+  // query parameter: slug__n
+  repeated string slug_n = 148191314;
+  // query parameter: slug__nic
+  repeated string slug_nic = 395367538;
+  // query parameter: slug__nie
+  repeated string slug_nie = 294701824;
+  // query parameter: slug__niew
+  repeated string slug_niew = 183422419;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 187071181;
+  // query parameter: slug__regex
+  repeated string slug_regex = 332508141;
+  // query parameter: start
+  optional int64 start = 239117705;
+  // query parameter: tag
+  repeated string tag = 482403435;
+  // query parameter: tag__any
+  repeated string tag_any = 84076845;
+  // query parameter: tag__n
+  repeated string tag_n = 526341581;
+  // query parameter: tag_id
+  repeated int64 tag_id = 82738109;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 50861177;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 115210147;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 346511844;
+}
+message TenancyContactRolesBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkContactRoleRequest body = 94161703;
+}
+message TenancyContactRolesBulkPartialUpdateResponse {
+  repeated ContactRole result = 515443827;
+}
+message TenancyContactRolesCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 162822267;
+}
+message TenancyContactRolesBulkUpdateRequest {
+  // request body: body
+  repeated BulkContactRoleRequest body = 278213862;
+}
+message TenancyContactRolesBulkUpdateResponse {
+  repeated ContactRole result = 418642660;
+}
+message TenancyContactRolesDestroyRequest {
+  // path parameter: id
+  int64 id = 7537689;
+}
+message TenancyContactRolesRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 361209935;
+  // query parameter: fields
+  optional string fields = 358079616;
+  // path parameter: id
+  int64 id = 201790459;
+  // query parameter: omit
+  optional string omit = 185694090;
+}
+message TenancyContactRolesPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 260246287;
+  // request body: body
+  optional PatchedContactRoleRequest body = 156149377;
+}
+message TenancyContactRolesUpdateRequest {
+  // path parameter: id
+  int64 id = 513659362;
+  // request body: body
+  ContactRoleRequest body = 309661424;
+}
+message TenancyContactsBulkDestroyRequest {
+  // request body: body
+  repeated ContactRequest body = 212581575;
+}
+message TenancyContactsListRequest {
+  // query parameter: address
+  repeated string address = 287406355;
+  // query parameter: address__empty
+  optional bool address_empty = 57201900;
+  // query parameter: address__ic
+  repeated string address_ic = 209952153;
+  // query parameter: address__ie
+  repeated string address_ie = 243507391;
+  // query parameter: address__iew
+  repeated string address_iew = 70655890;
+  // query parameter: address__iregex
+  repeated string address_iregex = 218095549;
+  // query parameter: address__isw
+  repeated string address_isw = 336127698;
+  // query parameter: address__n
+  repeated string address_n = 536101715;
+  // query parameter: address__nic
+  repeated string address_nic = 344770659;
+  // query parameter: address__nie
+  repeated string address_nie = 311215421;
+  // query parameter: address__niew
+  repeated string address_niew = 345671004;
+  // query parameter: address__nisw
+  repeated string address_nisw = 74976332;
+  // query parameter: address__regex
+  repeated string address_regex = 30247538;
+  // query parameter: brief
+  optional bool brief = 414085353;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 102455367;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 478658992;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 235695658;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 160539051;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 201007587;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 55953292;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 63277187;
+  // query parameter: created_by_request
+  optional string created_by_request = 158581621;
+  // query parameter: description
+  repeated string description = 122620701;
+  // query parameter: description__empty
+  optional bool description_empty = 327595772;
+  // query parameter: description__ic
+  repeated string description_ic = 530640873;
+  // query parameter: description__ie
+  repeated string description_ie = 497085635;
+  // query parameter: description__iew
+  repeated string description_iew = 223658094;
+  // query parameter: description__iregex
+  repeated string description_iregex = 262144597;
+  // query parameter: description__isw
+  repeated string description_isw = 495044314;
+  // query parameter: description__n
+  repeated string description_n = 102353591;
+  // query parameter: description__nic
+  repeated string description_nic = 469832759;
+  // query parameter: description__nie
+  repeated string description_nie = 369167045;
+  // query parameter: description__niew
+  repeated string description_niew = 312738792;
+  // query parameter: description__nisw
+  repeated string description_nisw = 316284386;
+  // query parameter: description__regex
+  repeated string description_regex = 507423916;
+  // query parameter: email
+  repeated string email = 174905059;
+  // query parameter: email__empty
+  optional bool email_empty = 334553090;
+  // query parameter: email__ic
+  repeated string email_ic = 191227219;
+  // query parameter: email__ie
+  repeated string email_ie = 224782457;
+  // query parameter: email__iew
+  repeated string email_iew = 443301062;
+  // query parameter: email__iregex
+  repeated string email_iregex = 142732863;
+  // query parameter: email__isw
+  repeated string email_isw = 172018010;
+  // query parameter: email__n
+  repeated string email_n = 438472693;
+  // query parameter: email__nic
+  repeated string email_nic = 177997947;
+  // query parameter: email__nie
+  repeated string email_nie = 144442709;
+  // query parameter: email__niew
+  repeated string email_niew = 110901450;
+  // query parameter: email__nisw
+  repeated string email_nisw = 377064790;
+  // query parameter: email__regex
+  repeated string email_regex = 388447002;
+  // query parameter: fields
+  optional string fields = 496811498;
+  // query parameter: group
+  repeated string group = 527543666;
+  // query parameter: group__n
+  repeated string group_n = 472001232;
+  // query parameter: group_id
+  repeated string group_id = 109703510;
+  // query parameter: group_id__n
+  repeated string group_id_n = 459705766;
+  // query parameter: id
+  repeated int32 id = 300167068;
+  // query parameter: id__empty
+  optional bool id_empty = 475036849;
+  // query parameter: id__gt
+  repeated int32 id_gt = 342650417;
+  // query parameter: id__gte
+  repeated int32 id_gte = 129077342;
+  // query parameter: id__lt
+  repeated int32 id_lt = 375367012;
+  // query parameter: id__lte
+  repeated int32 id_lte = 177278401;
+  // query parameter: id__n
+  repeated int32 id_n = 366490818;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 201509611;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 379072344;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 161623884;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 374358607;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 126935813;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 269876016;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 238941983;
+  // query parameter: limit
+  optional int64 limit = 382362954;
+  // query parameter: link
+  repeated string link = 315741231;
+  // query parameter: link__empty
+  optional bool link_empty = 180565900;
+  // query parameter: link__ic
+  repeated string link_ic = 411536315;
+  // query parameter: link__ie
+  repeated string link_ie = 445091553;
+  // query parameter: link__iew
+  repeated string link_iew = 241538868;
+  // query parameter: link__iregex
+  repeated string link_iregex = 88083157;
+  // query parameter: link__isw
+  repeated string link_isw = 507113828;
+  // query parameter: link__n
+  repeated string link_n = 219541739;
+  // query parameter: link__nic
+  repeated string link_nic = 515653637;
+  // query parameter: link__nie
+  repeated string link_nie = 482098399;
+  // query parameter: link__niew
+  repeated string link_niew = 492007800;
+  // query parameter: link__nisw
+  repeated string link_nisw = 221313128;
+  // query parameter: link__regex
+  repeated string link_regex = 485022734;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 62810286;
+  // query parameter: name
+  repeated string name = 140449176;
+  // query parameter: name__empty
+  optional bool name_empty = 129652923;
+  // query parameter: name__ic
+  repeated string name_ic = 437111732;
+  // query parameter: name__ie
+  repeated string name_ie = 336446018;
+  // query parameter: name__iew
+  repeated string name_iew = 363385107;
+  // query parameter: name__iregex
+  repeated string name_iregex = 43415968;
+  // query parameter: name__isw
+  repeated string name_isw = 366930701;
+  // query parameter: name__n
+  repeated string name_n = 285089526;
+  // query parameter: name__nic
+  repeated string name_nic = 50253490;
+  // query parameter: name__nie
+  repeated string name_nie = 83808728;
+  // query parameter: name__niew
+  repeated string name_niew = 488898279;
+  // query parameter: name__nisw
+  repeated string name_nisw = 491163945;
+  // query parameter: name__regex
+  repeated string name_regex = 231905599;
+  // query parameter: offset
+  optional int64 offset = 6928490;
+  // query parameter: omit
+  optional string omit = 366128064;
+  // query parameter: ordering
+  optional string ordering = 495000625;
+  // query parameter: owner
+  repeated string owner = 484469872;
+  // query parameter: owner__n
+  repeated string owner_n = 390311938;
+  // query parameter: owner_group
+  repeated string owner_group = 212345786;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 526567948;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 164270226;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 113575398;
+  // query parameter: owner_id
+  repeated int64 owner_id = 29281246;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 92766458;
+  // query parameter: phone
+  repeated string phone = 329922821;
+  // query parameter: phone__empty
+  optional bool phone_empty = 33538660;
+  // query parameter: phone__ic
+  repeated string phone_ic = 80839413;
+  // query parameter: phone__ie
+  repeated string phone_ie = 517044609;
+  // query parameter: phone__iew
+  repeated string phone_iew = 448987100;
+  // query parameter: phone__iregex
+  repeated string phone_iregex = 76520217;
+  // query parameter: phone__isw
+  repeated string phone_isw = 452532694;
+  // query parameter: phone__n
+  repeated string phone_n = 270173677;
+  // query parameter: phone__nic
+  repeated string phone_nic = 479608031;
+  // query parameter: phone__nie
+  repeated string phone_nie = 43402835;
+  // query parameter: phone__niew
+  repeated string phone_niew = 261132820;
+  // query parameter: phone__nisw
+  repeated string phone_nisw = 262810106;
+  // query parameter: phone__regex
+  repeated string phone_regex = 213653232;
+  // query parameter: q
+  optional string q = 187122716;
+  // query parameter: start
+  optional int64 start = 90946165;
+  // query parameter: tag
+  repeated string tag = 143442749;
+  // query parameter: tag__any
+  repeated string tag_any = 299573067;
+  // query parameter: tag__n
+  repeated string tag_n = 291268437;
+  // query parameter: tag_id
+  repeated int64 tag_id = 388388557;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 165476761;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 418486281;
+  // query parameter: title
+  repeated string title = 430113281;
+  // query parameter: title__empty
+  optional bool title_empty = 231930460;
+  // query parameter: title__ic
+  repeated string title_ic = 414765733;
+  // query parameter: title__ie
+  repeated string title_ie = 515431447;
+  // query parameter: title__iew
+  repeated string title_iew = 436410568;
+  // query parameter: title__iregex
+  repeated string title_iregex = 456025313;
+  // query parameter: title__isw
+  repeated string title_isw = 437984686;
+  // query parameter: title__n
+  repeated string title_n = 24635981;
+  // query parameter: title__nic
+  repeated string title_nic = 118116115;
+  // query parameter: title__nie
+  repeated string title_nie = 151671353;
+  // query parameter: title__niew
+  repeated string title_niew = 507477884;
+  // query parameter: title__nisw
+  repeated string title_nisw = 236091664;
+  // query parameter: title__regex
+  repeated string title_regex = 308732614;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 42298578;
+}
+message TenancyContactsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkContactRequest body = 414411065;
+}
+message TenancyContactsBulkPartialUpdateResponse {
+  repeated Contact result = 163353757;
+}
+message TenancyContactsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 479928773;
+}
+message TenancyContactsBulkUpdateRequest {
+  // request body: body
+  repeated BulkContactRequest body = 223492566;
+}
+message TenancyContactsBulkUpdateResponse {
+  repeated Contact result = 12377692;
+}
+message TenancyContactsDestroyRequest {
+  // path parameter: id
+  int64 id = 41167805;
+}
+message TenancyContactsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 363011645;
+  // query parameter: fields
+  optional string fields = 418223370;
+  // path parameter: id
+  int64 id = 14677743;
+  // query parameter: omit
+  optional string omit = 345314456;
+}
+message TenancyContactsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 330265457;
+  // request body: body
+  optional PatchedContactRequest body = 10144501;
+}
+message TenancyContactsUpdateRequest {
+  // path parameter: id
+  int64 id = 479127248;
+  // request body: body
+  ContactRequest body = 214113142;
+}
+message TenancyTenantGroupsBulkDestroyRequest {
+  // request body: body
+  repeated TenantGroupRequest body = 479514152;
+}
+message TenancyTenantGroupsListRequest {
+  // query parameter: ancestor
+  repeated string ancestor = 476219773;
+  // query parameter: ancestor__n
+  repeated string ancestor_n = 100701333;
+  // query parameter: ancestor_id
+  repeated string ancestor_id = 197821453;
+  // query parameter: ancestor_id__n
+  repeated string ancestor_id_n = 172741699;
+  // query parameter: brief
+  optional bool brief = 480857786;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 283934836;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 84942463;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 532477555;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 427247292;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 298736620;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 534405805;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 369382896;
+  // query parameter: created_by_request
+  optional string created_by_request = 237223780;
+  // query parameter: description
+  repeated string description = 218504702;
+  // query parameter: description__empty
+  optional bool description_empty = 149625851;
+  // query parameter: description__ic
+  repeated string description_ic = 86898704;
+  // query parameter: description__ie
+  repeated string description_ie = 53343466;
+  // query parameter: description__iew
+  repeated string description_iew = 525866179;
+  // query parameter: description__iregex
+  repeated string description_iregex = 265638930;
+  // query parameter: description__isw
+  repeated string description_isw = 523600513;
+  // query parameter: description__n
+  repeated string description_n = 534590008;
+  // query parameter: description__nic
+  repeated string description_nic = 54209426;
+  // query parameter: description__nie
+  repeated string description_nie = 154875140;
+  // query parameter: description__niew
+  repeated string description_niew = 171157681;
+  // query parameter: description__nisw
+  repeated string description_nisw = 167612087;
+  // query parameter: description__regex
+  repeated string description_regex = 393852793;
+  // query parameter: fields
+  optional string fields = 457846363;
+  // query parameter: id
+  repeated int32 id = 93891061;
+  // query parameter: id__empty
+  optional bool id_empty = 386269780;
+  // query parameter: id__gt
+  repeated int32 id_gt = 34328058;
+  // query parameter: id__gte
+  repeated int32 id_gte = 211066881;
+  // query parameter: id__lt
+  repeated int32 id_lt = 2199843;
+  // query parameter: id__lte
+  repeated int32 id_lte = 332925680;
+  // query parameter: id__n
+  repeated int32 id_n = 179683241;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 162537928;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 433942247;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 501278719;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 437029194;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 533995314;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 485307625;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 175715788;
+  // query parameter: limit
+  optional int64 limit = 199942107;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 40368825;
+  // query parameter: name
+  repeated string name = 521917639;
+  // query parameter: name__empty
+  optional bool name_empty = 261509330;
+  // query parameter: name__ic
+  repeated string name_ic = 505925211;
+  // query parameter: name__ie
+  repeated string name_ie = 69720015;
+  // query parameter: name__iew
+  repeated string name_iew = 532189686;
+  // query parameter: name__iregex
+  repeated string name_iregex = 71226631;
+  // query parameter: name__isw
+  repeated string name_isw = 528644092;
+  // query parameter: name__n
+  repeated string name_n = 44511731;
+  // query parameter: name__nic
+  repeated string name_nic = 174968655;
+  // query parameter: name__nie
+  repeated string name_nie = 208523893;
+  // query parameter: name__niew
+  repeated string name_niew = 199344260;
+  // query parameter: name__nisw
+  repeated string name_nisw = 470038932;
+  // query parameter: name__regex
+  repeated string name_regex = 9949554;
+  // query parameter: offset
+  optional int64 offset = 454512739;
+  // query parameter: omit
+  optional string omit = 136979479;
+  // query parameter: ordering
+  optional string ordering = 51233284;
+  // query parameter: owner
+  repeated string owner = 457218253;
+  // query parameter: owner__n
+  repeated string owner_n = 116096555;
+  // query parameter: owner_group
+  repeated string owner_group = 440479357;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 295299993;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 392420113;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 302862667;
+  // query parameter: owner_id
+  repeated int64 owner_id = 219706585;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 62998977;
+  // query parameter: parent
+  repeated string parent = 108441512;
+  // query parameter: parent__n
+  repeated string parent_n = 103006596;
+  // query parameter: parent_id
+  repeated int64 parent_id = 469131204;
+  // query parameter: parent_id__n
+  repeated int64 parent_id_n = 174226622;
+  // query parameter: q
+  optional string q = 274839383;
+  // query parameter: slug
+  repeated string slug = 82617175;
+  // query parameter: slug__empty
+  optional bool slug_empty = 520261612;
+  // query parameter: slug__ic
+  repeated string slug_ic = 305181877;
+  // query parameter: slug__ie
+  repeated string slug_ie = 405847591;
+  // query parameter: slug__iew
+  repeated string slug_iew = 29083044;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 263093551;
+  // query parameter: slug__isw
+  repeated string slug_isw = 25434282;
+  // query parameter: slug__n
+  repeated string slug_n = 383388091;
+  // query parameter: slug__nic
+  repeated string slug_nic = 247646603;
+  // query parameter: slug__nie
+  repeated string slug_nie = 281201841;
+  // query parameter: slug__niew
+  repeated string slug_niew = 363360304;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 97196964;
+  // query parameter: slug__regex
+  repeated string slug_regex = 501829692;
+  // query parameter: start
+  optional int64 start = 49316206;
+  // query parameter: tag
+  repeated string tag = 533399250;
+  // query parameter: tag__any
+  repeated string tag_any = 335190052;
+  // query parameter: tag__n
+  repeated string tag_n = 470671030;
+  // query parameter: tag_id
+  repeated int64 tag_id = 98030716;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 180153370;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 218384326;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 285165463;
+}
+message TenancyTenantGroupsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkTenantGroupRequest body = 329872178;
+}
+message TenancyTenantGroupsBulkPartialUpdateResponse {
+  repeated TenantGroup result = 28997828;
+}
+message TenancyTenantGroupsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 106049370;
+}
+message TenancyTenantGroupsBulkUpdateRequest {
+  // request body: body
+  repeated BulkTenantGroupRequest body = 108922391;
+}
+message TenancyTenantGroupsBulkUpdateResponse {
+  repeated TenantGroup result = 256562885;
+}
+message TenancyTenantGroupsDestroyRequest {
+  // path parameter: id
+  int64 id = 343717988;
+}
+message TenancyTenantGroupsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 322161602;
+  // query parameter: fields
+  optional string fields = 430657915;
+  // path parameter: id
+  int64 id = 411127846;
+  // query parameter: omit
+  optional string omit = 264967115;
+}
+message TenancyTenantGroupsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 528999190;
+  // request body: body
+  optional PatchedWritableTenantGroupRequest body = 414921778;
+}
+message TenancyTenantGroupsUpdateRequest {
+  // path parameter: id
+  int64 id = 277175951;
+  // request body: body
+  WritableTenantGroupRequest body = 265648403;
+}
+message TenancyTenantsBulkDestroyRequest {
+  // request body: body
+  repeated TenantRequest body = 30990517;
+}
+message TenancyTenantsListRequest {
+  // query parameter: brief
+  optional bool brief = 349190299;
+  // query parameter: contact
+  repeated int64 contact = 398164377;
+  // query parameter: contact__n
+  repeated int64 contact_n = 511254789;
+  // query parameter: contact_group
+  repeated string contact_group = 521926071;
+  // query parameter: contact_group__n
+  repeated string contact_group_n = 317719261;
+  // query parameter: contact_role
+  repeated int64 contact_role = 475793820;
+  // query parameter: contact_role__n
+  repeated int64 contact_role_n = 278072014;
+  // query parameter: created
+  repeated google.protobuf.Timestamp created = 294056541;
+  // query parameter: created__empty
+  repeated google.protobuf.Timestamp created_empty = 169433902;
+  // query parameter: created__gt
+  repeated google.protobuf.Timestamp created_gt = 130492630;
+  // query parameter: created__gte
+  repeated google.protobuf.Timestamp created_gte = 142934943;
+  // query parameter: created__lt
+  repeated google.protobuf.Timestamp created_lt = 95113011;
+  // query parameter: created__lte
+  repeated google.protobuf.Timestamp created_lte = 363712496;
+  // query parameter: created__n
+  repeated google.protobuf.Timestamp created_n = 210805501;
+  // query parameter: created_by_request
+  optional string created_by_request = 88752601;
+  // query parameter: description
+  repeated string description = 357275553;
+  // query parameter: description__empty
+  optional bool description_empty = 123704262;
+  // query parameter: description__ic
+  repeated string description_ic = 517780763;
+  // query parameter: description__ie
+  repeated string description_ie = 14465091;
+  // query parameter: description__iew
+  repeated string description_iew = 511054204;
+  // query parameter: description__iregex
+  repeated string description_iregex = 491337481;
+  // query parameter: description__isw
+  repeated string description_isw = 239667984;
+  // query parameter: description__n
+  repeated string description_n = 188831929;
+  // query parameter: description__nic
+  repeated string description_nic = 245751105;
+  // query parameter: description__nie
+  repeated string description_nie = 212195867;
+  // query parameter: description__niew
+  repeated string description_niew = 35056774;
+  // query parameter: description__nisw
+  repeated string description_nisw = 301220114;
+  // query parameter: description__regex
+  repeated string description_regex = 383161056;
+  // query parameter: fields
+  optional string fields = 73974198;
+  // query parameter: group
+  repeated string group = 257006236;
+  // query parameter: group__n
+  repeated string group_n = 79206320;
+  // query parameter: group_id
+  repeated string group_id = 446726922;
+  // query parameter: group_id__n
+  repeated string group_id_n = 215141302;
+  // query parameter: id
+  repeated int32 id = 88170836;
+  // query parameter: id__empty
+  optional bool id_empty = 402205369;
+  // query parameter: id__gt
+  repeated int32 id_gt = 336110771;
+  // query parameter: id__gte
+  repeated int32 id_gte = 345729938;
+  // query parameter: id__lt
+  repeated int32 id_lt = 99797082;
+  // query parameter: id__lte
+  repeated int32 id_lte = 221324181;
+  // query parameter: id__n
+  repeated int32 id_n = 100786738;
+  // query parameter: last_updated
+  repeated google.protobuf.Timestamp last_updated = 259697717;
+  // query parameter: last_updated__empty
+  repeated google.protobuf.Timestamp last_updated_empty = 16272840;
+  // query parameter: last_updated__gt
+  repeated google.protobuf.Timestamp last_updated_gt = 436750396;
+  // query parameter: last_updated__gte
+  repeated google.protobuf.Timestamp last_updated_gte = 285859695;
+  // query parameter: last_updated__lt
+  repeated google.protobuf.Timestamp last_updated_lt = 403930633;
+  // query parameter: last_updated__lte
+  repeated google.protobuf.Timestamp last_updated_lte = 196081932;
+  // query parameter: last_updated__n
+  repeated google.protobuf.Timestamp last_updated_n = 189091227;
+  // query parameter: limit
+  optional int64 limit = 11408868;
+  // query parameter: modified_by_request
+  optional string modified_by_request = 310897974;
+  // query parameter: name
+  repeated string name = 365529610;
+  // query parameter: name__empty
+  optional bool name_empty = 507266715;
+  // query parameter: name__ic
+  repeated string name_ic = 81584364;
+  // query parameter: name__ie
+  repeated string name_ie = 182250078;
+  // query parameter: name__iew
+  repeated string name_iew = 63217699;
+  // query parameter: name__iregex
+  repeated string name_iregex = 261864502;
+  // query parameter: name__isw
+  repeated string name_isw = 64894985;
+  // query parameter: name__n
+  repeated string name_n = 246321744;
+  // query parameter: name__nic
+  repeated string name_nic = 109230464;
+  // query parameter: name__nie
+  repeated string name_nie = 75675226;
+  // query parameter: name__niew
+  repeated string name_niew = 130337391;
+  // query parameter: name__nisw
+  repeated string name_nisw = 133294605;
+  // query parameter: name__regex
+  repeated string name_regex = 296879825;
+  // query parameter: offset
+  optional int64 offset = 442105414;
+  // query parameter: omit
+  optional string omit = 372399436;
+  // query parameter: ordering
+  optional string ordering = 220152653;
+  // query parameter: owner
+  repeated string owner = 148168038;
+  // query parameter: owner__n
+  repeated string owner_n = 92157214;
+  // query parameter: owner_group
+  repeated string owner_group = 457843076;
+  // query parameter: owner_group__n
+  repeated string owner_group_n = 324908508;
+  // query parameter: owner_group_id
+  repeated int64 owner_group_id = 164607982;
+  // query parameter: owner_group_id__n
+  repeated int64 owner_group_id_n = 185939674;
+  // query parameter: owner_id
+  repeated int64 owner_id = 186025930;
+  // query parameter: owner_id__n
+  repeated int64 owner_id_n = 384353514;
+  // query parameter: q
+  optional string q = 462615384;
+  // query parameter: slug
+  repeated string slug = 227131480;
+  // query parameter: slug__empty
+  optional bool slug_empty = 435836815;
+  // query parameter: slug__ic
+  repeated string slug_ic = 223783010;
+  // query parameter: slug__ie
+  repeated string slug_ie = 190227772;
+  // query parameter: slug__iew
+  repeated string slug_iew = 124139987;
+  // query parameter: slug__iregex
+  repeated string slug_iregex = 5261038;
+  // query parameter: slug__isw
+  repeated string slug_isw = 127097201;
+  // query parameter: slug__n
+  repeated string slug_n = 1389228;
+  // query parameter: slug__nic
+  repeated string slug_nic = 199683838;
+  // query parameter: slug__nie
+  repeated string slug_nie = 300349552;
+  // query parameter: slug__niew
+  repeated string slug_niew = 9995353;
+  // query parameter: slug__nisw
+  repeated string slug_nisw = 11672639;
+  // query parameter: slug__regex
+  repeated string slug_regex = 488547229;
+  // query parameter: start
+  optional int64 start = 73501923;
+  // query parameter: tag
+  repeated string tag = 476898345;
+  // query parameter: tag__any
+  repeated string tag_any = 187934209;
+  // query parameter: tag__n
+  repeated string tag_n = 399690357;
+  // query parameter: tag_id
+  repeated int64 tag_id = 307793117;
+  // query parameter: tag_id__any
+  repeated int64 tag_id_any = 331772843;
+  // query parameter: tag_id__n
+  repeated int64 tag_id_n = 438395817;
+  // query parameter: updated_by_request
+  optional string updated_by_request = 68033354;
+}
+message TenancyTenantsBulkPartialUpdateRequest {
+  // request body: body
+  repeated PatchedBulkTenantRequest body = 10342999;
+}
+message TenancyTenantsBulkPartialUpdateResponse {
+  repeated Tenant result = 137701805;
+}
+message TenancyTenantsCreateRequest {
+  // request body: body
+  // Complex OpenAPI shape represented as JSON.
+  google.protobuf.Value body = 418540965;
+}
+message TenancyTenantsBulkUpdateRequest {
+  // request body: body
+  repeated BulkTenantRequest body = 249571416;
+}
+message TenancyTenantsBulkUpdateResponse {
+  repeated Tenant result = 474582836;
+}
+message TenancyTenantsDestroyRequest {
+  // path parameter: id
+  int64 id = 528955607;
+}
+message TenancyTenantsRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 131948385;
+  // query parameter: fields
+  optional string fields = 287785402;
+  // path parameter: id
+  int64 id = 456041431;
+  // query parameter: omit
+  optional string omit = 143726446;
+}
+message TenancyTenantsPartialUpdateRequest {
+  // path parameter: id
+  int64 id = 286280105;
+  // request body: body
+  optional PatchedTenantRequest body = 308687167;
+}
+message TenancyTenantsUpdateRequest {
+  // path parameter: id
+  int64 id = 255569630;
+  // request body: body
+  TenantRequest body = 328064004;
+}
+
+service TenancyService {
+  // DELETE /api/tenancy/contact-assignments/ - Delete a list of contact assignment objects.
+  rpc TenancyContactAssignmentsBulkDestroy (TenancyContactAssignmentsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-assignments/ - Get a list of contact assignment objects.
+  rpc TenancyContactAssignmentsList (TenancyContactAssignmentsListRequest) returns (PaginatedContactAssignmentList);
+  // PATCH /api/tenancy/contact-assignments/ - Patch a list of contact assignment objects.
+  rpc TenancyContactAssignmentsBulkPartialUpdate (TenancyContactAssignmentsBulkPartialUpdateRequest) returns (TenancyContactAssignmentsBulkPartialUpdateResponse);
+  // POST /api/tenancy/contact-assignments/ - Post a list of contact assignment objects.
+  rpc TenancyContactAssignmentsCreate (TenancyContactAssignmentsCreateRequest) returns (ContactAssignment);
+  // PUT /api/tenancy/contact-assignments/ - Put a list of contact assignment objects.
+  rpc TenancyContactAssignmentsBulkUpdate (TenancyContactAssignmentsBulkUpdateRequest) returns (TenancyContactAssignmentsBulkUpdateResponse);
+  // DELETE /api/tenancy/contact-assignments/{id}/ - Delete a contact assignment object.
+  rpc TenancyContactAssignmentsDestroy (TenancyContactAssignmentsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-assignments/{id}/ - Get a contact assignment object.
+  rpc TenancyContactAssignmentsRetrieve (TenancyContactAssignmentsRetrieveRequest) returns (ContactAssignment);
+  // PATCH /api/tenancy/contact-assignments/{id}/ - Patch a contact assignment object.
+  rpc TenancyContactAssignmentsPartialUpdate (TenancyContactAssignmentsPartialUpdateRequest) returns (ContactAssignment);
+  // PUT /api/tenancy/contact-assignments/{id}/ - Put a contact assignment object.
+  rpc TenancyContactAssignmentsUpdate (TenancyContactAssignmentsUpdateRequest) returns (ContactAssignment);
+  // DELETE /api/tenancy/contact-groups/ - Delete a list of contact group objects.
+  rpc TenancyContactGroupsBulkDestroy (TenancyContactGroupsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-groups/ - Get a list of contact group objects.
+  rpc TenancyContactGroupsList (TenancyContactGroupsListRequest) returns (PaginatedContactGroupList);
+  // PATCH /api/tenancy/contact-groups/ - Patch a list of contact group objects.
+  rpc TenancyContactGroupsBulkPartialUpdate (TenancyContactGroupsBulkPartialUpdateRequest) returns (TenancyContactGroupsBulkPartialUpdateResponse);
+  // POST /api/tenancy/contact-groups/ - Post a list of contact group objects.
+  rpc TenancyContactGroupsCreate (TenancyContactGroupsCreateRequest) returns (ContactGroup);
+  // PUT /api/tenancy/contact-groups/ - Put a list of contact group objects.
+  rpc TenancyContactGroupsBulkUpdate (TenancyContactGroupsBulkUpdateRequest) returns (TenancyContactGroupsBulkUpdateResponse);
+  // DELETE /api/tenancy/contact-groups/{id}/ - Delete a contact group object.
+  rpc TenancyContactGroupsDestroy (TenancyContactGroupsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-groups/{id}/ - Get a contact group object.
+  rpc TenancyContactGroupsRetrieve (TenancyContactGroupsRetrieveRequest) returns (ContactGroup);
+  // PATCH /api/tenancy/contact-groups/{id}/ - Patch a contact group object.
+  rpc TenancyContactGroupsPartialUpdate (TenancyContactGroupsPartialUpdateRequest) returns (ContactGroup);
+  // PUT /api/tenancy/contact-groups/{id}/ - Put a contact group object.
+  rpc TenancyContactGroupsUpdate (TenancyContactGroupsUpdateRequest) returns (ContactGroup);
+  // DELETE /api/tenancy/contact-roles/ - Delete a list of contact role objects.
+  rpc TenancyContactRolesBulkDestroy (TenancyContactRolesBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-roles/ - Get a list of contact role objects.
+  rpc TenancyContactRolesList (TenancyContactRolesListRequest) returns (PaginatedContactRoleList);
+  // PATCH /api/tenancy/contact-roles/ - Patch a list of contact role objects.
+  rpc TenancyContactRolesBulkPartialUpdate (TenancyContactRolesBulkPartialUpdateRequest) returns (TenancyContactRolesBulkPartialUpdateResponse);
+  // POST /api/tenancy/contact-roles/ - Post a list of contact role objects.
+  rpc TenancyContactRolesCreate (TenancyContactRolesCreateRequest) returns (ContactRole);
+  // PUT /api/tenancy/contact-roles/ - Put a list of contact role objects.
+  rpc TenancyContactRolesBulkUpdate (TenancyContactRolesBulkUpdateRequest) returns (TenancyContactRolesBulkUpdateResponse);
+  // DELETE /api/tenancy/contact-roles/{id}/ - Delete a contact role object.
+  rpc TenancyContactRolesDestroy (TenancyContactRolesDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contact-roles/{id}/ - Get a contact role object.
+  rpc TenancyContactRolesRetrieve (TenancyContactRolesRetrieveRequest) returns (ContactRole);
+  // PATCH /api/tenancy/contact-roles/{id}/ - Patch a contact role object.
+  rpc TenancyContactRolesPartialUpdate (TenancyContactRolesPartialUpdateRequest) returns (ContactRole);
+  // PUT /api/tenancy/contact-roles/{id}/ - Put a contact role object.
+  rpc TenancyContactRolesUpdate (TenancyContactRolesUpdateRequest) returns (ContactRole);
+  // DELETE /api/tenancy/contacts/ - Delete a list of contact objects.
+  rpc TenancyContactsBulkDestroy (TenancyContactsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contacts/ - Get a list of contact objects.
+  rpc TenancyContactsList (TenancyContactsListRequest) returns (PaginatedContactList);
+  // PATCH /api/tenancy/contacts/ - Patch a list of contact objects.
+  rpc TenancyContactsBulkPartialUpdate (TenancyContactsBulkPartialUpdateRequest) returns (TenancyContactsBulkPartialUpdateResponse);
+  // POST /api/tenancy/contacts/ - Post a list of contact objects.
+  rpc TenancyContactsCreate (TenancyContactsCreateRequest) returns (Contact);
+  // PUT /api/tenancy/contacts/ - Put a list of contact objects.
+  rpc TenancyContactsBulkUpdate (TenancyContactsBulkUpdateRequest) returns (TenancyContactsBulkUpdateResponse);
+  // DELETE /api/tenancy/contacts/{id}/ - Delete a contact object.
+  rpc TenancyContactsDestroy (TenancyContactsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/contacts/{id}/ - Get a contact object.
+  rpc TenancyContactsRetrieve (TenancyContactsRetrieveRequest) returns (Contact);
+  // PATCH /api/tenancy/contacts/{id}/ - Patch a contact object.
+  rpc TenancyContactsPartialUpdate (TenancyContactsPartialUpdateRequest) returns (Contact);
+  // PUT /api/tenancy/contacts/{id}/ - Put a contact object.
+  rpc TenancyContactsUpdate (TenancyContactsUpdateRequest) returns (Contact);
+  // DELETE /api/tenancy/tenant-groups/ - Delete a list of tenant group objects.
+  rpc TenancyTenantGroupsBulkDestroy (TenancyTenantGroupsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/tenant-groups/ - Get a list of tenant group objects.
+  rpc TenancyTenantGroupsList (TenancyTenantGroupsListRequest) returns (PaginatedTenantGroupList);
+  // PATCH /api/tenancy/tenant-groups/ - Patch a list of tenant group objects.
+  rpc TenancyTenantGroupsBulkPartialUpdate (TenancyTenantGroupsBulkPartialUpdateRequest) returns (TenancyTenantGroupsBulkPartialUpdateResponse);
+  // POST /api/tenancy/tenant-groups/ - Post a list of tenant group objects.
+  rpc TenancyTenantGroupsCreate (TenancyTenantGroupsCreateRequest) returns (TenantGroup);
+  // PUT /api/tenancy/tenant-groups/ - Put a list of tenant group objects.
+  rpc TenancyTenantGroupsBulkUpdate (TenancyTenantGroupsBulkUpdateRequest) returns (TenancyTenantGroupsBulkUpdateResponse);
+  // DELETE /api/tenancy/tenant-groups/{id}/ - Delete a tenant group object.
+  rpc TenancyTenantGroupsDestroy (TenancyTenantGroupsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/tenant-groups/{id}/ - Get a tenant group object.
+  rpc TenancyTenantGroupsRetrieve (TenancyTenantGroupsRetrieveRequest) returns (TenantGroup);
+  // PATCH /api/tenancy/tenant-groups/{id}/ - Patch a tenant group object.
+  rpc TenancyTenantGroupsPartialUpdate (TenancyTenantGroupsPartialUpdateRequest) returns (TenantGroup);
+  // PUT /api/tenancy/tenant-groups/{id}/ - Put a tenant group object.
+  rpc TenancyTenantGroupsUpdate (TenancyTenantGroupsUpdateRequest) returns (TenantGroup);
+  // DELETE /api/tenancy/tenants/ - Delete a list of tenant objects.
+  rpc TenancyTenantsBulkDestroy (TenancyTenantsBulkDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/tenants/ - Get a list of tenant objects.
+  rpc TenancyTenantsList (TenancyTenantsListRequest) returns (PaginatedTenantList);
+  // PATCH /api/tenancy/tenants/ - Patch a list of tenant objects.
+  rpc TenancyTenantsBulkPartialUpdate (TenancyTenantsBulkPartialUpdateRequest) returns (TenancyTenantsBulkPartialUpdateResponse);
+  // POST /api/tenancy/tenants/ - Post a list of tenant objects.
+  rpc TenancyTenantsCreate (TenancyTenantsCreateRequest) returns (Tenant);
+  // PUT /api/tenancy/tenants/ - Put a list of tenant objects.
+  rpc TenancyTenantsBulkUpdate (TenancyTenantsBulkUpdateRequest) returns (TenancyTenantsBulkUpdateResponse);
+  // DELETE /api/tenancy/tenants/{id}/ - Delete a tenant object.
+  rpc TenancyTenantsDestroy (TenancyTenantsDestroyRequest) returns (google.protobuf.Empty);
+  // GET /api/tenancy/tenants/{id}/ - Get a tenant object.
+  rpc TenancyTenantsRetrieve (TenancyTenantsRetrieveRequest) returns (Tenant);
+  // PATCH /api/tenancy/tenants/{id}/ - Patch a tenant object.
+  rpc TenancyTenantsPartialUpdate (TenancyTenantsPartialUpdateRequest) returns (Tenant);
+  // PUT /api/tenancy/tenants/{id}/ - Put a tenant object.
+  rpc TenancyTenantsUpdate (TenancyTenantsUpdateRequest) returns (Tenant);
+}
