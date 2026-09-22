@@ -1,0 +1,40 @@
+name: native-openapi-api
+
+on:
+  pull_request:
+    paths:
+      - Cargo.toml
+      - macros/**
+      - src/**
+      - openapi/**
+      - verus/**
+      - .github/workflows/native-api.yml
+  push:
+    branches: [main]
+    paths:
+      - Cargo.toml
+      - macros/**
+      - src/**
+      - openapi/**
+      - verus/**
+      - .github/workflows/native-api.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-openapi-api-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - run: rustup toolchain install 1.98.0 --profile minimal --component rustfmt,clippy
+      - run: cargo +1.98.0 fmt --all --check
+      - run: cargo +1.98.0 test --workspace --all-targets
+      - run: cargo +1.98.0 clippy --workspace --all-targets -- -D warnings
