@@ -1,0 +1,4 @@
+repository=https://github.com/netbox-community/netbox.git
+commit=dbec965a5186a40971312c9331dfb9db46cc9183
+path=contrib/openapi.json
+openapi_version=4.7.1

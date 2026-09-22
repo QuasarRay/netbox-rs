@@ -1,16 +1,16 @@
-# NetBox protobuf contracts
+# Generated NetBox protobuf contracts
 
-These protobuf contracts are generated from NetBox's committed machine-readable OpenAPI schema:
+The `.proto` files in this directory are generated from the committed NetBox OpenAPI snapshot at `../../openapi/openapi.json` by the Rust generator at `../../src/bin/netbox_openapi_proto.rs`.
 
-- upstream: `netbox-community/netbox`
-- source: `contrib/openapi.json`
-- OpenAPI-reported NetBox version: **4.7.1**
-- protobuf package: `netbox.v1`
+Do not edit generated `.proto` files manually.
 
-The generated files model the public REST API contract: component schemas become protobuf messages/enums and REST operations become app-grouped gRPC service methods.
+Regenerate them from the repository root with:
 
-OpenAPI is treated as an API contract, not as NetBox's database schema. NetBox models and migrations remain authoritative for persistence semantics.
+```sh
+cargo run --bin netbox_openapi_proto -- \
+  --input openapi/openapi.json \
+  --output-dir proto/netbox \
+  --package netbox.v1
+```
 
-Generated enum identifiers include a stable hash of the exact upstream value to avoid protobuf canonical-name collisions (for example interface speeds such as `2.5gbase-t` versus `25gbase-t`).
-
-Do not hand-edit the generated `.proto` files.
+The manifest `.netbox-openapi-proto-manifest` tracks only generator-owned files. This README is intentionally not listed there.
