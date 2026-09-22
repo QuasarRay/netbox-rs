@@ -118,6 +118,11 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
     }
     let root: RootSchema = serde_json::from_value(doc.schema.clone())
         .map_err(|e| format!("JSON Schema normalization failed: {e}"))?;
+    let parsed = serde_json::to_value(&root)
+        .map_err(|e| format!("normalized schema reserialization failed: {e}"))?;
+    if let Some(path) = schema_keyword_path(&parsed, "default", "#") {
+        return Err(format!("Schemars reconstructed schema default at {path}"));
+    }
     let mut types = TypeSpace::new(TypeSpaceSettings::default().with_struct_builder(false));
     types
         .add_root_schema(root)
