@@ -1,0 +1,33 @@
+// @generated from netbox-community/netbox contrib/openapi.json; DO NOT EDIT.
+// NetBox OpenAPI version: 4.7.1
+
+syntax = "proto3";
+
+package netbox.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "netbox_types.proto";
+
+message SchemaRetrieveRequest {
+  // query parameter: brief
+  optional bool brief = 174868217;
+  // query parameter: fields
+  optional string fields = 424265116;
+  // query parameter: format
+  optional string format = 198805802;
+  // query parameter: lang
+  optional string lang = 218125385;
+  // query parameter: omit
+  optional string omit = 390491298;
+}
+message SchemaRetrieveResponse {
+  // Complex OpenAPI response represented as JSON.
+  map<string, google.protobuf.Value> result = 465649263;
+}
+
+service SchemaService {
+  // GET /api/schema/ - OpenApi3 schema for this API. Format can be selected via content negotiation. - YAML: application/vnd.oai.openapi - JSON: application/vnd.oai.openapi+json
+  rpc SchemaRetrieve (SchemaRetrieveRequest) returns (SchemaRetrieveResponse);
+}
