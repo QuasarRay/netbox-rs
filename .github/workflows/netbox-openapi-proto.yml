@@ -1,62 +1,146 @@
-name: bootstrap-netbox-openapi
+name: netbox-openapi-proto
 
 on:
+  pull_request:
+    paths:
+      - Cargo.toml
+      - src/bin/netbox_openapi_proto.rs
+      - openapi/**
+      - proto/netbox/**
+      - .github/workflows/netbox-openapi-proto.yml
   push:
-    branches:
-      - codex/rust-openapi-proto-pipeline
+    branches: [main]
+    paths:
+      - Cargo.toml
+      - src/bin/netbox_openapi_proto.rs
+      - openapi/**
+      - proto/netbox/**
+      - .github/workflows/netbox-openapi-proto.yml
+  workflow_dispatch:
+    inputs:
+      netbox_ref:
+        description: NetBox branch, tag, or commit to import
+        required: false
+        default: main
+  schedule:
+    - cron: "17 4 * * 1"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: netbox-openapi-proto-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  bootstrap:
-    if: github.actor != 'github-actions[bot]'
+  verify:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: codex/rust-openapi-proto-pipeline
-          fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Rust toolchain
-        run: rustup toolchain install 1.98.0 --profile minimal --component rustfmt
+        run: rustup toolchain install 1.98.0 --profile minimal --component rustfmt,clippy
 
-      - name: Validate Rust generator
-        run: |
-          cargo +1.98.0 fmt --check
-          cargo +1.98.0 test --bin netbox_openapi_proto
+      - name: Rust formatting
+        run: cargo +1.98.0 fmt --check
+
+      - name: Generator tests
+        run: cargo +1.98.0 test --bin netbox_openapi_proto
+
+      - name: Generator lint
+        run: cargo +1.98.0 clippy --bin netbox_openapi_proto -- -D warnings
 
       - name: Install protobuf compiler
         run: |
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler
 
-      - name: Download exact NetBox OpenAPI snapshot
+      - name: Reproduce committed protobufs
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p openapi
+          generated="${RUNNER_TEMP}/netbox-proto"
+
+          cargo +1.98.0 run --bin netbox_openapi_proto -- \
+            --input openapi/openapi.json \
+            --output-dir "${generated}" \
+            --package netbox.v1
+
+          diff -ru --exclude=README.md "${generated}" proto/netbox
+
+          cargo +1.98.0 run --bin netbox_openapi_proto -- \
+            --input openapi/openapi.json \
+            --output-dir proto/netbox \
+            --package netbox.v1 \
+            --check
+
+      - name: Compile committed protobufs
+        shell: bash
+        run: |
+          set -euo pipefail
+          protoc \
+            --proto_path=proto/netbox \
+            --proto_path=/usr/include \
+            --descriptor_set_out="${RUNNER_TEMP}/netbox.pb" \
+            proto/netbox/*.proto
+
+  refresh:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      NETBOX_REF: ${{ inputs.netbox_ref || 'main' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Rust toolchain
+        run: rustup toolchain install 1.98.0 --profile minimal
+
+      - name: Install protobuf compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Resolve and download NetBox OpenAPI
+        shell: bash
+        run: |
+          set -euo pipefail
+          resolved_sha="$(
+            curl --fail --silent --show-error --location \
+              "https://api.github.com/repos/netbox-community/netbox/commits/${NETBOX_REF}" \
+              | jq -r .sha
+          )"
+          test -n "${resolved_sha}"
+          test "${resolved_sha}" != "null"
+
           curl --fail --location --retry 3 --retry-all-errors \
-            "https://raw.githubusercontent.com/netbox-community/netbox/dbec965a5186a40971312c9331dfb9db46cc9183/contrib/openapi.json" \
+            "https://raw.githubusercontent.com/netbox-community/netbox/${resolved_sha}/contrib/openapi.json" \
             --output openapi/openapi.json
 
-          version="$(jq -r '.info.version // "unknown"' openapi/openapi.json)"
+          openapi_version="$(jq -r '.info.version // "unknown"' openapi/openapi.json)"
           cat > openapi/SOURCE <<EOF
           repository=https://github.com/netbox-community/netbox.git
-          commit=dbec965a5186a40971312c9331dfb9db46cc9183
+          commit=${resolved_sha}
           path=contrib/openapi.json
-          openapi_version=${version}
+          openapi_version=${openapi_version}
           EOF
 
-      - name: Regenerate protobufs with the Rust pipeline
+      - name: Regenerate protobuf contracts
         run: |
           cargo +1.98.0 run --bin netbox_openapi_proto -- \
             --input openapi/openapi.json \
             --output-dir proto/netbox \
             --package netbox.v1
 
-      - name: Compile protobufs
+      - name: Compile regenerated protobufs
         run: |
           protoc \
             --proto_path=proto/netbox \
@@ -64,16 +148,33 @@ jobs:
             --descriptor_set_out="${RUNNER_TEMP}/netbox.pb" \
             proto/netbox/*.proto
 
-      - name: Commit source snapshot and Rust-generated contracts
+      - name: Create or refresh update pull request
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add openapi proto/netbox
-          if git diff --cached --quiet; then
-            echo "No bootstrap changes."
+          if [[ -z "$(git status --porcelain -- openapi proto/netbox)" ]]; then
+            echo "NetBox OpenAPI and protobuf contracts are already current."
             exit 0
           fi
-          git commit -m "Add pinned NetBox OpenAPI source and Rust-generated protobufs [skip ci]"
-          git push origin HEAD:codex/rust-openapi-proto-pipeline
+
+          branch="automation/netbox-openapi-proto"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "${branch}"
+          git add openapi proto/netbox
+          git commit -m "chore: refresh NetBox OpenAPI and protobufs"
+          git push --force origin "${branch}"
+
+          existing="$(
+            gh pr list --head "${branch}" --base main --state open \
+              --json number --jq '.[0].number // empty'
+          )"
+          if [[ -z "${existing}" ]]; then
+            gh pr create \
+              --base main \
+              --head "${branch}" \
+              --title "chore: refresh NetBox OpenAPI and protobufs" \
+              --body "Refreshes the committed NetBox OpenAPI snapshot and regenerates proto/netbox with the in-repository Rust generator."
+          else
+            echo "Updated existing PR #${existing}"
+          fi
