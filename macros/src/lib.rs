@@ -56,7 +56,6 @@ struct Doc {
     raw: Value,
     ops: Vec<Op>,
     types: OpenAPI,
-    types_json: Value,
 }
 
 impl Doc {
@@ -111,27 +110,18 @@ impl Doc {
         // Progenitor's OpenAPI -> Typify conversion is the type compiler.
         // Paths are irrelevant here: synthesized RPC shapes are components.
         typed["paths"] = json!({});
-        let types_json = typed.clone();
         let types = serde_json::from_value::<OpenAPI>(typed)
             .map_err(|e| format!("generated type OpenAPI invalid: {e}"))?;
 
-        Ok(Self {
-            raw,
-            ops,
-            types,
-            types_json,
-        })
+        Ok(Self { raw, ops, types })
     }
 }
 fn api(doc: &Doc) -> Result<Tokens, String> {
     let settings = GenerationSettings::default();
     let mut generator = Generator::new(&settings);
-    if let Err(error) = generator.generate_tokens(&doc.types) {
-        return Err(format!(
-            "OpenAPI Rust type generation failed: {error}; suspect component: {}",
-            isolate_type_failure(&doc.types_json)
-        ));
-    }
+    generator
+        .generate_tokens(&doc.types)
+        .map_err(|e| format!("OpenAPI Rust type generation failed: {e}"))?;
     let models = generator.get_type_space().to_stream();
 
     let services = grouped(&doc.ops).into_iter().map(|(group, ops)| {
@@ -220,47 +210,6 @@ fn implementation(doc: &Doc) -> Result<Tokens, String> {
     Ok(quote!(#(#modules)*))
 }
 
-fn type_generation_fails(document: &Value, active: &[String]) -> bool {
-    let mut document = document.clone();
-    let Some(schemas) = document
-        .pointer_mut("/components/schemas")
-        .and_then(Value::as_object_mut)
-    else {
-        return true;
-    };
-    for (name, schema) in schemas {
-        if !active.contains(name) {
-            *schema = json!({});
-        }
-    }
-    let Ok(spec) = serde_json::from_value::<OpenAPI>(document) else {
-        return true;
-    };
-    let settings = GenerationSettings::default();
-    Generator::new(&settings).generate_tokens(&spec).is_err()
-}
-
-fn isolate_type_failure(document: &Value) -> String {
-    let Some(schemas) = document
-        .pointer("/components/schemas")
-        .and_then(Value::as_object)
-    else {
-        return "<missing schemas>".into();
-    };
-    let mut active = schemas.keys().cloned().collect::<Vec<_>>();
-    while active.len() > 1 {
-        let mid = active.len() / 2;
-        let (left, right) = active.split_at(mid);
-        if type_generation_fails(document, left) {
-            active = left.to_vec();
-        } else if type_generation_fails(document, right) {
-            active = right.to_vec();
-        } else {
-            return format!("<interaction among {} components>", active.len());
-        }
-    }
-    active.pop().unwrap_or_else(|| "<none>".into())
-}
 fn grouped(ops: &[Op]) -> BTreeMap<String, Vec<&Op>> {
     let mut out: BTreeMap<String, Vec<&Op>> = BTreeMap::new();
     for op in ops {
