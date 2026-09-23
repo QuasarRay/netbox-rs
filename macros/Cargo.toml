@@ -9,6 +9,7 @@ proc-macro = true
 
 [dependencies]
 heck = "0.5"
+log = "0.4"
 openapiv3 = "2.2"
 proc-macro2 = "1"
 quote = "1"
