@@ -1,12 +1,43 @@
 use heck::{ToPascalCase, ToSnakeCase};
+use log::{LevelFilter, Log, Metadata, Record};
 use openapiv3::OpenAPI;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as Tokens;
 use progenitor::{GenerationSettings, Generator};
 use quote::{format_ident, quote};
 use serde_json::{Map, Value, json};
-use std::{collections::BTreeMap, env, fs, path::PathBuf};
+use std::{collections::BTreeMap, env, fs, path::PathBuf, sync::{Mutex, OnceLock}};
 use syn::LitStr;
+
+struct TypifyTrace;
+static TYPIFY_TRACE: TypifyTrace = TypifyTrace;
+static LAST_TYPIFY: OnceLock<Mutex<String>> = OnceLock::new();
+
+impl Log for TypifyTrace {
+    fn enabled(&self, _: &Metadata<'_>) -> bool { true }
+
+    fn log(&self, record: &Record<'_>) {
+        let message = record.args().to_string();
+        if message.starts_with("finalizing type entry") {
+            *LAST_TYPIFY.get_or_init(Default::default).lock().unwrap() = message;
+        }
+    }
+
+    fn flush(&self) {}
+}
+
+fn trace_typify() {
+    if log::set_logger(&TYPIFY_TRACE).is_ok() {
+        log::set_max_level(LevelFilter::Debug);
+    }
+}
+
+fn last_typify() -> String {
+    LAST_TYPIFY
+        .get()
+        .and_then(|value| value.lock().ok().map(|value| value.clone()))
+        .unwrap_or_else(|| "no Typify finalization trace".into())
+}
 
 #[proc_macro]
 pub fn netbox_api(input: TokenStream) -> TokenStream {
@@ -119,9 +150,13 @@ impl Doc {
 fn api(doc: &Doc) -> Result<Tokens, String> {
     let settings = GenerationSettings::default();
     let mut generator = Generator::new(&settings);
-    generator
-        .generate_tokens(&doc.types)
-        .map_err(|e| format!("OpenAPI Rust type generation failed: {e}"))?;
+    trace_typify();
+    if let Err(error) = generator.generate_tokens(&doc.types) {
+        return Err(format!(
+            "OpenAPI Rust type generation failed: {error}; last Typify step: {}",
+            last_typify()
+        ));
+    }
     let models = generator.get_type_space().to_stream();
 
     let services = grouped(&doc.ops).into_iter().map(|(group, ops)| {
