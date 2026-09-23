@@ -6,7 +6,12 @@ use proc_macro2::TokenStream as Tokens;
 use progenitor::{GenerationSettings, Generator};
 use quote::{format_ident, quote};
 use serde_json::{Map, Value, json};
-use std::{collections::BTreeMap, env, fs, path::PathBuf, sync::{Mutex, OnceLock}};
+use std::{
+    collections::BTreeMap,
+    env, fs,
+    path::PathBuf,
+    sync::{Mutex, OnceLock},
+};
 use syn::LitStr;
 
 struct TypifyTrace;
@@ -14,7 +19,9 @@ static TYPIFY_TRACE: TypifyTrace = TypifyTrace;
 static LAST_TYPIFY: OnceLock<Mutex<String>> = OnceLock::new();
 
 impl Log for TypifyTrace {
-    fn enabled(&self, _: &Metadata<'_>) -> bool { true }
+    fn enabled(&self, _: &Metadata<'_>) -> bool {
+        true
+    }
 
     fn log(&self, record: &Record<'_>) {
         let message = record.args().to_string();
