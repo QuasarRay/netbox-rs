@@ -476,8 +476,7 @@ fn enum_member_matches(kind: &str, value: &Value) -> bool {
 fn group(path: &str) -> String {
     path.trim_matches('/')
         .split('/')
-        .skip_while(|s| *s == "api")
-        .next()
+        .find(|s| *s != "api")
         .filter(|s| !s.is_empty())
         .unwrap_or("root")
         .replace('-', "_")
