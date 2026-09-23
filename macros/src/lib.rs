@@ -43,9 +43,15 @@ fn error(e: String) -> Tokens {
 }
 
 #[derive(Clone)]
+enum Model {
+    Named(String),
+    Unit,
+}
+
+#[derive(Clone)]
 struct Failure {
     status: u16,
-    body: String,
+    body: Model,
 }
 
 #[derive(Clone)]
@@ -55,7 +61,9 @@ struct Op {
     method: String,
     path: String,
     request: String,
+    request_ty: Model,
     response: String,
+    response_ty: Model,
     failures: Vec<Failure>,
 }
 
@@ -77,6 +85,7 @@ impl Doc {
             *schema = codegen_schema(schema.take());
         }
 
+        let mut pool = SchemaPool::new(schemas)?;
         let mut ops = Vec::new();
         let paths = raw
             .get("paths")
@@ -97,24 +106,24 @@ impl Doc {
                 let stem = pascal(&id);
                 let request = format!("Rpc{stem}Request");
                 let response = format!("Rpc{stem}Response");
-                schemas.insert(
-                    request.clone(),
-                    codegen_schema(request_schema(&raw, item, op)?),
-                );
-                schemas.insert(response.clone(), codegen_schema(response_schema(&raw, op)?));
-                let failures = failure_schemas(&raw, op, &stem, schemas)?;
+                let request_ty = pool.intern(request_schema(&raw, item, op)?)?;
+                let response_ty = response_type(&raw, op, &mut pool)?;
+                let failures = failure_schemas(&raw, op, &mut pool)?;
                 ops.push(Op {
                     id,
                     group: group(path),
                     method: method.to_ascii_uppercase(),
                     path: path.clone(),
                     request,
+                    request_ty,
                     response,
+                    response_ty,
                     failures,
                 });
             }
         }
         ops.sort_by(|a, b| (&a.group, &a.id).cmp(&(&b.group, &b.id)));
+        drop(pool);
 
         // Progenitor's OpenAPI -> Typify conversion is the type compiler.
         // Paths are irrelevant here: synthesized RPC shapes are components.
@@ -132,6 +141,12 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
         .generate_tokens(&doc.types)
         .map_err(|e| format!("OpenAPI Rust type generation failed: {e}"))?;
     let models = generator.get_type_space().to_stream();
+    let aliases = doc.ops.iter().flat_map(|op| {
+        [
+            model_alias(&op.request, &op.request_ty),
+            model_alias(&op.response, &op.response_ty),
+        ]
+    });
 
     let services = grouped(&doc.ops).into_iter().map(|(group, ops)| {
         let trait_name = format_ident!("{}", pascal(&group));
@@ -162,18 +177,28 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
             let error = format_ident!("Rpc{}Error", pascal(&op.id));
             let variants = op.failures.iter().map(|failure| {
                 let variant = format_ident!("Status{}", failure.status);
-                let status = failure.status;
-                let rename = status.to_string();
-                let body = format_ident!("{}", failure.body);
-                quote!(
-                    #[serde(rename = #rename)]
-                    #variant(models::#body)
-                )
+                let rename = failure.status.to_string();
+                match &failure.body {
+                    Model::Named(body) => {
+                        let body = format_ident!("{}", body);
+                        quote!(
+                            #[serde(rename = #rename)]
+                            #variant(models::#body)
+                        )
+                    }
+                    Model::Unit => quote!(
+                        #[serde(rename = #rename)]
+                        #variant
+                    ),
+                }
             });
             let statuses = op.failures.iter().map(|failure| {
                 let variant = format_ident!("Status{}", failure.status);
                 let status = failure.status;
-                quote!(Self::#variant(_) => #status)
+                match failure.body {
+                    Model::Named(_) => quote!(Self::#variant(_) => #status),
+                    Model::Unit => quote!(Self::#variant => #status),
+                }
             });
             quote! {
                 #[derive(Debug, ::serde::Serialize, ::serde::Deserialize)]
@@ -200,7 +225,10 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
 
     Ok(quote! {
         #[allow(clippy::all)]
-        pub mod models { #models }
+        pub mod models {
+            #models
+            #(#aliases)*
+        }
 
         pub trait ApiError: ::serde::Serialize + Send + 'static {
             fn status(&self) -> u16;
@@ -340,7 +368,11 @@ fn request_schema(doc: &Value, item: &Value, op: &Value) -> Result<Value, String
     }))
 }
 
-fn response_schema(doc: &Value, op: &Value) -> Result<Value, String> {
+fn response_type(
+    doc: &Value,
+    op: &Value,
+    pool: &mut SchemaPool<'_>,
+) -> Result<Model, String> {
     let responses = op
         .get("responses")
         .and_then(Value::as_object)
@@ -351,22 +383,24 @@ fn response_schema(doc: &Value, op: &Value) -> Result<Value, String> {
             continue;
         }
         let response = resolve(doc, response)?;
-        schemas.push(
-            content_schema(response.get("content")).unwrap_or_else(|| json!({"enum":[null]})),
-        );
+        schemas.push(content_schema(response.get("content")));
     }
-    Ok(match schemas.len() {
-        0 => json!({"enum":[null]}),
-        1 => schemas.pop().unwrap(),
-        _ => json!({"oneOf": schemas}),
-    })
+    match schemas.as_slice() {
+        [] | [None] => Ok(Model::Unit),
+        [Some(schema)] => pool.intern(schema.clone()),
+        _ => pool.intern(json!({
+            "oneOf": schemas
+                .into_iter()
+                .map(|schema| schema.unwrap_or_else(|| json!({"enum":[null]})))
+                .collect::<Vec<_>>()
+        })),
+    }
 }
 
 fn failure_schemas(
     doc: &Value,
     op: &Value,
-    stem: &str,
-    components: &mut Map<String, Value>,
+    pool: &mut SchemaPool<'_>,
 ) -> Result<Vec<Failure>, String> {
     let responses = op
         .get("responses")
@@ -381,10 +415,10 @@ fn failure_schemas(
             continue;
         };
         let response = resolve(doc, response)?;
-        let schema = content_schema(response.get("content"))
-            .unwrap_or_else(|| json!({"type":"object","additionalProperties":{}}));
-        let body = format!("Rpc{stem}Error{status}");
-        components.insert(body.clone(), codegen_schema(schema));
+        let body = match content_schema(response.get("content")) {
+            Some(schema) => pool.intern(schema)?,
+            None => Model::Unit,
+        };
         failures.push(Failure { status, body });
     }
     failures.sort_by_key(|failure| failure.status);
@@ -471,6 +505,71 @@ fn enum_member_matches(kind: &str, value: &Value) -> bool {
         "object" => value.is_object(),
         _ => true,
     }
+}
+
+struct SchemaPool<'a> {
+    components: &'a mut Map<String, Value>,
+    seen: BTreeMap<String, String>,
+}
+
+impl<'a> SchemaPool<'a> {
+    fn new(components: &'a mut Map<String, Value>) -> Result<Self, String> {
+        let mut seen = BTreeMap::new();
+        for (name, schema) in components.iter() {
+            seen.entry(schema_key(schema)?).or_insert_with(|| name.clone());
+        }
+        Ok(Self { components, seen })
+    }
+
+    fn intern(&mut self, schema: Value) -> Result<Model, String> {
+        let schema = codegen_schema(schema);
+        if let Some(name) = component_ref(&schema) {
+            return Ok(Model::Named(name.to_owned()));
+        }
+
+        let key = schema_key(&schema)?;
+        if let Some(name) = self.seen.get(&key) {
+            return Ok(Model::Named(name.clone()));
+        }
+
+        let name = format!("RpcShape{:016x}", fnv1a64(key.as_bytes()));
+        if let Some(existing) = self.components.get(&name)
+            && existing != &schema
+        {
+            return Err(format!("schema hash collision for {name}"));
+        }
+        self.components.insert(name.clone(), schema);
+        self.seen.insert(key, name.clone());
+        Ok(Model::Named(name))
+    }
+}
+
+fn schema_key(schema: &Value) -> Result<String, String> {
+    serde_json::to_string(schema).map_err(|error| error.to_string())
+}
+
+fn component_ref(schema: &Value) -> Option<&str> {
+    schema
+        .get("$ref")
+        .and_then(Value::as_str)?
+        .strip_prefix("#/components/schemas/")
+}
+
+fn model_alias(alias: &str, target: &Model) -> Tokens {
+    let alias = format_ident!("{}", alias);
+    match target {
+        Model::Named(target) => {
+            let target = format_ident!("{}", target);
+            quote!(pub type #alias = #target;)
+        }
+        Model::Unit => quote!(pub type #alias = ();),
+    }
+}
+
+fn fnv1a64(bytes: &[u8]) -> u64 {
+    bytes.iter().fold(0xcbf29ce484222325u64, |hash, byte| {
+        (hash ^ u64::from(*byte)).wrapping_mul(0x100000001b3)
+    })
 }
 
 fn group(path: &str) -> String {
