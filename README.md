@@ -1,68 +1,76 @@
 # netbox-rs
 
-NetBox's OpenAPI document is the source code. `netbox-rs` compiles it into a native Rust API and Summer/Tonic gRPC services; handwritten endpoint models and `.proto` domain contracts are unnecessary.
+NetBox's OpenAPI document is the source code. `netbox-rs` compiles it into native Rust models, a domain API, and Summer/Tonic services. No handwritten endpoint model layer or protobuf domain contract is required.
 
 ```text
 openapi/openapi.json
         │
         ▼
-netbox-rs-macros
-  openapiv3 parser → normalized JSON Schema → Typify
-        │                                │
-        ├──────── native Rust models ────┤
-        ├──────── async service traits   │
-        └──────── Summer/Tonic adapters ─┘
+ serde_json + openapiv3
+        │
+        ▼
+ tiny NetBox codegen normalization
+        │
+        ▼
+ Progenitor → Typify
+        │
+        ├── native Rust models
+        ├── native service traits
+        └── generated Summer/Tonic adapters
                          │
                          ▼
-                  CBOR over gRPC/HTTP2
+                    CBOR / gRPC
 ```
 
 ## API / implementation split
 
-The public API is deliberately tiny:
+The authored public API is one macro invocation:
 
 ```rust
 // src/api.rs
 netbox_rs_macros::netbox_api!("openapi/openapi.json");
 ```
 
-That one macro invocation generates all NetBox models, operation metadata, and per-domain async traits (`Dcim`, `Ipam`, `Circuits`, ...). The generated types are native Rust types; protobuf and Tonic do not appear in the domain API.
+It generates every model, operation descriptor, and domain trait (`Dcim`, `Ipam`, `Circuits`, ...). Domain code sees native Rust only: request/response types plus methods returning `impl Future + Send`. This keeps Tonic, CBOR, protobuf, and transport details out of the API and avoids `async_trait` boxing.
 
-The transport side is equally small:
+Transport is generated independently:
 
 ```rust
 // src/implementation.rs
 netbox_rs_macros::netbox_impl!("openapi/openapi.json");
 ```
 
-It generates Summer-compatible `NamedService` adapters and routes each RPC through a custom Tonic CBOR codec. Register a domain implementation per NetBox service group:
+Each generated domain module exposes a Summer registration function:
 
 ```rust,ignore
 implementation::dcim::register(&mut app, my_dcim);
 implementation::ipam::register(&mut app, my_ipam);
 ```
 
-`src/transport.rs` is generic infrastructure only: one CBOR codec, one unary adapter, and one declarative macro generate all concrete gRPC servers.
+`src/transport.rs` is the shared implementation kernel: one CBOR codec, one unary adapter, and one declarative macro generate all concrete Tonic `NamedService` implementations.
 
-## Compiler design
+## Compiler
 
-`netbox-rs-macros` performs the work at compile time:
+`netbox-rs-macros` does the repetitive work at compile time:
 
-1. parse and validate the pinned OpenAPI document with `serde_json` + `openapiv3`;
-2. normalize OpenAPI schema semantics into a JSON-Schema core (`$ref`, `nullable`, exclusive bounds, open objects);
-3. synthesize request/response schemas from operations, parameters, bodies and 2xx responses;
-4. let Typify lower that schema into native Rust structs/enums/newtypes;
-5. emit service traits from `operationId` and service groups from `/api/<group>/...`;
-6. emit Summer/Tonic server implementations with macro-generated routing.
+1. parse the pinned contract with `serde_json` and validate it with `openapiv3`;
+2. normalize only NetBox/codegen edge cases while leaving the authoritative OpenAPI file untouched;
+3. synthesize a request component from path/query parameters and request body for every operation;
+4. synthesize a response component from successful responses;
+5. delegate OpenAPI schema semantics and Rust type construction to Progenitor/Typify;
+6. generate domain traits from `operationId`;
+7. generate the Summer/Tonic routing layer from the same operation table.
 
-The original OpenAPI remains the language-independent contract. Rust is a compiled implementation of that contract, not its source.
+The codegen view removes schema defaults (runtime REST behavior, not Rust type identity), drops enum members that cannot satisfy their declared primitive type, and preserves open objects with named fields. The original OpenAPI document remains the complete language-independent contract.
+
+RPC names are deterministic from that contract: paths are grouped by the first segment after `/api/`, and each `operationId` determines the method name and generated request/response names. CBOR encodes the generated Serde data model over Tonic's codec-agnostic gRPC transport.
 
 ## Verification
 
-`verus/schema_lowering.rs` contains the first Verus proof kernel. It proves the `nullable: true` normalization used by the compiler and the distinct missing/null/value states needed for PATCH semantics. The current proof boundary is intentionally explicit: the complete Typify/Ciborium/Tonic stack is not claimed to be formally verified yet.
+`verus/schema_lowering.rs` is a small proof kernel for transformations owned by this repository. It proves the abstract equivalence between OpenAPI nullable values and the generated optional representation, proves that deleting enum members impossible under the declared primitive type cannot change the accepted-value set, and records the distinct missing/null/value states needed by partial-update semantics.
 
-The intended progression is to prove the normalization and codec kernel pass-by-pass while keeping parsing and code emission outside a small semantic core.
+This is intentionally a narrow claim. `serde_json`, `openapiv3`, Progenitor/Typify, Ciborium, Tonic, Summer, and rustc remain in the trusted computing base. The next high-value proof target is the generated CBOR encode/decode boundary.
 
-## Legacy Proto tooling
+## Legacy proto tooling
 
-`src/bin/netbox_openapi_proto.rs`, `src/bin/netbox_openapi_fidelity.rs`, and `proto/netbox/` remain as compatibility/audit tooling. They are no longer required by the native Rust API architecture; OpenAPI is authoritative.
+`src/bin/netbox_openapi_proto.rs`, `src/bin/netbox_openapi_fidelity.rs`, and `proto/netbox/` remain as compatibility/audit tooling. They are not part of the native domain API architecture.
