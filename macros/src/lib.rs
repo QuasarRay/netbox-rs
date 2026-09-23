@@ -140,10 +140,12 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
             let name = format_ident!("{}", snake(&op.id));
             let req = format_ident!("{}", op.request);
             let res = format_ident!("{}", op.response);
-            quote!(async fn #name(&self, request: models::#req) -> Result<models::#res>;)
+            quote!(
+                fn #name(&self, request: models::#req)
+                    -> impl ::core::future::Future<Output = Result<models::#res>> + Send;
+            )
         });
         quote! {
-            #[allow(async_fn_in_trait)]
             pub trait #trait_name: Send + Sync + 'static { #(#methods)* }
         }
     });
