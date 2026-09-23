@@ -2,7 +2,7 @@ use bytes::{Buf, BufMut};
 use serde::{Serialize, de::DeserializeOwned};
 use std::{future::Future, io, marker::PhantomData};
 use summer_grpc::tonic::{
-    Request, Response, Status,
+    Code, Request, Response, Status,
     codec::{Codec, DecodeBuf, Decoder, EncodeBuf, Encoder},
     server::UnaryService,
 };
@@ -84,6 +84,31 @@ where
         ciborium::de::from_reader(bytes.as_ref())
             .map(Some)
             .map_err(|error| Status::invalid_argument(format!("CBOR decode failed: {error}")))
+    }
+}
+
+pub fn status<E: crate::api::ApiError>(error: E) -> Status {
+    let status = error.status();
+    let code = match status {
+        400 | 422 => Code::InvalidArgument,
+        401 => Code::Unauthenticated,
+        403 => Code::PermissionDenied,
+        404 => Code::NotFound,
+        409 => Code::AlreadyExists,
+        429 => Code::ResourceExhausted,
+        500 => Code::Internal,
+        501 => Code::Unimplemented,
+        502..=504 => Code::Unavailable,
+        _ => Code::Unknown,
+    };
+    let mut details = Vec::new();
+    match ciborium::ser::into_writer(&error, &mut details) {
+        Ok(()) => Status::with_details(
+            code,
+            format!("NetBox API error {status}"),
+            bytes::Bytes::from(details),
+        ),
+        Err(error) => Status::internal(format!("CBOR error encoding failed: {error}")),
     }
 }
 
@@ -176,7 +201,7 @@ macro_rules! __netbox_grpc_service {
                                                 .$method(request.into_inner())
                                                 .await
                                                 .map(::summer_grpc::tonic::Response::new)
-                                                .map_err(::summer_grpc::tonic::Status::from)
+                                                .map_err($crate::transport::status)
                                         }
                                     },
                                 );
