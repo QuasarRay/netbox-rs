@@ -70,7 +70,3 @@ RPC names are deterministic from that contract: paths are grouped by the first s
 `verus/schema_lowering.rs` is a small proof kernel for transformations owned by this repository. It proves the abstract equivalence between OpenAPI nullable values and the generated optional representation, proves that deleting enum members impossible under the declared primitive type cannot change the accepted-value set, and records the distinct missing/null/value states needed by partial-update semantics.
 
 This is intentionally a narrow claim. `serde_json`, `openapiv3`, Progenitor/Typify, Ciborium, Tonic, Summer, and rustc remain in the trusted computing base. The next high-value proof target is the generated CBOR encode/decode boundary.
-
-## Legacy proto tooling
-
-`src/bin/netbox_openapi_proto.rs`, `src/bin/netbox_openapi_fidelity.rs`, and `proto/netbox/` remain as compatibility/audit tooling. They are not part of the native domain API architecture.
