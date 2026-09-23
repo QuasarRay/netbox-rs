@@ -2,12 +2,11 @@ use heck::{ToPascalCase, ToSnakeCase};
 use openapiv3::OpenAPI;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as Tokens;
+use progenitor::{GenerationSettings, Generator};
 use quote::{format_ident, quote};
-use schemars::schema::RootSchema;
 use serde_json::{Map, Value, json};
 use std::{collections::BTreeMap, env, fs, path::PathBuf};
 use syn::LitStr;
-use typify::{TypeSpace, TypeSpaceSettings};
 
 #[proc_macro]
 pub fn netbox_api(input: TokenStream) -> TokenStream {
@@ -56,19 +55,19 @@ struct Op {
 struct Doc {
     raw: Value,
     ops: Vec<Op>,
-    schema: Value,
+    types: OpenAPI,
 }
 
 impl Doc {
     fn new(raw: Value) -> Result<Self, String> {
-        let mut definitions = Map::new();
-        for (name, schema) in raw
-            .pointer("/components/schemas")
-            .and_then(Value::as_object)
-            .into_iter()
-            .flatten()
-        {
-            definitions.insert(name.clone(), schema_core(schema.clone()));
+        let mut typed = raw.clone();
+        let schemas = typed
+            .pointer_mut("/components/schemas")
+            .and_then(Value::as_object_mut)
+            .ok_or("OpenAPI components.schemas missing")?;
+
+        for schema in schemas.values_mut() {
+            *schema = codegen_schema(schema.take());
         }
 
         let mut ops = Vec::new();
@@ -91,8 +90,8 @@ impl Doc {
                 let stem = pascal(&id);
                 let request = format!("Rpc{stem}Request");
                 let response = format!("Rpc{stem}Response");
-                definitions.insert(request.clone(), request_schema(&raw, item, op)?);
-                definitions.insert(response.clone(), response_schema(&raw, op)?);
+                schemas.insert(request.clone(), codegen_schema(request_schema(&raw, item, op)?));
+                schemas.insert(response.clone(), codegen_schema(response_schema(&raw, op)?));
                 ops.push(Op {
                     id,
                     group: group(path),
@@ -104,30 +103,23 @@ impl Doc {
             }
         }
         ops.sort_by(|a, b| (&a.group, &a.id).cmp(&(&b.group, &b.id)));
-        Ok(Self {
-            raw,
-            ops,
-            schema: json!({"definitions": definitions}),
-        })
+
+        // Progenitor's OpenAPI -> Typify conversion is the type compiler.
+        // Paths are irrelevant here: synthesized RPC shapes are components.
+        typed["paths"] = json!({});
+        let types = serde_json::from_value::<OpenAPI>(typed)
+            .map_err(|e| format!("generated type OpenAPI invalid: {e}"))?;
+
+        Ok(Self { raw, ops, types })
     }
 }
-
 fn api(doc: &Doc) -> Result<Tokens, String> {
-    if let Some(path) = schema_keyword_path(&doc.schema, "default", "#") {
-        return Err(format!("normalizer left schema default at {path}"));
-    }
-    let root: RootSchema = serde_json::from_value(doc.schema.clone())
-        .map_err(|e| format!("JSON Schema normalization failed: {e}"))?;
-    let parsed = serde_json::to_value(&root)
-        .map_err(|e| format!("normalized schema reserialization failed: {e}"))?;
-    if let Some(path) = schema_keyword_path(&parsed, "default", "#") {
-        return Err(format!("Schemars reconstructed schema default at {path}"));
-    }
-    let mut types = TypeSpace::new(TypeSpaceSettings::default().with_struct_builder(false));
-    types
-        .add_root_schema(root)
-        .map_err(|e| format!("Rust type generation failed: {e}"))?;
-    let models = types.to_stream();
+    let settings = GenerationSettings::default();
+    let mut generator = Generator::new(&settings);
+    generator
+        .generate_tokens(&doc.types)
+        .map_err(|e| format!("OpenAPI Rust type generation failed: {e}"))?;
+    let models = generator.get_type_space().to_stream();
 
     let services = grouped(&doc.ops).into_iter().map(|(group, ops)| {
         let trait_name = format_ident!("{}", pascal(&group));
@@ -179,7 +171,6 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
         #(#services)*
     })
 }
-
 fn implementation(doc: &Doc) -> Result<Tokens, String> {
     let modules = grouped(&doc.ops).into_iter().map(|(group, ops)| {
         let module = format_ident!("{}", snake(&group));
@@ -263,7 +254,7 @@ fn request_schema(doc: &Value, item: &Value, op: &Value) -> Result<Value, String
             name
         };
         let schema = p.get("schema").cloned().unwrap_or(Value::Bool(true));
-        properties.insert(field.clone(), schema_core(schema));
+        properties.insert(field.clone(), schema);
         if p.get("required").and_then(Value::as_bool).unwrap_or(false) || place == "path" {
             required.push(Value::String(field));
         }
@@ -272,7 +263,7 @@ fn request_schema(doc: &Value, item: &Value, op: &Value) -> Result<Value, String
     if let Some(body) = op.get("requestBody") {
         let body = resolve(doc, body)?;
         if let Some(schema) = content_schema(body.get("content")) {
-            properties.insert("body".into(), schema_core(schema));
+            properties.insert("body".into(), schema);
             if body
                 .get("required")
                 .and_then(Value::as_bool)
@@ -304,12 +295,11 @@ fn response_schema(doc: &Value, op: &Value) -> Result<Value, String> {
         let response = resolve(doc, response)?;
         schemas.push(
             content_schema(response.get("content"))
-                .map(schema_core)
-                .unwrap_or_else(|| json!({"type":"null"})),
+                .unwrap_or_else(|| json!({"enum":[null]})),
         );
     }
     Ok(match schemas.len() {
-        0 => json!({"type":"null"}),
+        0 => json!({"enum":[null]}),
         1 => schemas.pop().unwrap(),
         _ => json!({"oneOf": schemas}),
     })
@@ -335,188 +325,45 @@ fn resolve<'a>(doc: &'a Value, value: &'a Value) -> Result<&'a Value, String> {
         .ok_or_else(|| format!("unresolved ref: {reference}"))
 }
 
-fn schema_keyword_path(value: &Value, keyword: &str, path: &str) -> Option<String> {
-    let object = value.as_object()?;
-    if object.contains_key(keyword) {
-        return Some(format!("{path}/{keyword}"));
-    }
-
-    for key in [
-        "properties",
-        "patternProperties",
-        "definitions",
-        "$defs",
-        "dependentSchemas",
-    ] {
-        if let Some(children) = object.get(key).and_then(Value::as_object) {
-            for (name, child) in children {
-                if let Some(found) =
-                    schema_keyword_path(child, keyword, &format!("{path}/{key}/{name}"))
-                {
-                    return Some(found);
-                }
-            }
-        }
-    }
-    for key in [
-        "items",
-        "additionalProperties",
-        "not",
-        "contains",
-        "propertyNames",
-        "if",
-        "then",
-        "else",
-    ] {
-        if let Some(child) = object.get(key) {
-            if child.is_object() {
-                if let Some(found) = schema_keyword_path(child, keyword, &format!("{path}/{key}")) {
-                    return Some(found);
-                }
-            } else if key == "items" {
-                for (index, child) in child.as_array().into_iter().flatten().enumerate() {
-                    if let Some(found) =
-                        schema_keyword_path(child, keyword, &format!("{path}/{key}/{index}"))
-                    {
-                        return Some(found);
-                    }
-                }
-            }
-        }
-    }
-    for key in ["oneOf", "anyOf", "allOf", "prefixItems"] {
-        for (index, child) in object
-            .get(key)
-            .and_then(Value::as_array)
-            .into_iter()
-            .flatten()
-            .enumerate()
-        {
-            if let Some(found) =
-                schema_keyword_path(child, keyword, &format!("{path}/{key}/{index}"))
-            {
-                return Some(found);
-            }
-        }
-    }
-    None
-}
-
-fn schema_core(v: Value) -> Value {
+fn codegen_schema(v: Value) -> Value {
     let Value::Object(mut o) = v else {
         return v;
     };
 
-    if let Some(Value::String(reference)) = o.get_mut("$ref") {
-        if let Some(name) = reference.strip_prefix("#/components/schemas/") {
-            *reference = format!("#/definitions/{name}");
+    // Defaults affect REST behavior, not Rust representation. The exact
+    // values remain authoritative in the committed OpenAPI contract.
+    o.remove("default");
+
+    if let Some(Value::Object(children)) = o.get_mut("properties") {
+        for child in children.values_mut() {
+            *child = codegen_schema(child.take());
         }
     }
-
-    // Annotation/application-only keywords are preserved in the authoritative
-    // OpenAPI source, but do not participate in construction of Rust types.
-    for key in [
-        "default",
-        "example",
-        "deprecated",
-        "readOnly",
-        "writeOnly",
-        "discriminator",
-        "xml",
-        "externalDocs",
-    ] {
-        o.remove(key);
-    }
-
-    let nullable = o
-        .remove("nullable")
-        .and_then(|value| value.as_bool())
-        .unwrap_or(false);
-
-    // OpenAPI 3.0 uses boolean exclusive bounds; JSON Schema draft-07 uses
-    // the exclusive bound itself as the numeric value.
-    for suffix in ["Minimum", "Maximum"] {
-        let exclusive = format!("exclusive{suffix}");
-        let plain = suffix.to_ascii_lowercase();
-        if o.get(&exclusive).and_then(Value::as_bool) == Some(true) {
-            if let Some(bound) = o.remove(&plain) {
-                o.insert(exclusive, bound);
-            } else {
-                o.remove(&exclusive);
-            }
-        } else if matches!(o.get(&exclusive), Some(Value::Bool(_))) {
-            o.remove(&exclusive);
+    for key in ["items", "additionalProperties", "not"] {
+        if let Some(child) = o.get_mut(key)
+            && child.is_object()
+        {
+            *child = codegen_schema(child.take());
         }
     }
-
-    // Map-valued child-schema positions: keys are user/property identifiers
-    // and must never be interpreted as schema keywords themselves.
-    for key in ["properties", "patternProperties", "definitions", "$defs"] {
-        if let Some(Value::Object(children)) = o.get_mut(key) {
-            for child in children.values_mut() {
-                *child = schema_core(child.take());
-            }
-        }
-    }
-
-    // Single child-schema positions.
-    for key in [
-        "items",
-        "additionalProperties",
-        "not",
-        "contains",
-        "propertyNames",
-        "if",
-        "then",
-        "else",
-    ] {
-        if let Some(child) = o.get_mut(key) {
-            if child.is_object() {
-                *child = schema_core(child.take());
-            } else if key == "items" && child.is_array() {
-                if let Some(children) = child.as_array_mut() {
-                    for child in children {
-                        *child = schema_core(child.take());
-                    }
-                }
-            }
-        }
-    }
-
-    // Array-valued child-schema positions.
-    for key in ["oneOf", "anyOf", "allOf", "prefixItems"] {
+    for key in ["oneOf", "anyOf", "allOf"] {
         if let Some(Value::Array(children)) = o.get_mut(key) {
             for child in children {
-                *child = schema_core(child.take());
+                *child = codegen_schema(child.take());
             }
         }
     }
 
-    // Draft 2019+/2020-12 map-valued child schemas, accepted for forward
-    // compatibility even though the pinned NetBox document is OpenAPI 3.0.
-    if let Some(Value::Object(children)) = o.get_mut("dependentSchemas") {
-        for child in children.values_mut() {
-            *child = schema_core(child.take());
-        }
-    }
-
-    // Typify treats true additionalProperties next to named fields as
-    // unconstrained-but-ignored. Empty schema has the intended open-map
-    // semantics and yields a flattened map in the generated Rust type.
+    // An empty schema is OpenAPI's unconstrained additional-value schema;
+    // Typify turns it into a flattened map instead of dropping extra keys.
     if matches!(o.get("additionalProperties"), Some(Value::Bool(true)))
         && o.get("properties").is_some()
     {
         o.insert("additionalProperties".into(), json!({}));
     }
 
-    let body = Value::Object(o);
-    if nullable {
-        json!({"anyOf":[body,{"type":"null"}]})
-    } else {
-        body
-    }
+    Value::Object(o)
 }
-
 fn group(path: &str) -> String {
     path.trim_matches('/')
         .split('/')
@@ -554,41 +401,38 @@ mod tests {
     use super::*;
 
     #[test]
-    fn normalizes_openapi_schema() {
+    fn delegates_openapi_semantics_to_progenitor() {
         assert_eq!(
-            schema_core(json!({"type":"string","nullable":true})),
-            json!({"anyOf":[{"type":"string"},{"type":"null"}]})
+            codegen_schema(json!({"type":"string","nullable":true})),
+            json!({"type":"string","nullable":true})
         );
         assert_eq!(
-            schema_core(json!({"$ref":"#/components/schemas/Device"})),
-            json!({"$ref":"#/definitions/Device"})
+            codegen_schema(json!({"$ref":"#/components/schemas/Device"})),
+            json!({"$ref":"#/components/schemas/Device"})
         );
         assert_eq!(
-            schema_core(json!({"type":"integer","minimum":1,"exclusiveMinimum":true})),
-            json!({"type":"integer","exclusiveMinimum":1})
-        );
-        assert_eq!(
-            schema_core(json!({"type":"string","default":"ignored"})),
-            json!({"type":"string"})
+            codegen_schema(json!({
+                "type":"integer", "minimum":1, "exclusiveMinimum":true
+            })),
+            json!({
+                "type":"integer", "minimum":1, "exclusiveMinimum":true
+            })
         );
     }
 
     #[test]
-    fn property_named_default_is_not_an_annotation() {
-        let normalized = schema_core(json!({
+    fn strips_codegen_default_without_touching_property_named_default() {
+        let normalized = codegen_schema(json!({
             "type":"object",
             "properties":{"default":{"type":"string","default":"inner"}}
         }));
-        assert_eq!(
-            normalized["properties"]["default"],
-            json!({"type":"string"})
-        );
+        assert_eq!(normalized["properties"]["default"], json!({"type":"string"}));
     }
 
     #[test]
     fn preserves_open_object_with_named_fields() {
         assert_eq!(
-            schema_core(json!({
+            codegen_schema(json!({
                 "type":"object",
                 "properties":{"id":{"type":"integer"}},
                 "additionalProperties":true
