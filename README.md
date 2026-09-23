@@ -31,7 +31,7 @@ The authored public API is one macro invocation:
 netbox_rs_macros::netbox_api!("openapi/openapi.json");
 ```
 
-It generates every model, operation descriptor, and domain trait (`Dcim`, `Ipam`, `Circuits`, ...). Domain code sees native Rust only: request/response types plus methods returning `impl Future + Send`. This keeps Tonic, CBOR, protobuf, and transport details out of the API and avoids `async_trait` boxing.
+It generates every model, operation descriptor, and domain trait (`Dcim`, `Ipam`, `Circuits`, ...). Domain code sees native Rust only: typed requests, typed success values, operation-specific typed error enums, and methods returning `impl Future + Send`. This keeps Tonic, CBOR, protobuf, and transport details out of the API and avoids `async_trait` boxing.
 
 Transport is generated independently:
 
@@ -40,7 +40,7 @@ Transport is generated independently:
 netbox_rs_macros::netbox_impl!("openapi/openapi.json");
 ```
 
-Each generated domain module exposes a Summer registration function:
+Each generated domain module exposes a Summer registration function. Documented non-2xx OpenAPI bodies are preserved as generated error variants; the adapter maps their status to a gRPC code and CBOR-encodes the typed error into gRPC status details.
 
 ```rust,ignore
 implementation::dcim::register(&mut app, my_dcim);
@@ -56,9 +56,9 @@ implementation::ipam::register(&mut app, my_ipam);
 1. parse the pinned contract with `serde_json` and validate it with `openapiv3`;
 2. normalize only NetBox/codegen edge cases while leaving the authoritative OpenAPI file untouched;
 3. synthesize a request component from path/query parameters and request body for every operation;
-4. synthesize a response component from successful responses;
+4. synthesize a success component and status-specific failure components from every documented response;
 5. delegate OpenAPI schema semantics and Rust type construction to Progenitor/Typify;
-6. generate domain traits from `operationId`;
+6. generate domain traits and typed error enums from `operationId`;
 7. generate the Summer/Tonic routing layer from the same operation table.
 
 The codegen view removes schema defaults (runtime REST behavior, not Rust type identity), drops enum members that cannot satisfy their declared primitive type, and preserves open objects with named fields. The original OpenAPI document remains the complete language-independent contract.
