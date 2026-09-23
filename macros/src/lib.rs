@@ -85,7 +85,7 @@ impl Doc {
             *schema = codegen_schema(schema.take());
         }
 
-        let mut pool = SchemaPool::new(schemas)?;
+        let mut pool = SchemaPool::new(schemas);
         let mut ops = Vec::new();
         let paths = raw
             .get("paths")
@@ -511,19 +511,17 @@ struct SchemaPool<'a> {
 }
 
 impl<'a> SchemaPool<'a> {
-    fn new(components: &'a mut Map<String, Value>) -> Result<Self, String> {
-        let mut seen = BTreeMap::new();
-        for (name, schema) in components.iter() {
-            seen.entry(schema_key(schema)?)
-                .or_insert_with(|| name.clone());
+    fn new(components: &'a mut Map<String, Value>) -> Self {
+        Self {
+            components,
+            seen: BTreeMap::new(),
         }
-        Ok(Self { components, seen })
     }
 
     fn intern(&mut self, schema: Value) -> Result<Model, String> {
         let schema = codegen_schema(schema);
         if let Some(name) = component_ref(&schema) {
-            return Ok(Model::Named(name.to_owned()));
+            return Ok(Model::Named(name));
         }
 
         let key = schema_key(&schema)?;
@@ -547,11 +545,12 @@ fn schema_key(schema: &Value) -> Result<String, String> {
     serde_json::to_string(schema).map_err(|error| error.to_string())
 }
 
-fn component_ref(schema: &Value) -> Option<&str> {
+fn component_ref(schema: &Value) -> Option<String> {
     schema
         .get("$ref")
         .and_then(Value::as_str)?
         .strip_prefix("#/components/schemas/")
+        .map(pascal)
 }
 
 fn model_alias(alias: &str, target: &Model) -> Tokens {
@@ -691,7 +690,14 @@ mod tests {
     #[test]
     fn naming_is_stable() {
         assert_eq!(pascal("dcim_devices_retrieve"), "DcimDevicesRetrieve");
+        assert_eq!(pascal("VMInterface"), "VmInterface");
+        assert_eq!(pascal("IKEPolicy"), "IkePolicy");
+        assert_eq!(pascal("L2VPN"), "L2Vpn");
         assert_eq!(snake("dcim_devices_retrieve"), "dcim_devices_retrieve");
         assert_eq!(group("/api/dcim/devices/{id}/"), "dcim");
+        assert_eq!(
+            component_ref(&json!({"$ref":"#/components/schemas/VMInterface"})).as_deref(),
+            Some("VmInterface")
+        );
     }
 }
