@@ -387,12 +387,12 @@ fn codegen_schema(v: Value) -> Value {
     // values remain authoritative in the committed OpenAPI contract.
     o.remove("default");
 
-    // OpenAPI constraints intersect. A null enum member cannot satisfy an
-    // explicitly non-null primitive type unless nullable=true, so discarding
-    // that unreachable member preserves the accepted-value set and prevents
-    // Typify from trying to construct an impossible Rust enum variant.
-    if !o.get("nullable").and_then(Value::as_bool).unwrap_or(false)
-        && o.get("type").and_then(Value::as_str).is_some()
+    // NetBox emits typed enums containing an explicit null member. For a
+    // non-nullable schema that member is unreachable; for a nullable schema
+    // `nullable: true` already carries the null semantics. Removing the
+    // redundant member preserves acceptance while avoiding an impossible
+    // typed enum variant in Progenitor/Typify.
+    if o.get("type").and_then(Value::as_str).is_some()
         && let Some(Value::Array(values)) = o.get_mut("enum")
     {
         values.retain(|value| !value.is_null());
@@ -514,7 +514,7 @@ mod tests {
                 "nullable":true,
                 "enum":[1200, null]
             }))["enum"],
-            json!([1200, null])
+            json!([1200])
         );
     }
 
