@@ -43,6 +43,12 @@ fn error(e: String) -> Tokens {
 }
 
 #[derive(Clone)]
+struct Failure {
+    status: u16,
+    body: String,
+}
+
+#[derive(Clone)]
 struct Op {
     id: String,
     group: String,
@@ -50,6 +56,7 @@ struct Op {
     path: String,
     request: String,
     response: String,
+    failures: Vec<Failure>,
 }
 
 struct Doc {
@@ -95,6 +102,7 @@ impl Doc {
                     codegen_schema(request_schema(&raw, item, op)?),
                 );
                 schemas.insert(response.clone(), codegen_schema(response_schema(&raw, op)?));
+                let failures = failure_schemas(&raw, op, &stem, schemas)?;
                 ops.push(Op {
                     id,
                     group: group(path),
@@ -102,6 +110,7 @@ impl Doc {
                     path: path.clone(),
                     request,
                     response,
+                    failures,
                 });
             }
         }
@@ -130,13 +139,48 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
             let name = format_ident!("{}", snake(&op.id));
             let req = format_ident!("{}", op.request);
             let res = format_ident!("{}", op.response);
+            let err = if op.failures.is_empty() {
+                format_ident!("Never")
+            } else {
+                format_ident!("Rpc{}Error", pascal(&op.id))
+            };
             quote!(
                 fn #name(&self, request: models::#req)
-                    -> impl ::core::future::Future<Output = Result<models::#res>> + Send;
+                    -> impl ::core::future::Future<Output = Result<models::#res, #err>> + Send;
             )
         });
         quote! {
             pub trait #trait_name: Send + Sync + 'static { #(#methods)* }
+        }
+    });
+
+    let errors = doc.ops.iter().filter(|op| !op.failures.is_empty()).map(|op| {
+        let error = format_ident!("Rpc{}Error", pascal(&op.id));
+        let variants = op.failures.iter().map(|failure| {
+            let variant = format_ident!("Status{}", failure.status);
+            let status = failure.status;
+            let rename = status.to_string();
+            let body = format_ident!("{}", failure.body);
+            quote!(
+                #[serde(rename = #rename)]
+                #variant(models::#body)
+            )
+        });
+        let statuses = op.failures.iter().map(|failure| {
+            let variant = format_ident!("Status{}", failure.status);
+            let status = failure.status;
+            quote!(Self::#variant(_) => #status)
+        });
+        quote! {
+            #[derive(Debug, ::serde::Serialize, ::serde::Deserialize)]
+            #[serde(tag = "status", content = "body")]
+            pub enum #error { #(#variants),* }
+
+            impl ApiError for #error {
+                fn status(&self) -> u16 {
+                    match self { #(#statuses),* }
+                }
+            }
         }
     });
 
@@ -154,14 +198,19 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
         #[allow(clippy::all)]
         pub mod models { #models }
 
-        #[derive(Debug, Clone, PartialEq, Eq)]
-        pub struct Error { pub status: u16, pub message: String }
-        impl Error {
-            pub fn new(status: u16, message: impl Into<String>) -> Self {
-                Self { status, message: message.into() }
-            }
+        pub trait ApiError: ::serde::Serialize + Send + 'static {
+            fn status(&self) -> u16;
         }
-        pub type Result<T> = ::core::result::Result<T, Error>;
+
+        #[derive(Debug, ::serde::Serialize, ::serde::Deserialize)]
+        pub enum Never {}
+        impl ApiError for Never {
+            fn status(&self) -> u16 { match *self {} }
+        }
+
+        pub type Result<T, E = Never> = ::core::result::Result<T, E>;
+
+        #(#errors)*
 
         #[derive(Debug, Clone, Copy, PartialEq, Eq)]
         pub struct Operation {
@@ -307,6 +356,35 @@ fn response_schema(doc: &Value, op: &Value) -> Result<Value, String> {
         1 => schemas.pop().unwrap(),
         _ => json!({"oneOf": schemas}),
     })
+}
+
+fn failure_schemas(
+    doc: &Value,
+    op: &Value,
+    stem: &str,
+    components: &mut Map<String, Value>,
+) -> Result<Vec<Failure>, String> {
+    let responses = op
+        .get("responses")
+        .and_then(Value::as_object)
+        .ok_or("operation responses missing")?;
+    let mut failures = Vec::new();
+    for (status, response) in responses {
+        if status.starts_with('2') {
+            continue;
+        }
+        let Ok(status) = status.parse::<u16>() else {
+            continue;
+        };
+        let response = resolve(doc, response)?;
+        let schema = content_schema(response.get("content"))
+            .unwrap_or_else(|| json!({"type":"object","additionalProperties":{}}));
+        let body = format!("Rpc{stem}Error{status}");
+        components.insert(body.clone(), codegen_schema(schema));
+        failures.push(Failure { status, body });
+    }
+    failures.sort_by_key(|failure| failure.status);
+    Ok(failures)
 }
 
 fn content_schema(content: Option<&Value>) -> Option<Value> {
