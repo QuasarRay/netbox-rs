@@ -90,7 +90,10 @@ impl Doc {
                 let stem = pascal(&id);
                 let request = format!("Rpc{stem}Request");
                 let response = format!("Rpc{stem}Response");
-                schemas.insert(request.clone(), codegen_schema(request_schema(&raw, item, op)?));
+                schemas.insert(
+                    request.clone(),
+                    codegen_schema(request_schema(&raw, item, op)?),
+                );
                 schemas.insert(response.clone(), codegen_schema(response_schema(&raw, op)?));
                 ops.push(Op {
                     id,
@@ -294,8 +297,7 @@ fn response_schema(doc: &Value, op: &Value) -> Result<Value, String> {
         }
         let response = resolve(doc, response)?;
         schemas.push(
-            content_schema(response.get("content"))
-                .unwrap_or_else(|| json!({"enum":[null]})),
+            content_schema(response.get("content")).unwrap_or_else(|| json!({"enum":[null]})),
         );
     }
     Ok(match schemas.len() {
@@ -426,7 +428,10 @@ mod tests {
             "type":"object",
             "properties":{"default":{"type":"string","default":"inner"}}
         }));
-        assert_eq!(normalized["properties"]["default"], json!({"type":"string"}));
+        assert_eq!(
+            normalized["properties"]["default"],
+            json!({"type":"string"})
+        );
     }
 
     #[test]
