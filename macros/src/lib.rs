@@ -368,11 +368,7 @@ fn request_schema(doc: &Value, item: &Value, op: &Value) -> Result<Value, String
     }))
 }
 
-fn response_type(
-    doc: &Value,
-    op: &Value,
-    pool: &mut SchemaPool<'_>,
-) -> Result<Model, String> {
+fn response_type(doc: &Value, op: &Value, pool: &mut SchemaPool<'_>) -> Result<Model, String> {
     let responses = op
         .get("responses")
         .and_then(Value::as_object)
@@ -518,7 +514,8 @@ impl<'a> SchemaPool<'a> {
     fn new(components: &'a mut Map<String, Value>) -> Result<Self, String> {
         let mut seen = BTreeMap::new();
         for (name, schema) in components.iter() {
-            seen.entry(schema_key(schema)?).or_insert_with(|| name.clone());
+            seen.entry(schema_key(schema)?)
+                .or_insert_with(|| name.clone());
         }
         Ok(Self { components, seen })
     }
