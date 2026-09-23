@@ -1,50 +1,12 @@
 use heck::{ToPascalCase, ToSnakeCase};
-use log::{LevelFilter, Log, Metadata, Record};
 use openapiv3::OpenAPI;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as Tokens;
 use progenitor::{GenerationSettings, Generator};
 use quote::{format_ident, quote};
 use serde_json::{Map, Value, json};
-use std::{
-    collections::BTreeMap,
-    env, fs,
-    path::PathBuf,
-    sync::{Mutex, OnceLock},
-};
+use std::{collections::BTreeMap, env, fs, path::PathBuf};
 use syn::LitStr;
-
-struct TypifyTrace;
-static TYPIFY_TRACE: TypifyTrace = TypifyTrace;
-static LAST_TYPIFY: OnceLock<Mutex<String>> = OnceLock::new();
-
-impl Log for TypifyTrace {
-    fn enabled(&self, _: &Metadata<'_>) -> bool {
-        true
-    }
-
-    fn log(&self, record: &Record<'_>) {
-        let message = record.args().to_string();
-        if message.starts_with("finalizing type entry") {
-            *LAST_TYPIFY.get_or_init(Default::default).lock().unwrap() = message;
-        }
-    }
-
-    fn flush(&self) {}
-}
-
-fn trace_typify() {
-    if log::set_logger(&TYPIFY_TRACE).is_ok() {
-        log::set_max_level(LevelFilter::Debug);
-    }
-}
-
-fn last_typify() -> String {
-    LAST_TYPIFY
-        .get()
-        .and_then(|value| value.lock().ok().map(|value| value.clone()))
-        .unwrap_or_else(|| "no Typify finalization trace".into())
-}
 
 #[proc_macro]
 pub fn netbox_api(input: TokenStream) -> TokenStream {
@@ -94,6 +56,7 @@ struct Doc {
     raw: Value,
     ops: Vec<Op>,
     types: OpenAPI,
+    types_json: Value,
 }
 
 impl Doc {
@@ -148,20 +111,25 @@ impl Doc {
         // Progenitor's OpenAPI -> Typify conversion is the type compiler.
         // Paths are irrelevant here: synthesized RPC shapes are components.
         typed["paths"] = json!({});
+        let types_json = typed.clone();
         let types = serde_json::from_value::<OpenAPI>(typed)
             .map_err(|e| format!("generated type OpenAPI invalid: {e}"))?;
 
-        Ok(Self { raw, ops, types })
+        Ok(Self {
+            raw,
+            ops,
+            types,
+            types_json,
+        })
     }
 }
 fn api(doc: &Doc) -> Result<Tokens, String> {
     let settings = GenerationSettings::default();
     let mut generator = Generator::new(&settings);
-    trace_typify();
     if let Err(error) = generator.generate_tokens(&doc.types) {
         return Err(format!(
-            "OpenAPI Rust type generation failed: {error}; last Typify step: {}",
-            last_typify()
+            "OpenAPI Rust type generation failed: {error}; suspect component: {}",
+            isolate_type_failure(&doc.types_json)
         ));
     }
     let models = generator.get_type_space().to_stream();
@@ -250,6 +218,47 @@ fn implementation(doc: &Doc) -> Result<Tokens, String> {
     Ok(quote!(#(#modules)*))
 }
 
+fn type_generation_fails(document: &Value, active: &[String]) -> bool {
+    let mut document = document.clone();
+    let Some(schemas) = document
+        .pointer_mut("/components/schemas")
+        .and_then(Value::as_object_mut)
+    else {
+        return true;
+    };
+    for (name, schema) in schemas {
+        if !active.contains(name) {
+            *schema = json!({});
+        }
+    }
+    let Ok(spec) = serde_json::from_value::<OpenAPI>(document) else {
+        return true;
+    };
+    let settings = GenerationSettings::default();
+    Generator::new(&settings).generate_tokens(&spec).is_err()
+}
+
+fn isolate_type_failure(document: &Value) -> String {
+    let Some(schemas) = document
+        .pointer("/components/schemas")
+        .and_then(Value::as_object)
+    else {
+        return "<missing schemas>".into();
+    };
+    let mut active = schemas.keys().cloned().collect::<Vec<_>>();
+    while active.len() > 1 {
+        let mid = active.len() / 2;
+        let (left, right) = active.split_at(mid);
+        if type_generation_fails(document, left) {
+            active = left.to_vec();
+        } else if type_generation_fails(document, right) {
+            active = right.to_vec();
+        } else {
+            return format!("<interaction among {} components>", active.len());
+        }
+    }
+    active.pop().unwrap_or_else(|| "<none>".into())
+}
 fn grouped(ops: &[Op]) -> BTreeMap<String, Vec<&Op>> {
     let mut out: BTreeMap<String, Vec<&Op>> = BTreeMap::new();
     for op in ops {
