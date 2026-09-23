@@ -195,7 +195,7 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
             let statuses = op.failures.iter().map(|failure| {
                 let variant = format_ident!("Status{}", failure.status);
                 let status = failure.status;
-                match failure.body {
+                match &failure.body {
                     Model::Named(_) => quote!(Self::#variant(_) => #status),
                     Model::Unit => quote!(Self::#variant => #status),
                 }
@@ -385,16 +385,18 @@ fn response_type(
         let response = resolve(doc, response)?;
         schemas.push(content_schema(response.get("content")));
     }
-    match schemas.as_slice() {
-        [] | [None] => Ok(Model::Unit),
-        [Some(schema)] => pool.intern(schema.clone()),
-        _ => pool.intern(json!({
-            "oneOf": schemas
-                .into_iter()
-                .map(|schema| schema.unwrap_or_else(|| json!({"enum":[null]})))
-                .collect::<Vec<_>>()
-        })),
+    if schemas.is_empty() || (schemas.len() == 1 && schemas[0].is_none()) {
+        return Ok(Model::Unit);
     }
+    if schemas.len() == 1 {
+        return pool.intern(schemas.pop().unwrap().unwrap());
+    }
+    pool.intern(json!({
+        "oneOf": schemas
+            .into_iter()
+            .map(|schema| schema.unwrap_or_else(|| json!({"enum":[null]})))
+            .collect::<Vec<_>>()
+    }))
 }
 
 fn failure_schemas(
