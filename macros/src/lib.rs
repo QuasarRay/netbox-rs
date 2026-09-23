@@ -387,15 +387,15 @@ fn codegen_schema(v: Value) -> Value {
     // values remain authoritative in the committed OpenAPI contract.
     o.remove("default");
 
-    // NetBox emits typed enums containing an explicit null member. For a
-    // non-nullable schema that member is unreachable; for a nullable schema
-    // `nullable: true` already carries the null semantics. Removing the
-    // redundant member preserves acceptance while avoiding an impossible
-    // typed enum variant in Progenitor/Typify.
-    if o.get("type").and_then(Value::as_str).is_some()
+    // NetBox occasionally emits enum members that cannot satisfy the declared
+    // primitive type (notably the string "null" inside integer enums). They
+    // are unreachable under OpenAPI's intersecting constraints. Real null
+    // members are represented by Progenitor through `nullable`, not as an
+    // inner Rust enum variant.
+    if let Some(kind) = o.get("type").and_then(Value::as_str).map(str::to_owned)
         && let Some(Value::Array(values)) = o.get_mut("enum")
     {
-        values.retain(|value| !value.is_null());
+        values.retain(|value| enum_member_matches(&kind, value));
     }
 
     if let Some(Value::Object(children)) = o.get_mut("properties") {
@@ -428,6 +428,18 @@ fn codegen_schema(v: Value) -> Value {
 
     Value::Object(o)
 }
+fn enum_member_matches(kind: &str, value: &Value) -> bool {
+    match kind {
+        "string" => value.is_string(),
+        "integer" => value.as_i64().is_some() || value.as_u64().is_some(),
+        "number" => value.is_number(),
+        "boolean" => value.is_boolean(),
+        "array" => value.is_array(),
+        "object" => value.is_object(),
+        _ => true,
+    }
+}
+
 fn group(path: &str) -> String {
     path.trim_matches('/')
         .split('/')
@@ -515,6 +527,22 @@ mod tests {
                 "enum":[1200, null]
             }))["enum"],
             json!([1200])
+        );
+        assert_eq!(
+            codegen_schema(json!({
+                "type":"integer",
+                "nullable":true,
+                "enum":[1200, "null", null]
+            }))["enum"],
+            json!([1200])
+        );
+        assert_eq!(
+            codegen_schema(json!({
+                "type":"string",
+                "nullable":true,
+                "enum":["A", "null", null]
+            }))["enum"],
+            json!(["A", "null"])
         );
     }
 
