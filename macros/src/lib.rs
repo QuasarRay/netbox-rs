@@ -154,35 +154,39 @@ fn api(doc: &Doc) -> Result<Tokens, String> {
         }
     });
 
-    let errors = doc.ops.iter().filter(|op| !op.failures.is_empty()).map(|op| {
-        let error = format_ident!("Rpc{}Error", pascal(&op.id));
-        let variants = op.failures.iter().map(|failure| {
-            let variant = format_ident!("Status{}", failure.status);
-            let status = failure.status;
-            let rename = status.to_string();
-            let body = format_ident!("{}", failure.body);
-            quote!(
-                #[serde(rename = #rename)]
-                #variant(models::#body)
-            )
-        });
-        let statuses = op.failures.iter().map(|failure| {
-            let variant = format_ident!("Status{}", failure.status);
-            let status = failure.status;
-            quote!(Self::#variant(_) => #status)
-        });
-        quote! {
-            #[derive(Debug, ::serde::Serialize, ::serde::Deserialize)]
-            #[serde(tag = "status", content = "body")]
-            pub enum #error { #(#variants),* }
+    let errors = doc
+        .ops
+        .iter()
+        .filter(|op| !op.failures.is_empty())
+        .map(|op| {
+            let error = format_ident!("Rpc{}Error", pascal(&op.id));
+            let variants = op.failures.iter().map(|failure| {
+                let variant = format_ident!("Status{}", failure.status);
+                let status = failure.status;
+                let rename = status.to_string();
+                let body = format_ident!("{}", failure.body);
+                quote!(
+                    #[serde(rename = #rename)]
+                    #variant(models::#body)
+                )
+            });
+            let statuses = op.failures.iter().map(|failure| {
+                let variant = format_ident!("Status{}", failure.status);
+                let status = failure.status;
+                quote!(Self::#variant(_) => #status)
+            });
+            quote! {
+                #[derive(Debug, ::serde::Serialize, ::serde::Deserialize)]
+                #[serde(tag = "status", content = "body")]
+                pub enum #error { #(#variants),* }
 
-            impl ApiError for #error {
-                fn status(&self) -> u16 {
-                    match self { #(#statuses),* }
+                impl ApiError for #error {
+                    fn status(&self) -> u16 {
+                        match self { #(#statuses),* }
+                    }
                 }
             }
-        }
-    });
+        });
 
     let metadata = doc.ops.iter().map(|op| {
         let (id, group, method, path) = (&op.id, &op.group, &op.method, &op.path);
